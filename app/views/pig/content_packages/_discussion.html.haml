@@ -1,0 +1,5 @@
+.mt-1
+=render("posts/remote_form", :post => current_user.posts.build(:target => @content_package))
+.posts
+  -@content_package.posts.each do |post|
+    =render("discussion_post", :post => post)
