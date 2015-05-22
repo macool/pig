@@ -1,7 +1,7 @@
 :javascript
-  YmContent.ContentPackages.descriptions = #{Hash[ContentType.all.map{|ct| [ct.id, ct.description]}].to_json};
+  Pig.ContentPackages.descriptions = #{Hash[ContentType.all.map{|ct| [ct.id, ct.description]}].to_json};
   $(document).ready(function(){
-    YmContent.ContentPackages.initForm();
+    Pig.ContentPackages.initForm();
     $( ".autocomplete-select" ).combobox();
   });
 

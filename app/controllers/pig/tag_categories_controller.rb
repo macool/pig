@@ -4,7 +4,7 @@ module Pig
   class TagCategoriesController < ApplicationController
 
     def self.included(base)
-      base.layout 'ym_content/application'
+      base.layout 'pig/application'
       base.load_and_authorize_resource
     end
 

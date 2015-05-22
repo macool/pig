@@ -3,7 +3,7 @@ require_dependency "pig/application_controller"
 module Pig
   class PersonasController < ApplicationController
 
-    layout 'ym_content/application'
+    layout 'pig/application'
     load_and_authorize_resource
 
     def create

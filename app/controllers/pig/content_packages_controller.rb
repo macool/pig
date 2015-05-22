@@ -2,7 +2,7 @@ require_dependency "pig/application_controller"
 
 module Pig
   class ContentPackagesController < ApplicationController
-    layout 'ym_content/application', except: :show
+    layout 'pig/application', except: :show
     load_and_authorize_resource
     # Define an around filter for all controller actions that could potentially be routed to from a permalink
     around_action :redirect_to_permalink, :only => ContentPackage.member_routes.collect{ |x| x[:action] }
@@ -124,7 +124,7 @@ module Pig
     def update
       get_view_data
       previous_status = @content_package.status
-      # Because of the way ym_content uses method missing to update each content chunk just using
+      # Because of the way pig uses method missing to update each content chunk just using
       # touch: true on the association would result in an update on the content package for every chunk
       # Because of this the updated_at time is set here
       content_package_params["updated_at"] = DateTime.now
@@ -161,7 +161,7 @@ module Pig
     private
     def content_package_params
       permitted_params = [*params[:content_package].try(:keys) + [:persona_ids => []]]
-      if @content_package && YmContent::config.tags_feature
+      if @content_package && pig::config.tags_feature
         permitted_params << [:taxonomy_tags => @content_package.content_type.tag_categories.map{|x| { x.slug => [] }}.reduce(:merge)]
       end
       params.require(:content_package).permit(permitted_params)

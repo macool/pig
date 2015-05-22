@@ -3,7 +3,7 @@ require_dependency "pig/application_controller"
 module Pig
   class CmsUsersController < ApplicationController
 
-    layout 'ym_content/application'
+    layout 'pig/application'
     authorize_resource :cms_user
     before_action :check_cms_user, except: [:index, :new, :create_user]
 
