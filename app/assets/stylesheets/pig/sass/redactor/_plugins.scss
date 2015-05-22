@@ -1,0 +1,249 @@
+#redactor-modal {
+  section {
+    padding: 20px 40px 40px 40px;
+  }
+
+  textarea{
+    height: 68px;
+    box-shadow: none;
+    padding: 8px;
+  }
+
+  input[type="text"], input[type="number"] {
+    box-shadow: none;
+    padding: 8px;
+    height: auto;
+  }
+
+  input[type="number"] {
+    width: 100px;
+  }
+
+  footer button {
+    border-radius: 0;
+  }
+}
+
+// Callouts
+.redactor-editor p.call-out-box {
+  width: 100%;
+  border: 1px solid #555;
+  color: #555;
+  margin: 0;
+  padding: 25px 25px 25px 84px;
+  position: relative;
+
+  .fa {
+    position: absolute;
+    left: 0;
+    font-size: 24px;
+    top: 0;
+    height: 100%;
+    padding: 23px 0 0 0;
+    border-right: 1px solid #555;
+    width: 60px;
+    text-align: center;
+  }
+
+  &:after {
+    display: none;
+  }
+}
+
+// Markers
+.redactor-editor .redactor-wrap-marker {
+  font-size: 11px;
+  margin: 0;
+  display: block;
+
+  + p:not(.call-out-box), + h2, + h3, + h4, + h5 {
+    margin-top: 20px;
+  }
+
+  span {
+    background: #F7EF99;
+    padding: 2px;
+    font-weight: normal;
+  }
+}
+
+// Highlight Blocks
+
+.redactor-editor .highlight-block {
+  background: #EEE;
+  border-top: 2px solid #555;
+  border-bottom: 2px solid #555;
+  margin: 0;
+  padding: 20px;
+  width: 100%;
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  #cms-style-container & {
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.highlight-block-primary {
+    border-color: #4f86c6;
+  }
+
+  &.highlight-block-secondary {
+    border-color: #C40063;
+  }
+
+  &.highlight-block-tertiary {
+    border-color: #72bf44;
+  }
+}
+
+// Expand Content
+
+.redactor-editor h2.redactor-wrap-marker {
+  font-size: 24px;
+  cursor: initial;
+  background: #f7f7f7;
+  color: #4f86c6;
+  padding: 20px;
+  border-bottom: 1px solid #4f86c6;
+  margin: 0;
+}
+
+.redactor-editor .expanding-content {
+  height: auto;
+  background: #f7f7f7;
+  padding: 20px;
+  width: 100%;
+  margin: 0;
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  #cms-style-container & {
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Blockquotes
+#redactor-blockquote-citation {
+  width: 100%;
+  padding: 4px;
+}
+
+.redactor-modal-error {
+  font-style: italic;
+}
+
+.redactor-editor blockquote.blockquote-fancy {
+  position: relative;
+  border-left: 7px solid #555;
+  position: relative;
+  padding: 0 0 0 18px;
+  margin: 20px 0 20px 40px;
+
+  &:before {
+    content: "\201C";
+    position: absolute;
+    font-size: 60px;
+    margin: 0 0 0 -64px;
+    line-height: 1;
+  }
+
+  cite {
+    display: block;
+  }
+}
+
+// Date blocks
+.redactor-editor {
+  .dateblock {
+    display: table;
+    width: 100%;
+    margin-bottom: 0;
+    background: #EEE;
+  }
+
+  .dateblock-info,
+  .dateblock-date {
+    display: table-cell;
+    vertical-align: top;
+  }
+
+  .dateblock-date {
+    min-width: 75px;
+    width: 75px;
+    margin: 0;
+    line-height: 1;
+
+    @include media-query(md) {
+      width: 115px;
+    }
+  }
+
+  .dateblock-day,
+  .dateblock-month,
+  .dateblock-year {
+    display: block;
+    color: #555;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 5px;
+    font-weight: bold;
+  }
+
+  .dateblock-day {
+    background: none;
+    color: #555;
+    // background: $gg-blue;
+    border-radius: 4px 0 0 0;
+    font-size: 46px;
+    letter-spacing: -3px;
+    padding-left: 2px;
+    @include media-query(md) {
+      font-size: 66px;
+    }
+  }
+
+  .dateblock-month {
+    background: none;
+    font-size: 20px;
+  }
+
+  .dateblock-year {
+    background: none;
+    color: #555;
+    font-size: 20px;
+
+  }
+
+  .dateblock-text {
+    background: none;
+    color: #555;
+    border-radius: 0 4px 4px 4px;
+    padding: 20px 30px 10px;
+    margin: 0;
+  }
+}
+
+// Video
+.redactor-editor .responsive-video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 25px;
+  height: 0;
+  margin: 20px 0;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
