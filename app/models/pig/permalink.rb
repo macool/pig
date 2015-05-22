@@ -39,7 +39,7 @@ module Pig
     end
 
     def self.find_from_url(url)
-      find_by_attr = YmContent.config.nested_permalinks ? :full_path : :path
+      find_by_attr = Pig.config.nested_permalinks ? :full_path : :path
       permalink_path = "#{find_by_attr == :full_path ? '/' : ''}#{url}".squeeze('/').downcase
       # find_by_<method> is deprecated in rails 4
       if Rails::VERSION::MAJOR >= 4
@@ -61,7 +61,7 @@ module Pig
 
     def path_does_not_match_existing_route
       existing_routes = Rails.application.routes.routes.collect do |route|
-        if YmContent.config.nested_permalinks
+        if Pig.config.nested_permalinks
           route.path.spec.to_s.split(/\(/).try(:[],1)
         else
           route.path.spec.to_s.split(/\/|\(/).try(:[],1)

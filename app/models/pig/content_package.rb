@@ -3,7 +3,7 @@ module Pig
 
     include YmCore::Model
     include YmActivity::Recordable
-    include YmContent::Permalinkable
+    include Pig::Permalinkable
 
     belongs_to :content_type
     belongs_to :parent, :class_name => "ContentPackage"
@@ -34,13 +34,17 @@ module Pig
 
     image_accessor :meta_image
 
-    alias_method_chain(:set_permalink_path, :viewless)
+
 
     scope :root, -> { where(:parent_id => nil, :deleted_at => nil).order(:position, :id) }
     scope :published, -> { where(:status => 'published').where('publish_at <= ? OR publish_at IS NULL', Date.today) }
     scope :expiring, -> { where('next_review < ?', Date.today) }
 
     class << self
+
+      def greg
+        "world"
+      end
 
       def member_routes
         # Define all routes set up by "resources :content_packages"
@@ -377,6 +381,7 @@ module Pig
     def set_permalink_path_with_viewless
       content_type.try(:viewless?) ? true : set_permalink_path_without_viewless
     end
+    alias_method_chain(:set_permalink_path, :viewless)
 
     def set_status
       if self.status_changed? && self.author_id then

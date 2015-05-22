@@ -36,7 +36,7 @@ module Pig
       when 'image'
         file
       when 'link'
-        YmContent::Link.new(raw_value)
+        Pig::Link.new(raw_value)
       when 'user'
         User.find_by_id(raw_value) if raw_value.present?
       else

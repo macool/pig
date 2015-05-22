@@ -1,6 +1,6 @@
 /*
  * Video plugin.
- * To include in a project add 'video' to config.redactor_plugins in config/initializers/ym_content.rb
+ * To include in a project add 'video' to config.redactor_plugins in config/initializers/pig.rb
  * http://imperavi.com/redactor/plugins/video/ (modified to add wrapper div)
  */
 

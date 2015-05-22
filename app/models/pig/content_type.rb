@@ -14,9 +14,7 @@ module Pig
     scope :viewless, -> { where(:viewless)}
     scope :not_viewless, -> { where(:viewless => false)}
 
-    def self.default_scope
-      include(:content_attributes)
-    end
+    default_scope -> { includes(:content_attributes) }
 
     def destroyable?
       content_packages.count.zero?

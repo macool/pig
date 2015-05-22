@@ -1,6 +1,6 @@
 /*
  * Document Block plugin.
- * To include in a project add 'documentsBlock' to config.redactor_plugins in config/initializers/ym_content.rb
+ * To include in a project add 'documentsBlock' to config.redactor_plugins in config/initializers/pig.rb
  */
 
 if (!RedactorPlugins) var RedactorPlugins = {};

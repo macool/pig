@@ -1,6 +1,6 @@
 /*
  * Date block plugin.
- * To include in a project add 'dateBlock' to config.redactor_plugins in config/initializers/ym_content.rb
+ * To include in a project add 'dateBlock' to config.redactor_plugins in config/initializers/pig.rb
  */
 
 if (!RedactorPlugins) var RedactorPlugins = {};

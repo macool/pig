@@ -1,6 +1,6 @@
 /*
  * Call outs plugin.
- * To include in a project add 'callOuts' to config.redactor_plugins in config/initializers/ym_content.rb
+ * To include in a project add 'callOuts' to config.redactor_plugins in config/initializers/pig.rb
  * Adpated from http://imperavi.com/redactor/plugins/clips/
  */
 

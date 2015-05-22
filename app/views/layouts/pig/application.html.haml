@@ -1,11 +1,11 @@
 !!!5
 %html
   %head
-    =render('layouts/ym_content/head')
+    =render('layouts/pig/head')
     <%= csrf_meta_tags %>
   -body_tag do
     .cms-wrapper
-      =render("layouts/ym_content/header")
+      =render("layouts/pig/header")
       =yield
       .push
-    =render("layouts/ym_content/footer")
+    =render("layouts/pig/footer")

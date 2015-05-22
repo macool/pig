@@ -49,21 +49,21 @@ $(document).ready(function() {
     ul.outerWidth(this.element.outerWidth());
   };
 });
-window.YmContent = {
+window.Pig = {
   ContentPackages: {
     initForm: function() {
       $('#content_package_content_type_id').change(function() {
-        return YmContent.ContentPackages.updateGoal();
+        return Pig.ContentPackages.updateGoal();
       });
       $('#content_package_notes').change(function() {
-        return YmContent.ContentPackages.goalChangedByUser = true;
+        return Pig.ContentPackages.goalChangedByUser = true;
       });
-      return YmContent.ContentPackages.updateGoal();
+      return Pig.ContentPackages.updateGoal();
     },
     updateGoal: function() {
       var goal;
-      if (!YmContent.ContentPackages.goalChangedByUser) {
-        goal = YmContent.ContentPackages.descriptions[$('#content_package_content_type_id').val()];
+      if (!Pig.ContentPackages.goalChangedByUser) {
+        goal = Pig.ContentPackages.descriptions[$('#content_package_content_type_id').val()];
         return $('#content_package_notes').val(goal);
       }
     },
@@ -113,7 +113,7 @@ window.YmContent = {
         } else {
           content_type_id = row.attr('id').split('-').slice(-1)[0];
           link.data('loaded', 0);
-          setTimeout("YmContent.ContentTypes.loading(" + content_type_id + ")", 250);
+          setTimeout("Pig.ContentTypes.loading(" + content_type_id + ")", 250);
           return $.get("/content_types/" + content_type_id + "/children").success(function() {
             link.data('loaded', 1);
             link.data('open', 1);
@@ -123,12 +123,12 @@ window.YmContent = {
         }
       });
       $('.js-duplicate-link').on('click', function() {
-        YmContent.ContentTypes.seedId = $(this).data('content-type-id');
+        Pig.ContentTypes.seedId = $(this).data('content-type-id');
         return $('#duplicate-modal').modal();
       });
       return $('.js-duplicate-submit').on('click', function() {
         var duplicateTo, path;
-        path = "/content_types/" + YmContent.ContentTypes.seedId + "/duplicate";
+        path = "/content_types/" + Pig.ContentTypes.seedId + "/duplicate";
         duplicateTo = $('#duplicate_to').val();
         if (duplicateTo !== "") {
           path += "?to=" + duplicateTo;
@@ -198,9 +198,9 @@ window.YmContent = {
   },
   Sitemap: {
     init: function() {
-      YmContent.Sitemap.filter();
+      Pig.Sitemap.filter();
       $('select#status').change(function() {
-        return YmContent.Sitemap.filter();
+        return Pig.Sitemap.filter();
       });
       return $('#sitemap').on('click', '.has-children td.td-name', function() {
         var content_package_id, depth, link, row, _results, _results2;
@@ -222,7 +222,7 @@ window.YmContent = {
               break;
             }
           }
-          YmContent.Sitemap.setCookie();
+          Pig.Sitemap.setCookie();
           return _results;
         } else if ($(this).data('loaded') === 1) {
           link.attr('data-open', 1);
@@ -241,18 +241,18 @@ window.YmContent = {
               break;
             }
           }
-          YmContent.Sitemap.setCookie();
+          Pig.Sitemap.setCookie();
           return _results2;
         } else {
           content_package_id = row.attr('id').split('-').slice(-1)[0];
           link.attr('data-loaded', 0);
-          setTimeout("YmContent.Sitemap.loading(" + content_package_id + ")", 250);
+          setTimeout("Pig.Sitemap.loading(" + content_package_id + ")", 250);
           return $.get("/content_packages/" + content_package_id + "/children").success(function() {
             link.attr('data-loaded', 1);
             // link.data('open', 1);
             link.attr('data-open', 1);
             link.find('i.sitemap-caret').removeClass('fa-spin').removeClass('fa-spinner').removeClass('fa-caret-right');
-            YmContent.Sitemap.setCookie();
+            Pig.Sitemap.setCookie();
             return link.find('i.sitemap-caret').addClass('fa-caret-down');
           });
         }
@@ -283,7 +283,7 @@ window.YmContent = {
       if (parts.length == 2) return JSON.parse(parts.pop().split(";").shift());
     },
     setCookie: function() {
-      document.cookie = "open=" + JSON.stringify(YmContent.Sitemap.getOpenNodes());
+      document.cookie = "open=" + JSON.stringify(Pig.Sitemap.getOpenNodes());
     },
     getOpenNodes: function() {
       return $.map($('.td-name[data-open=1]'), function(a) {
@@ -291,7 +291,7 @@ window.YmContent = {
       });
     },
     setOpenNodes: function() {
-      $.each(YmContent.Sitemap.getCookie(), function(i, v) {
+      $.each(Pig.Sitemap.getCookie(), function(i, v) {
         $('.td-name[data-content-package="'+ v +'"]').each(function() {
           $(this).trigger('click');
         });

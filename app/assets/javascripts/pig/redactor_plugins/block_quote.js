@@ -1,6 +1,6 @@
 /*
  * Fancy blockquotes plugin.
- * To include in a project add 'blockQuote' to config.redactor_plugins in config/initializers/ym_content.rb
+ * To include in a project add 'blockQuote' to config.redactor_plugins in config/initializers/pig.rb
  */
 
 if (!RedactorPlugins) var RedactorPlugins = {};

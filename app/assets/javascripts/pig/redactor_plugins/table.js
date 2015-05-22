@@ -1,6 +1,6 @@
 /*
  * Tables plugin.
- * To include in a project add 'table' to config.redactor_plugins in config/initializers/ym_content.rb
+ * To include in a project add 'table' to config.redactor_plugins in config/initializers/pig.rb
  * http://imperavi.com/redactor/plugins/table/
  */
 
