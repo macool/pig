@@ -276,7 +276,7 @@ window.YmContent = {
       if (link.data('loaded') === 0) {
         return link.find('i.sitemap-caret').removeClass('fa-caret-right').addClass('fa-spinner').addClass('fa-spin');
       }
-    },
+    }, 
     getCookie: function() {
       var value = "; " + document.cookie;
       var parts = value.split("; " + "open" + "=");
@@ -286,7 +286,7 @@ window.YmContent = {
       document.cookie = "open=" + JSON.stringify(YmContent.Sitemap.getOpenNodes());
     },
     getOpenNodes: function() {
-      return $.map($('.td-name[data-open=1]'), function(a) {
+      return $.map($('.td-name[data-open=1]'), function(a) { 
         return $(a).data('content-package');
       });
     },

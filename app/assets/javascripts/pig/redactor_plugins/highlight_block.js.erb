@@ -1,0 +1,58 @@
+/*
+ * Highlight Content plugin.
+ * To include in a project add 'highlightBlocks' to config.redactor_plugins in config/initializers/ym_content.rb
+ * Adpated from http://imperavi.com/redactor/plugins/clips/
+ */
+
+if (!RedactorPlugins) var RedactorPlugins = {};
+
+RedactorPlugins.highlightBlocks = function()
+{
+  return {
+    init: function() {
+      var items = [
+        ['<li><a href="#" class="redactor-higlight-blocks-link" data-class="redactor-primary">Highlight Block - Primary</a></li>'],
+        ['<li><a href="#" class="redactor-higlight-blocks-link" data-class="redactor-secondary">Highlight Block - Secondary</a></li>'],
+        ['<li><a href="#" class="redactor-higlight-blocks-link" data-class="redactor-tertiary">Highlight Block - Tertiary</a></li>']
+      ];
+
+      this.highlightBlocks.template = $('<ul id="redactor-modal-list">');
+
+      var itemsLength = items.length;
+
+      for (var i = 0; i < itemsLength; i++) {
+        this.highlightBlocks.template.append(items[i]);
+      }
+
+      this.modal.addTemplate('highlightBlocks', '<section>' + this.utils.getOuterHtml(this.highlightBlocks.template) + '</section>');
+
+      var button = this.button.add('highlightBlocks', 'Highlight Blocks');
+      this.button.setAwesome('highlightBlocks', 'fa-lightbulb-o');
+      this.button.addCallback(button, this.highlightBlocks.show);
+
+    },
+    show: function() {
+      this.modal.load('highlightBlocks', 'Insert Highlight Block', 400);
+      this.modal.createCancelButton();
+      $('#redactor-modal-list').find('.redactor-higlight-blocks-link').each($.proxy(this.highlightBlocks.load, this));
+      this.selection.save();
+      this.modal.show();
+    },
+    load: function(i,s) {
+      $(s).on('click', $.proxy(function(e) {
+        e.preventDefault();
+        var text = this.selection.getText() !== '' ? this.selection.getHtml() : 'Your text here';
+        var className = $(e.currentTarget).data('class');
+        var html = '<p class="' + className + '">[HIGHLIGHT-START]</p><p>' + text + '</p><p>[HIGHLIGHT-END]</p>';
+        this.highlightBlocks.insert(html);
+      }, this));
+    },
+    insert: function(html) {
+      this.selection.restore();
+      this.insert.htmlWithoutClean(html, false);
+      this.modal.close();
+      this.observe.load();
+      redactorPluginUpdates.formatHighlightBlocks('change');
+    }
+  };
+};
