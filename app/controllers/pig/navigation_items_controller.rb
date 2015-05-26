@@ -2,11 +2,8 @@ require_dependency "pig/application_controller"
 
 module Pig
   class NavigationItemsController < ApplicationController
-
-    def self.included(base)
-      base.layout 'pig/application'
-      base.load_and_authorize_resource
-    end
+    layout 'pig/application'
+    load_and_authorize_resource
 
     def create
       @navigation_item.save

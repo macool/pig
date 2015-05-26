@@ -8,6 +8,12 @@ module Pig
       end
     end
 
+    # config.to_prepare do
+    #   Dir.glob(Rails.root + "app/helpers/**/*_helper*.rb").each do |c|
+    #     require_dependency(c)
+    #   end
+    # end
+
     config.nested_permalinks = true
     config.tags_feature = false
   end
