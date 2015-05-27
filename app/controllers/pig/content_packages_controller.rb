@@ -1,6 +1,6 @@
 module Pig
   class ContentPackagesController < ApplicationController
-    layout 'pig/application', except: :show
+    layout 'layouts/application', only: :show
     load_and_authorize_resource
     # Define an around filter for all controller actions that could potentially be routed to from a permalink
     around_action :redirect_to_permalink, :only => ContentPackage.member_routes.collect{ |x| x[:action] }
