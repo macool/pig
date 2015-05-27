@@ -11,7 +11,6 @@ module Pig
     private
     def cache_key(content_package, key_name = 'content_package')
       "#{key_name}_#{content_package.id}_#{Time.parse(content_package.updated_at.to_s).to_i}"
-
     end
   end
 end

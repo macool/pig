@@ -5,6 +5,8 @@ module Pig
     include YmActivity::Recordable
     include Pig::Permalinkable
 
+    self.table_name = 'pig_content_packages'
+
     belongs_to :content_type
     belongs_to :parent, :class_name => "ContentPackage"
     has_many :content_chunks, -> { includes :content_attribute }
@@ -41,10 +43,6 @@ module Pig
     scope :expiring, -> { where('next_review < ?', Date.today) }
 
     class << self
-
-      def greg
-        "world"
-      end
 
       def member_routes
         # Define all routes set up by "resources :content_packages"

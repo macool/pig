@@ -1,6 +1,7 @@
 module Pig
   class Permalink < ActiveRecord::Base
     include YmCore::Model
+    self.table_name = 'pig_permalinks'
 
     belongs_to :resource, :polymorphic => true
 

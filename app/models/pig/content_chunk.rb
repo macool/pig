@@ -1,5 +1,6 @@
 module Pig
   class ContentChunk < ActiveRecord::Base
+    self.table_name = 'pig_content_chunks'
 
     belongs_to :content_package
     belongs_to :content_attribute
