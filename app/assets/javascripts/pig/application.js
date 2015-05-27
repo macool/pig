@@ -15,18 +15,18 @@
 //= require bootstrap/modal
 
 //= require cocoon
-//= require widgets
-//= require navigation_manager
-//= require custom
-//= require character_limits
-//= require tabs
-//= require search_manager
+//= require pig/widgets
+//= require pig/navigation_manager
+//= require pig/custom
+//= require pig/character_limits
+//= require pig/tabs
+//= require pig/search_manager
 //= require underscore
 //= require sir-trevor
 //= require redactor
-//= require user_filter
+//= require pig/user_filter
 //= require_tree ./sir_trevor_custom_blocks
-//= require autocomplete-field
+//= require pig/autocomplete-field
 //= require select2
 //= require_tree ./redactor_plugins
 

@@ -10,37 +10,37 @@
 
    ======================================================================= */
 
-@import 'sass/scaffold/reset';
-@import 'sass/scaffold/media-queries';
-@import 'sass/scaffold/grid';
-@import 'sass/scaffold/colours';
-@import 'sass/scaffold/general';
-@import 'sass/scaffold/helpers';
+@import 'pig/sass/scaffold/reset';
+@import 'pig/sass/scaffold/media-queries';
+@import 'pig/sass/scaffold/grid';
+@import 'pig/sass/scaffold/colours';
+@import 'pig/sass/scaffold/general';
+@import 'pig/sass/scaffold/helpers';
 
-@import 'sass/general/type';
-@import 'sass/general/nav';
-@import 'sass/general/footer';
-@import 'sass/general/buttons';
-@import 'sass/general/page';
-@import 'sass/general/tables';
-@import 'sass/general/forms';
-@import 'sass/general/tabs';
-@import 'sass/general/tags';
-@import 'sass/general/dropdowns';
-@import 'sass/general/modals';
-@import 'sass/general/images';
-@import 'sass/general/pagination';
+@import 'pig/sass/general/type';
+@import 'pig/sass/general/nav';
+@import 'pig/sass/general/footer';
+@import 'pig/sass/general/buttons';
+@import 'pig/sass/general/page';
+@import 'pig/sass/general/tables';
+@import 'pig/sass/general/forms';
+@import 'pig/sass/general/tabs';
+@import 'pig/sass/general/tags';
+@import 'pig/sass/general/dropdowns';
+@import 'pig/sass/general/modals';
+@import 'pig/sass/general/images';
+@import 'pig/sass/general/pagination';
 
-@import 'sass/search/dropdown';
+@import 'pig/sass/search/dropdown';
 
-@import 'sass/sortable/list';
+@import 'pig/sass/sortable/list';
 
-@import 'sass/redactor/general';
-@import 'sass/redactor/plugins';
+@import 'pig/sass/redactor/general';
+@import 'pig/sass/redactor/plugins';
 
-@import 'sass/sidebar/general';
-@import 'sass/sidebar/feed';
-@import 'sass/sidebar/personas';
-@import 'sass/sidebar/datepicker';
+@import 'pig/sass/sidebar/general';
+@import 'pig/sass/sidebar/feed';
+@import 'pig/sass/sidebar/personas';
+@import 'pig/sass/sidebar/datepicker';
 
-@import 'sass/collapse/collapse';
+@import 'pig/sass/collapse/collapse';
