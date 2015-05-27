@@ -31,6 +31,6 @@ Dir[File.dirname(__FILE__) + '/pig/permalinks/*.rb'].each {|file| require file }
 # #   Dir[File.dirname(__FILE__) + '/ym_documents/**/*.rb'].each {|file| require file }
 # # end
 
-# require 'cocoon'
+require 'cocoon'
 # require 'oembed'
 # OEmbed::Providers.register(OEmbed::Providers::Flickr,OEmbed::Providers::Instagram,OEmbed::Providers::Scribd,OEmbed::Providers::SoundCloud,OEmbed::Providers::Slideshare,OEmbed::Providers::Youtube,OEmbed::Providers::Vimeo)
