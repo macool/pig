@@ -1,5 +1,6 @@
 require "pig/engine"
 require 'stringex'
+require 'formtastic-bootstrap'
 # require 'ym_core'
 # require 'ym_users'
 # require 'ym_tags'
