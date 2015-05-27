@@ -161,7 +161,7 @@
               %ul.cms-activities.cms-activity-feed
                 =render(partial: "content_packages/activity", collection: @activity_items, as: :activity, locals: {:include_name => true})
                 / -@activity_items.each do |activity|
-                /   =render("content_packages/activity", :include_name => true, :activity => activity)
+                /   =render("pig/content_packages/activity", :include_name => true, :activity => activity)
               -if @activity_items.total_pages != @activity_items.current_page
                 =link_to "See older activity", activity_content_package_path(@content_package), :remote => true, :class => 'btn btn-sm js-older-activities pull-right'
                 .clearfix

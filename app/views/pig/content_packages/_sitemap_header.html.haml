@@ -5,7 +5,7 @@
         .col-sm-6.col-sm-offset-3
           %h1=title(header_title)
         .col-sm-3.cms-header-actions
-          -if @content_packages && !@deleted_content_packages
-            =link_if_can("Add new content", [:new, ContentPackage.new], :icon => 'plus', :class => 'btn btn-success')
+          -if (@content_packages && !@deleted_content_packages) && can?(:update, @article)
+            =link_to("Add new content", new_pig_content_package_path, :icon => 'plus', :class => 'btn btn-success')
           -if @content_types
             =link_if_can("Add new template", [:new, ContentType.new], :icon => 'plus', :class => 'btn btn-success')

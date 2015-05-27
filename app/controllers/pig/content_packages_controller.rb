@@ -27,7 +27,7 @@ module Pig
     def create
       if @content_package.save
         current_user.record_activity!(@content_package, :text => "created")
-        redirect_to edit_content_package_path(@content_package)
+        redirect_to edit_pig_content_package_path(@content_package)
       else
         render :action => 'new'
       end
