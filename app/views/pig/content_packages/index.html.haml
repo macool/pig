@@ -8,7 +8,7 @@
     #{"$('#content-package-#{params[:open]}').addClass('highlight');" if @open}
   });
 .container.page-margin-bottom
-  =render("content_packages/sitemap_header", :header_title => "Content list")
+  =render("pig/content_packages/sitemap_header", :header_title => "Content list")
   .row
     .col-xs-12
       .tab-content.tab-content-sitemap.relative
