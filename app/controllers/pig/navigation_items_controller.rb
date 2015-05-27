@@ -1,5 +1,3 @@
-require_dependency "pig/application_controller"
-
 module Pig
   class NavigationItemsController < ApplicationController
     layout 'pig/application'
