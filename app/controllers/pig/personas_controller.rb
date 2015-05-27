@@ -16,7 +16,7 @@ module Pig
     end
 
     def index
-      @persona_groups = ::PersonaGroup.order(:position, :name)
+      @persona_groups = Pig::PersonaGroup.order(:position, :name)
     end
 
     def new

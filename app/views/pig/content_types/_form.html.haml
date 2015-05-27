@@ -52,7 +52,7 @@
               .check_boxes.form-group
                 =form.input :viewless
                 =form.input :singleton
-          -if YmContent::config.tags_feature
+          -if Pig::config.tags_feature
             .form-group
               %h4 Tag categories
               =form.input :tag_categories, as: :check_boxes, :label => false

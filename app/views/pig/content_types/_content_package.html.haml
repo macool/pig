@@ -8,4 +8,4 @@
     .dropdown
       =link_to('More'.html_safe, '#', 'data-toggle' => 'dropdown', :icon => 'angle-down', :icon_last => true)
       %ul.dropdown-menu.dropdown-menu-right
-        %li=link_to('Reveal in content list', content_packages_path(:open => content_package.id), :title => "Reveal this page in the sitemap")
+        %li=link_to('Reveal in content list', pig_content_packages_path(:open => content_package.id), :title => "Reveal this page in the sitemap")

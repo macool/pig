@@ -1,5 +1,5 @@
 :javascript
-  $(document).ready(function(){YmContent.Sortable.init();});
+  $(document).ready(function(){Pig.Sortable.init();});
 
 .container.page-margin-bottom
   .row
@@ -25,5 +25,5 @@
                   .well{:id => "content_attribute_ids_#{content_attribute.id}"}
                     =content_attribute
         %fieldset.form-actions
-          =link_to('Save order', reorder_content_type_path(@content_type), :method => :put, :class => 'btn btn-success sortable-submit pull-right')
+          =link_to('Save order', reorder_pig_content_type_path(@content_type), :method => :put, :class => 'btn btn-success sortable-submit pull-right')
           .clearfix

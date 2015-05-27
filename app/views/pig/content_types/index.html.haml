@@ -1,6 +1,6 @@
 :javascript
   $(document).ready(function(){
-    YmContent.ContentTypes.init()
+    Pig.ContentTypes.init()
   });
 
 .container.page-margin-bottom
@@ -26,17 +26,18 @@
                       =needs_design(content_type)
                   %td
                   %td
-                    =link_to('Edit', edit_content_type_path(content_type))
+                    =link_to('Edit', edit_pig_content_type_path(content_type))
                   %td
                     .dropdown
                       =link_to('More'.html_safe, '#', 'data-toggle' => 'dropdown', :icon => 'angle-down', :icon_last => true)
                       %ul.dropdown-menu.dropdown-menu-right
-                        %li=link_to("Add new content of this type", new_content_type_content_package_path(content_type))
+                        %li=link_to("Add new content of this type", new_pig_content_type_content_package_path(content_type))
                         %li=link_to('Duplicate...', '#', :class => 'js-duplicate-link', :data => {:content_type_id => content_type.id})
-                        %li=link_to('Reorder content attributes', reorder_content_type_path(content_type))
+                        %li=link_to('Reorder content attributes', reorder_pig_content_type_path(content_type))
                         -if content_type.destroyable?
-                          %li=link_to('Delete this content template', content_type_path(content_type), :method => :delete, :data => {:confirm => "Are you sure you want to delete this content template? This cannot be undone."})
-      =link_if_can("Add new content template", [:new, ContentType.new], :icon => 'plus', :class => 'btn btn-success btn-small mt-3 pull-right')
+                          %li=link_to('Delete this content template', pig_content_type_path(content_type), :method => :delete, :data => {:confirm => "Are you sure you want to delete this content template? This cannot be undone."})
+      -if can? :new, Pig::ContentType
+        =link_to("Add new content template", new_pig_content_type_path, :icon => 'plus', :class => 'btn btn-success btn-small mt-3 pull-right')
 .modal.fade#duplicate-modal
   .modal-dialog
     .modal-content

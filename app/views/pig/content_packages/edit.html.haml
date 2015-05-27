@@ -1,6 +1,6 @@
 :javascript
   $(document).ready(function() {
-    YmContent.Redactor.init();
+    Pig.Redactor.init();
     $( ".autocomplete-select" ).combobox();
     SirTrevor.setDefaults({
       uploadUrl: $('#cms-style-container').data('sirTrevorUploadUrl')
@@ -32,7 +32,7 @@
   });
 
 =semantic_form_for @content_package do |form|
-  .container.page-margin-bottom{data: {sir_trevor_upload_url: upload_sir_trevor_attachment_content_package_path(@content_package)} }
+  .container.page-margin-bottom{data: {sir_trevor_upload_url: upload_sir_trevor_attachment_pig_content_package_path(@content_package)} }
     .row
       .col-xs-12
         .cms-page-header
@@ -52,7 +52,7 @@
             =link_to('#meta', 'data-toggle' => 'tab') do
               %i.fa.fa-tag
               %span Meta
-          -if YmContent::config.tags_feature
+          -if Pig::config.tags_feature
             %li
               =link_to('#tags', 'data-toggle' => 'tab') do
                 %i.fa.fa-tags
@@ -75,7 +75,7 @@
               =form.input :meta_description, hint: 'Meta short description: Brief summary of the page, aim for 70 characters'
               =form.input :meta_keywords, hint: 'Meta keywords: comma separated'
               =form.input :meta_image, as: :image, hint: 'Meta images for facebook: Minimum size 600px x 315px, recommended size 1200px x 630px'
-        -if YmContent::config.tags_feature
+        -if Pig::config.tags_feature
           #tags.tab-pane
             .cms-form-well
               .row
@@ -117,13 +117,13 @@
                   .form-group
                     %h4.col-primary Review frequency
                     .check_boxes
-                      =form.input :review_frequency, :as => :radio, :collection => ContentPackage.review_frequencies.invert, :label => false
+                      =form.input :review_frequency, :as => :radio, :collection => Pig::ContentPackage.review_frequencies.invert, :label => false
                 .form-group
                   %h4.col-primary Page settings
                   %hr
                   =form.inputs do
                     =parent_content_package_select(form)
-                    =form.input :permalink_path, :prepend => @content_package.parent && @content_package.parent.respond_to?(:permalink_display_path) && YmContent.config.nested_permalinks ? @content_package.parent.permalink_display_path : '/' unless @content_package.viewless?
+                    =form.input :permalink_path, :prepend => @content_package.parent && @content_package.parent.respond_to?(:permalink_display_path) && Pig.config.nested_permalinks ? @content_package.parent.permalink_display_path : '/' unless @content_package.viewless?
                     =form.input :slug if current_user.yoomee_staff?
                     =form.input :logged_in_only, :as => :content_boolean, :label => "Only logged in users can view this"
                     =form.input :hide_from_robots, :as => :content_boolean, :label => "Exclude from search engine indexing"
@@ -143,7 +143,7 @@
               %label{for: "content_package_author_id"} Assigned To
               =form.input :author_id, :as => :select, :collection => User.where("role<>''").order(:role, :last_name).map { |u| ["#{u.full_name} (#{u.role})", u.id, {:'data-role' => u.role }] }, :include_blank => true, :label => false
               %label{for: "content_package_status"} Status
-              =form.input :status, :as => :select, :collection => ContentPackage.statuses(current_user).invert, :include_blank => false, :label => false
+              =form.input :status, :as => :select, :collection => Pig::ContentPackage.statuses(current_user).invert, :include_blank => false, :label => false
               #content_package_publish_at_fields{:class => content_package_publish_at_class}
                 %label{for: "content_package_publish_at"} Publish at (optional)
                 =form.input :publish_at, :as => :datepicker, :label => false
@@ -159,11 +159,11 @@
           .tab-content
             #activity.tab-pane.cms-well
               %ul.cms-activities.cms-activity-feed
-                =render(partial: "content_packages/activity", collection: @activity_items, as: :activity, locals: {:include_name => true})
+                =render(partial: "pig/content_packages/activity", collection: @activity_items, as: :activity, locals: {:include_name => true})
                 / -@activity_items.each do |activity|
                 /   =render("pig/content_packages/activity", :include_name => true, :activity => activity)
               -if @activity_items.total_pages != @activity_items.current_page
-                =link_to "See older activity", activity_content_package_path(@content_package), :remote => true, :class => 'btn btn-sm js-older-activities pull-right'
+                =link_to "See older activity", activity_pig_content_package_path(@content_package), :remote => true, :class => 'btn btn-sm js-older-activities pull-right'
                 .clearfix
             - if @content_package.personas.present?
               #personas.tab-pane.cms-well
@@ -195,7 +195,7 @@
                 =@content_package.id
               %label.col-primary Template
               %p
-                =link_to(@content_package.content_type, edit_content_type_path(@content_package.content_type))
+                =link_to(@content_package.content_type, edit_pig_content_type_path(@content_package.content_type))
               %label.col-primary Content requested by
               %p
                 =@content_package.requested_by.try(:full_name)

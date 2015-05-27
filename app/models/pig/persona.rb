@@ -20,11 +20,11 @@ module Pig
     end
 
     def group_name=(name)
-      self.group = PersonaGroup.new(:name => name)
+      self.group = Pig::PersonaGroup.new(:name => name)
     end
 
     def to_s
-      [namecategory].select(&:present?).join(' - ')
+      [name,category].select(&:present?).join(' - ')
     end
 
     private

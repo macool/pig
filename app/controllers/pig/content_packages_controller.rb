@@ -158,16 +158,16 @@ module Pig
 
     private
     def content_package_params
-      permitted_params = [*params[:content_package].try(:keys) + [:persona_ids => []]]
-      if @content_package && pig::config.tags_feature
+      permitted_params = [*params[:pig_content_package].try(:keys) + [:persona_ids => []]]
+      if @content_package && Pig::config.tags_feature
         permitted_params << [:taxonomy_tags => @content_package.content_type.tag_categories.map{|x| { x.slug => [] }}.reduce(:merge)]
       end
-      params.require(:content_package).permit(permitted_params)
+      params.require(:pig_content_package).permit(permitted_params)
     end
 
     def get_view_data
       # added double colon to access global scope... #TODO: this needs reviewing
-      @persona_groups = ::PersonaGroup.all.includes(:personas)
+      @persona_groups = Pig::PersonaGroup.all.includes(:personas)
       @activity_items = @content_package.activity_items.includes(:user, :resource).paginate(:page => 1, :per_page => 5)
       @non_meta_content_attributes = @content_package.content_attributes.where(:meta => false)
       @meta_content_attributes = @content_package.content_attributes.where(:meta => true)

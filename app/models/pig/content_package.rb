@@ -13,7 +13,7 @@ module Pig
     has_many :children, -> { where(:deleted_at => nil).order(:position, :id) }, :class_name => "ContentPackage", :foreign_key => 'parent_id'
     has_many :deleted_children, -> { where("deleted_at IS NOT NULL").order(:position, :id) }, :class_name => "ContentPackage", :foreign_key => 'parent_id'
     has_many :posts, :as => :target, :dependent => :destroy
-    has_and_belongs_to_many :personas
+    has_and_belongs_to_many :personas, class_name: 'Pig::Persona'
     belongs_to :author, :class_name => 'User'
     belongs_to :requested_by, :class_name => 'User'
     has_many :sir_trevor_images

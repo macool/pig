@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'geocoder'
   s.add_dependency 'cocoon'
   s.add_dependency 'public_suffix'
+  s.add_dependency "stringex", "~>1.3.2"
 
   s.add_development_dependency "sqlite3"
 end

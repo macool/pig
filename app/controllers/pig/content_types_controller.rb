@@ -1,7 +1,6 @@
 module Pig
   class ContentTypesController < ApplicationController
 
-    layout 'pig/application'
     load_and_authorize_resource
     skip_load_resource :only => :create
 
@@ -12,7 +11,7 @@ module Pig
     def create
       params = content_type_params
       params = convert_sir_trevor_settings(pams)
-      @content_type = ::ContentType.new
+      @content_type = Pig::ContentType.new
       @content_type.assign_attributes(params)
       if @connt_type.save
         redirect_to content_types_path
@@ -38,9 +37,9 @@ module Pig
     def duplicate
       seed = @content_type
       if params[:to]
-        @content_type = ContentType.find(params[:to])
+        @content_type = Pig::ContentType.find(params[:to])
       else
-        @content_type = ContentType.new
+        @content_type = Pig::ContentType.new
       end
       first_position = @content_type.content_attributes.size
       seed.content_attributes.each_with_index do |content_attribute, idx|
@@ -54,7 +53,7 @@ module Pig
     end
 
     def index
-      @content_types = ::ContentType.order(:name)
+      @content_types = Pig::ContentType.order(:name)
     end
 
     def new
@@ -66,7 +65,7 @@ module Pig
 
     def save_order
       params[:content_attribute_ids].each_with_index do |content_attribute_id, position|
-        ContentAttribute.find(content_attribute_id).update_attribute(:position, position)
+        Pig::ContentAttribute.find(content_attribute_id).update_attribute(:position, position)
       end
       redirect_to content_packages_path(:anchor => 'content-types')
     end
@@ -87,7 +86,7 @@ module Pig
     def sir_trevor_settings_to_json(settings)
       # Convert Sir Trevor form fields to JSON so content_type.update_attributes works
       j = {}
-      ::ContentAttribute::DEFAULT_SIR_TREVOR_BLOCK_TYPES.each do |block_type|
+      Pig::ContentAttribute::DEFAULT_SIR_TREVOR_BLOCK_TYPES.each do |block_type|
         j[block_type] = {:required => (settings.has_key? "#{block_type}_required"), :limit => settings["#{block_type}_limit"] }
       end
       json = JSON.generate(j)
