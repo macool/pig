@@ -5,7 +5,7 @@ module Pig::Permalinkable
     has_one :permalink, -> { where(:active => true) }, :as => :resource, :autosave => true
     has_many :permalinks, :as => :resource, :autosave => true, :dependent => :destroy
     validates :permalink, :presence => true, unless: 'viewless?', on: :update
-    before_validation :set_permalink_path, :set_permalink_full_path
+    # before_validation :set_permalink_path #, :set_permalink_full_path
     after_validation :set_permalink_errors
     after_save :sync_child_full_paths
   end
@@ -20,6 +20,8 @@ module Pig::Permalinkable
 
   def permalink_path=(val)
     (self.permalink || self.build_permalink).path = val
+    set_permalink_path
+    set_permalink_full_path
   end
 
   def permalink_display_path
@@ -44,6 +46,7 @@ module Pig::Permalinkable
     else
       self.permalink.generate_unique_path!(to_s)
     end
+    set_permalink_full_path
   end
 
   def set_permalink_full_path

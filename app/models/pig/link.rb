@@ -8,7 +8,7 @@ module Pig
     def initialize(val)
       @raw = val.strip
       if raw =~ /^\d+$/
-        @content_package = ::ContentPackage.find_by_id(raw)
+        @content_package = Pig::ContentPackage.find_by_id(raw)
         @target = nil
       else
         @url = val.to_s.html_safe

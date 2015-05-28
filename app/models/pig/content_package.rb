@@ -322,7 +322,7 @@ module Pig
           when "#{tags_context}_taggings"
             taggings.where("#{ActsAsTaggableOn::Tagging.table_name}.context = ?", tags_context)
           when tags_context
-            ActsAsTaggableOn::Tag.joins(:taggings).where("#{ActsAsTaggableOn::Tagging.table_name}.taggable_id = ? AND #{ActsAsTaggableOn::Tagging.table_name}.taggable_type = 'ContentPackage' AND #{ActsAsTaggableOn::Tagging.table_name}.context = ?", id, tags_context)
+            ActsAsTaggableOn::Tag.joins(:taggings).where("#{ActsAsTaggableOn::Tagging.table_name}.taggable_id = ? AND #{ActsAsTaggableOn::Tagging.table_name}.taggable_type = 'Pig::ContentPackage' AND #{ActsAsTaggableOn::Tagging.table_name}.context = ?", id, tags_context)
           else
             super
           end

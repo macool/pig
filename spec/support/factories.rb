@@ -52,24 +52,26 @@ FactoryGirl.define do
     end
   end
 
-  factory :activity_item do
-    user
-  end
+  # TODO - Activity
+  # factory :activity_item do
+  #   user
+  # end
 
   factory :content_package, class: Pig::ContentPackage do
     sequence(:name) {|n| "Content package #{n}"}
     content_type
     review_frequency 1
-    # due_date Date.today + 6.months
+    due_date Date.today + 6.months
     author
     requested_by
     sequence(:permalink_path) {|n| "my-nice-permalink-#{n}"}
     status "published"
-    # publish_at Date.today - 1.day
+    publish_at Date.today - 1.day
     sequence(:slug){|n| "content_package_#{n}" }
-    after(:build) do |content_package|
-      FactoryGirl.create(:activity_item, :resource_type => "ContentPackage", :resource => content_package)
-    end
+    # TODO - Activity
+    # after(:build) do |content_package|
+    #   FactoryGirl.create(:activity_item, :resource_type => "ContentPackage", :resource => content_package)
+    # end
 
     factory :viewless_content_package do
       association :content_type, :viewless

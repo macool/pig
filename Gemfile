@@ -15,6 +15,11 @@ gem 'ym_videos',      :git => "git@gitlab.yoomee.com:yoomee/ym_videos.git", :bra
 gem 'ym_assets',      :git => "git@gitlab.yoomee.com:yoomee/ym_assets.git"
 
 group :development, :test do
+  gem 'guard'
+  gem "guard-rspec", require: false
   gem 'rspec-rails'
+  gem 'shoulda-matchers', require: false
   gem 'factory_girl_rails'
+  gem 'pry'
+  gem 'pry-byebug'
 end
