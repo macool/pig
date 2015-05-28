@@ -7,6 +7,11 @@ module Pig
       end
     end
 
+    config.generators do |g|
+      g.test_framework :rspec
+      g.fixture_replacement :factory_girl, :dir => 'spec/factories'
+    end
+
     config.nested_permalinks = true
     config.tags_feature = false
   end

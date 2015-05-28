@@ -1,3 +1,4 @@
+source "https://yoomee:wLjuGMTu30AvxVyIrq3datc73LVUkvo@gems.yoomee.com"
 source 'https://rubygems.org'
 
 # Declare your gem's dependencies in pig.gemspec.
@@ -5,11 +6,15 @@ source 'https://rubygems.org'
 # development dependencies will be added by default to the :development group.
 gemspec
 
-# Declare any dependencies that are still in development here instead of in
-# your gemspec. These might include edge Rails or gems from your path or
-# Git. Remember to move these dependencies to your gemspec before releasing
-# your gem to rubygems.org.
+# gem 'ym_activity', :git => "git@gitlab.yoomee.com:yoomee/ym_activity.git", :branch => "rails-4"
+gem 'ym_users',       :git => "git@gitlab.yoomee.com:yoomee/ym_users.git", :branch => "rails-4"
+gem 'ym_core',        :git => "git@gitlab.yoomee.com:yoomee/ym_core.git", :branch => "rails-4"
+gem 'ym_posts',       :git => "git@gitlab.yoomee.com:yoomee/ym_posts.git", :branch => "rails-4"
+gem 'ym_tags',        :git => "git@gitlab.yoomee.com:yoomee/ym_tags.git", :branch => "rails-4"
+gem 'ym_videos',      :git => "git@gitlab.yoomee.com:yoomee/ym_videos.git", :branch => "rails-4"
+gem 'ym_assets',      :git => "git@gitlab.yoomee.com:yoomee/ym_assets.git"
 
-# To use a debugger
-# gem 'byebug', group: [:development, :test]
-
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+end

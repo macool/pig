@@ -4,12 +4,12 @@ require 'formtastic-bootstrap'
 # require 'ym_core'
 # require 'ym_users'
 # require 'ym_tags'
-# require 'ym_activity'
+# require 'ym_activity' #TODO
 # require 'pig/engine'
 # require 'ym_posts'
 require 'geocoder'
-# require 'dragonfly'
-# require 'acts-as-taggable-on'
+require 'dragonfly'
+require 'acts-as-taggable-on'
 # if defined?(YmDocuments)
 #   require 'ym_documents'
 # end

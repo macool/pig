@@ -1,8 +1,9 @@
 module Pig
   class ContentPackage < ActiveRecord::Base
 
-    include YmCore::Model
-    include YmActivity::Recordable
+    # include YmCore::Model
+    #TODO
+    # include YmActivity::Recordable
     include Pig::Permalinkable
 
     self.table_name = 'pig_content_packages'

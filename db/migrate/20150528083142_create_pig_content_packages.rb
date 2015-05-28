@@ -1,4 +1,5 @@
 class CreatePigContentPackages < ActiveRecord::Migration
+
   def change
     create_table :pig_content_packages do |t|
       t.string :slug
@@ -15,10 +16,19 @@ class CreatePigContentPackages < ActiveRecord::Migration
       t.date :due_date
       t.integer :review_frequency
       t.date :next_review
+      t.date :publish_at
+      t.date :published_at
       t.datetime :deleted_at
+      t.string :meta_title
+      t.text :meta_description
+      t.string :meta_keywords
+      t.string :meta_image_uid
+      t.string :meta_image_name
+
       t.timestamps
     end
     add_index :pig_content_packages, :parent_id
     add_index :pig_content_packages, :slug
   end
+
 end
