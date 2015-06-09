@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", "~> 4.0"
+  s.add_dependency 'coffee-rails', '~> 4.0.0'
   s.add_dependency 'ym_users', '~> 1.1.1'
   # s.add_dependency 'ym_activity'
   s.add_dependency 'geocoder'
@@ -25,11 +26,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'public_suffix'
   s.add_dependency 'stringex', '~>1.3.2'
   s.add_dependency 'acts-as-taggable-on', '~> 3.2'
-  s.add_dependency "dragonfly", "~>0.9.10"
   s.add_dependency 'formtastic-bootstrap', '~> 3.0'
+  s.add_dependency "cancancan"
+  s.add_dependency 'rack-cache'
+  s.add_dependency 'dragonfly', '~>0.9.15'
 
   s.add_development_dependency "sqlite3"
-  # s.add_development_dependency "rspec-rails"
-  # s.add_development_dependency 'factory_girl_rails'
 
 end

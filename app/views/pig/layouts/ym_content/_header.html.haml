@@ -28,10 +28,10 @@
                 %span Documents
           -if can? :manage, MetaDatum
             %li{:class => @meta_data ? 'active' : nil}
-              =link_to(meta_data_path) do
+              =link_to(pig_meta_data_path) do
                 %i.fa.fa-code
                 %span Non CMS meta data
-          -if (can? :manage, TagCategory) && (Pig::config.tags_feature)
+          -if (can? :manage, TagCategory) && (Pig::configuration.tags_feature)
             %li{:class => @tag_categories  ? 'active' : nil}
               =link_to(tags_path) do
                 %i.fa.fa-tags
@@ -85,7 +85,7 @@
         =link_to(ym_documents_engine.documents_path) do
           %i.fa.fa-file-archive-o
           %span Documents
-    -if (can? :manage, TagCategory) && (Pig::config.tags_feature)
+    -if (can? :manage, TagCategory) && (Pig::configuration.tags_feature)
       %li{:class => @tag_categories  ? 'active' : nil}
         =link_to(tags_path) do
           %i.fa.fa-tags
@@ -99,7 +99,7 @@
       %ul.dropdown-menu{:role => "menu"}
         -if can? :manage, MetaDatum
           %li{:class => @meta_data ? 'active' : nil}
-            =link_to(meta_data_path) do
+            =link_to(pig_meta_data_path) do
               %i.fa.fa-code
               %span Non CMS meta data
         -if (can? :manage, User)

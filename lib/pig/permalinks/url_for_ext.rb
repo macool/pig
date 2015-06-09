@@ -6,7 +6,7 @@ module ActionDispatch
         permalink = extract_permalink(options)
         url = url_for_without_permalinks(options)
         if permalink && !permalink.changed?
-          url.sub(permalink.resource_path, Pig.config.nested_permalinks ? permalink.full_path : "/#{permalink.path}")
+          url.sub(permalink.resource_path, Pig.configuration.nested_permalinks ? permalink.full_path : "/#{permalink.path}")
         else
           url
         end

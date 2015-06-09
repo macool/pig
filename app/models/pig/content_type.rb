@@ -26,7 +26,7 @@ module Pig
         false
       else
         ActionController::Base.view_paths.all? do |path|
-          !File.exists?("#{path}/content_packages/views/#{view_name}.html.haml")
+          !File.exists?("#{path}/pig/content_packages/views/#{view_name}.html.haml")
         end
       end
     end

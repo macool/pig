@@ -52,7 +52,7 @@
             =link_to('#meta', 'data-toggle' => 'tab') do
               %i.fa.fa-tag
               %span Meta
-          -if Pig::config.tags_feature
+          -if Pig::configuration.tags_feature
             %li
               =link_to('#tags', 'data-toggle' => 'tab') do
                 %i.fa.fa-tags
@@ -75,7 +75,7 @@
               =form.input :meta_description, hint: 'Meta short description: Brief summary of the page, aim for 70 characters'
               =form.input :meta_keywords, hint: 'Meta keywords: comma separated'
               =form.input :meta_image, as: :image, hint: 'Meta images for facebook: Minimum size 600px x 315px, recommended size 1200px x 630px'
-        -if Pig::config.tags_feature
+        -if Pig::configuration.tags_feature
           #tags.tab-pane
             .cms-form-well
               .row
@@ -123,7 +123,7 @@
                   %hr
                   =form.inputs do
                     =parent_content_package_select(form)
-                    =form.input :permalink_path, :prepend => @content_package.parent && @content_package.parent.respond_to?(:permalink_display_path) && Pig.config.nested_permalinks ? @content_package.parent.permalink_display_path : '/' unless @content_package.viewless?
+                    =form.input :permalink_path, :prepend => @content_package.parent && @content_package.parent.respond_to?(:permalink_display_path) && Pig.configuration.nested_permalinks ? @content_package.parent.permalink_display_path : '/' unless @content_package.viewless?
                     =form.input :slug if current_user.yoomee_staff?
                     =form.input :logged_in_only, :as => :content_boolean, :label => "Only logged in users can view this"
                     =form.input :hide_from_robots, :as => :content_boolean, :label => "Exclude from search engine indexing"

@@ -11,7 +11,7 @@ module Pig
         if @content_package
           @activity_items = @content_package.activity_items.paginate(:page => page, :per_page => 5)
         else
-          @activity_items = ActivityItem.where(:resource_type => "ContentPackage").paginate(:page => page, :per_page => 5)
+          @activity_items = Pig::ActivityItem.where(:resource_type => "Pig::ContentPackage").paginate(:page => page, :per_page => 5)
         end
         @page = page.to_i + 1
       end
@@ -26,7 +26,7 @@ module Pig
 
     def create
       if @content_package.save
-        current_user.record_activity!(@content_package, :text => "created")
+        @content_package.record_activity!(current_user, "created")
         redirect_to edit_pig_content_package_path(@content_package)
       else
         render :action => 'new'
@@ -67,7 +67,7 @@ module Pig
     end
 
     def new
-      @content_package.content_type = ::ContentType.find_by_id(params[:content_type_id])
+      @content_package.content_type = Pig::ContentType.find_by_id(params[:content_type_id])
       @content_package.parent_id = params[:parent]
       @content_package.requested_by = current_user
       @content_package.review_frequency = 1
@@ -128,7 +128,7 @@ module Pig
       content_package_params["updated_at"] = DateTime.now
       if @content_package.update_attributes(content_package_params)
         flash[:notice] = "Updated \"#{@content_package}\""
-        current_user.record_activity!(@content_package, :text => "updated")
+        @content_package.record_activity!(current_user, "updated")
         if @content_package.status == 'published' && previous_status != 'published'
           @content_package.published_at = DateTime.now
           @content_package.save
@@ -159,7 +159,7 @@ module Pig
     private
     def content_package_params
       permitted_params = [*params[:pig_content_package].try(:keys) + [:persona_ids => []]]
-      if @content_package && Pig::config.tags_feature
+      if @content_package && Pig::configuration.tags_feature
         permitted_params << [:taxonomy_tags => @content_package.content_type.tag_categories.map{|x| { x.slug => [] }}.reduce(:merge)]
       end
       params.require(:pig_content_package).permit(permitted_params)

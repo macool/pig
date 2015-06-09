@@ -11,7 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150528093861) do
+ActiveRecord::Schema.define(version: 20150608151718) do
+
+  create_table "pig_activity_items", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "resource_id"
+    t.string   "resource_type"
+    t.integer  "parent_resource_id"
+    t.string   "parent_resource_type"
+    t.string   "text"
+    t.datetime "created_at"
+  end
+
+  add_index "pig_activity_items", ["parent_resource_type", "parent_resource_id"], name: "parent_resource_index"
+  add_index "pig_activity_items", ["resource_type", "resource_id"], name: "resource_index"
+  add_index "pig_activity_items", ["user_id"], name: "index_pig_activity_items_on_user_id"
 
   create_table "pig_content_attributes", force: true do |t|
     t.integer "content_type_id"

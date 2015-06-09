@@ -10,11 +10,11 @@ module Pig
 
     def create
       params = content_type_params
-      params = convert_sir_trevor_settings(pams)
+      params = convert_sir_trevor_settings(params)
       @content_type = Pig::ContentType.new
       @content_type.assign_attributes(params)
-      if @connt_type.save
-        redirect_to content_types_path
+      if @content_type.save
+        redirect_to pig_content_types_path
       else
         render :action => 'edit'
       end
@@ -26,12 +26,12 @@ module Pig
       else
         flash[:error] = "Unable to delete this content template"
       end
-      redirect_to content_packages_path(:anchor => 'content-types')
+      redirect_to pig_content_packages_path(:anchor => 'content-types')
     end
 
     def dashboard
-      @activity_items = ActivityItem.where(:resource_type => "ContentPackage").paginate(:page => 1, :per_page => 5)
-      @my_content = ContentPackage.where(:author_id => current_user.try(:id)).order('due_date, id')
+      @activity_items = Pig::ActivityItem.where(:resource_type => "Pig::ContentPackage").paginate(:page => 1, :per_page => 5)
+      @my_content = Pig::ContentPackage.where(:author_id => current_user.try(:id)).order('due_date, id')
     end
 
     def duplicate
@@ -67,7 +67,7 @@ module Pig
       params[:content_attribute_ids].each_with_index do |content_attribute_id, position|
         Pig::ContentAttribute.find(content_attribute_id).update_attribute(:position, position)
       end
-      redirect_to content_packages_path(:anchor => 'content-types')
+      redirect_to pig_content_packages_path(:anchor => 'content-types')
     end
 
     def convert_sir_trevor_settings(params)
@@ -97,7 +97,7 @@ module Pig
       params = content_type_params
       params = convert_sir_trevor_settings(params)
       if @content_type.update_attributes(params)
-        redirect_to content_packages_path
+        redirect_to pig_content_packages_path
       else
         render :action => 'edit'
       end
@@ -106,7 +106,7 @@ module Pig
     private
 
     def content_type_params
-      params.require(:content_type).permit(
+      params.require(:pig_content_type).permit(
         :name,
         :description,
         :singleton,
@@ -129,7 +129,7 @@ module Pig
           :limit_unit,
           :position,
           :resource_content_type_id,
-          :sir_trevor_settings => ::ContentAttribute::DEFAULT_SIR_TREVOR_BLOCK_TYPES.map {|e| ["#{e}_required", "#{e}_limit"] }.flatten
+          :sir_trevor_settings => Pig::ContentAttribute::DEFAULT_SIR_TREVOR_BLOCK_TYPES.map {|e| ["#{e}_required", "#{e}_limit"] }.flatten
         ]
       )
     end

@@ -1,5 +1,5 @@
 :javascript
-  Pig.ContentPackages.descriptions = #{Hash[ContentType.all.map{|ct| [ct.id, ct.description]}].to_json};
+  Pig.ContentPackages.descriptions = #{Hash[Pig::ContentType.all.map{|ct| [ct.id, ct.description]}].to_json};
   $(document).ready(function(){
     Pig.ContentPackages.initForm();
     $( ".autocomplete-select" ).combobox();
@@ -50,6 +50,6 @@
                 =form.input :requested_by, :collection => User.where(:role => 'admin')
                 =form.input :author, :collection => User.where("role<>''").map { |u| ["#{u.full_name} (#{u.role})", u.id] }
                 =form.input :due_date, :order => [:day, :month, :year], :include_blank => false, :start_year => Date.today.year
-                =form.input :review_frequency, :as => :radio, :collection => ContentPackage.review_frequencies.invert
+                =form.input :review_frequency, :as => :radio, :collection => Pig::ContentPackage.review_frequencies.invert
 
             =form.action :submit, :label => 'Finish', :wrapper_html => { :class => 'btn btn-success pull-right' }

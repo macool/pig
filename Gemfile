@@ -14,12 +14,19 @@ gem 'ym_tags',        :git => "git@gitlab.yoomee.com:yoomee/ym_tags.git", :branc
 gem 'ym_videos',      :git => "git@gitlab.yoomee.com:yoomee/ym_videos.git", :branch => "rails-4"
 gem 'ym_assets',      :git => "git@gitlab.yoomee.com:yoomee/ym_assets.git"
 
+
+
 group :development, :test do
   gem 'guard'
   gem "guard-rspec", require: false
+  gem "guard-cucumber", require: false
+  gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'shoulda-matchers', require: false
-  gem 'factory_girl_rails'
   gem 'pry'
   gem 'pry-byebug'
+
+  gem 'cucumber-rails', :require => false
+  gem 'database_cleaner'
+  gem "poltergeist"
 end

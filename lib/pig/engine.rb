@@ -12,7 +12,11 @@ module Pig
       g.fixture_replacement :factory_girl, :dir => 'spec/factories'
     end
 
-    config.nested_permalinks = true
-    config.tags_feature = false
+    # config.nested_permalinks = true
+    # config.tags_feature = false
+
+    # config.unpublished do
+    #   puts "Test"
+    # end
   end
 end

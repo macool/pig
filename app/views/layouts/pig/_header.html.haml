@@ -31,14 +31,14 @@
               =link_to(pig_meta_data_path) do
                 %i.fa.fa-code
                 %span Non CMS meta data
-          -if (can? :manage, Pig::TagCategory) && (Pig::config.tags_feature)
+          -if (can? :manage, Pig::TagCategory) && (Pig::configuration.tags_feature)
             %li{:class => @tag_categories  ? 'active' : nil}
               =link_to(pig_tags_path) do
                 %i.fa.fa-tags
                 %span Tag Management
           -if (can? :manage, User)
             %li{:class => @users || @user ? 'active' : nil}
-              =link_to(pig_cms_users_path) do
+              =link_to(pig_users_path) do
                 %i.fa.fa-file-text-o
                 %span User Management
           %li
@@ -53,7 +53,7 @@
         %ul.cms-nav-user-dropdown
           / -if current_user.blogger?
           /   %li=link_to('Blog posts', '/conversations/blogs?mine=true', :icon => 'pencil-square-o', :icon_first => true)
-          %li=link_to('Account settings', edit_user_path(current_user), :icon => 'cog', :icon_first => true)
+          %li=link_to('Account settings', edit_pig_user_path(current_user), :icon => 'cog', :icon_first => true)
           %li=link_to('Change password', change_password_path, :icon => 'unlock-alt', :icon_first => true)
           %li=link_to('Sign out', sign_out_path, :method => :delete, :icon => 'sign-out', :icon_first => true)
     -if current_user && @content_package
@@ -85,7 +85,7 @@
         =link_to(ym_documents_engine.documents_path) do
           %i.fa.fa-file-archive-o
           %span Documents
-    -if (can? :manage, Pig::TagCategory) && (Pig::config.tags_feature)
+    -if (can? :manage, Pig::TagCategory) && (Pig::configuration.tags_feature)
       %li{:class => @tag_categories  ? 'active' : nil}
         =link_to(pig_tags_path) do
           %i.fa.fa-tags
@@ -104,7 +104,7 @@
               %span Non CMS meta data
         -if (can? :manage, User)
           %li{:class => @users || @user ? 'active' : nil}
-            =link_to(pig_cms_users_path) do
+            =link_to(pig_users_path) do
               %i.fa.fa-file-text-o
               %span User Management
         %li

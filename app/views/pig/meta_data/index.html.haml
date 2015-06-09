@@ -6,11 +6,12 @@
           .col-sm-6.col-sm-offset-3
             %h1=title 'Non-CMS Meta Data'
           .col-sm-3.cms-header-actions
-            =link_if_can('Add new meta data', [:new, MetaDatum.new], :icon => 'plus', :class => 'new-content btn btn-success')
+            -if can? :new, Pig::MetaDatum
+              =link_to('Add new meta data', new_pig_meta_datum_path, :icon => 'plus', :class => 'new-content btn btn-success')
   .row
     .tab-content.tab-content-sitemap.relative
       #meta-datas.tab-pane.active
-        =render 'meta_data/explanation'
+        =render 'pig/meta_data/explanation'
         %table.cms-table
           %thead
             %tr
@@ -32,4 +33,5 @@
                 %td=link_if_can('View', meta_datum)
                 %td=link_if_can('Edit', [:edit, meta_datum])
 
-        =link_if_can('Add new meta data', [:new, MetaDatum.new], :icon => 'plus', :class => 'btn btn-success pull-right')
+        -if can? :new, Pig::MetaDatum
+          =link_to('Add new meta data',new_pig_meta_datum_path, :icon => 'plus', :class => 'btn btn-success pull-right')

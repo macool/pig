@@ -2,9 +2,8 @@ module Pig
   class ContentPackage < ActiveRecord::Base
 
     # include YmCore::Model
-    #TODO
-    # include YmActivity::Recordable
     include Pig::Permalinkable
+    include Pig::Recordable
 
     self.table_name = 'pig_content_packages'
 
@@ -24,6 +23,7 @@ module Pig
     after_save :save_content_chunks
     after_save :invalidate_parent_cache
     after_destroy :destroy_parent_cache
+    
 
     validates :name, :content_type, :requested_by, :review_frequency, :presence => true
     validate :required_attributes
@@ -42,6 +42,10 @@ module Pig
     scope :root, -> { where(:parent_id => nil, :deleted_at => nil).order(:position, :id) }
     scope :published, -> { where(:status => 'published').where('publish_at <= ? OR publish_at IS NULL', Date.today) }
     scope :expiring, -> { where('next_review < ?', Date.today) }
+    scope :without, (lambda do |ids_or_records|
+      array = [*ids_or_records].collect{|i| i.is_a?(Integer) ? i : i.try(:id)}.reject(&:nil?)
+      array.empty? ? scoped : where(["#{table_name}.id NOT IN (?)", array])
+    end)
 
     class << self
 

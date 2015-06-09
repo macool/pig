@@ -2,7 +2,7 @@ module Pig
   module ContentHelper
 
     def content_package_publish_at_class
-      @content_package.status == 'published' && ContentPackage.statuses(current_user).has_key?(:published)  ? 'hidden' : ''
+      @content_package.status == 'published' && Pig::ContentPackage.statuses(current_user).has_key?(:published)  ? 'hidden' : ''
     end
 
     def needs_design(content_package)
@@ -11,11 +11,10 @@ module Pig
     end
 
     def parent_content_package_select(form, options = {})
-      puts "**** PARENTSELECT ***"
-      Rails.cache.fetch(ContentPackage.parent_dropdown_cache_key) do
+      Rails.cache.fetch(Pig::ContentPackage.parent_dropdown_cache_key) do
         options.reverse_merge!(:label => "Parent")
         current_page = form.object
-        return "" if ContentPackage.without([current_page] + current_page.children).empty?
+        return "" if Pig::ContentPackage.without([current_page] + current_page.children).empty?
         out = form.label(:parent_id, options[:label], :class => 'control-label')
         out << content_tag(:div, form.select(:parent_id, content_tag(:option, 'None', :value => '') + parent_content_package_option_tags(current_page)), :class => 'controls')
         content_tag(:div, out, :class => 'select form-group optional', :id => 'content_package_parent_input')
@@ -23,7 +22,7 @@ module Pig
     end
 
     def parent_content_package_option_tags(current_page, options = {})
-      options.reverse_merge!(:pages => ContentPackage.root, :indent => 0)
+      options.reverse_merge!(:pages => Pig::ContentPackage.root, :indent => 0)
       parent_pages = options[:pages].without([current_page] + current_page.children)
       parent_pages.inject('') do |memo, parent_page|
         ret = "<option value='#{parent_page.id}'"

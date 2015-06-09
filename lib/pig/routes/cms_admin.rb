@@ -11,18 +11,14 @@ class ActionDispatch::Routing::Mapper
             put 'reorder' => 'content_types#save_order'
           end
         end
+        
+        resources :users
+        post '/users/(:id)/set_active' => 'users#set_active', :as => 'set_active_user'
+        post '/users/create' => 'users#create_user'
 
         get '/content' => 'content_types#dashboard'
         post '/attachments' => 'attachments#create'
-
-        # ym_users_routes
-        scope 'cms' do
-          resources :cms_users, controller: 'cms_users'
-        end
-
-        post '/cms_users/(:id)/set_active' => 'cms_users#set_active', :as => 'set_active_user'
-        post '/cms_users/create' => 'cms_users#create_user', :as => 'create_cms_user'
-
+        
         resources :content_packages do
           collection do
             get 'filter/:filter' => 'content_packages#index', :as => 'filter'
@@ -59,7 +55,7 @@ class ActionDispatch::Routing::Mapper
         resources :meta_data
         resources :redactor_image_uploads, :only => [:index, :create]
 
-        if Pig::config.tags_feature
+        if Pig::configuration.tags_feature
           resources :tags
           resources :tag_categories
         end

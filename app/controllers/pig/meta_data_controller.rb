@@ -18,7 +18,7 @@ module Pig
       else
         flash[:error] = "\"#{@meta_datum}\" couldn't be destroyed"
       end
-      redirect_to meta_data_path
+      redirect_to pig_meta_data_path
     end
 
     def edit
@@ -44,7 +44,7 @@ module Pig
     private
 
     def meta_datum_params
-      params.require(:meta_datum).permit(:page_slug, :title, :description, :keywords, :image, :remove_image, :retained_image)
+      params.require(:pig_meta_datum).permit(:page_slug, :title, :description, :keywords, :image, :remove_image, :retained_image)
     end
 
   end

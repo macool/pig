@@ -25,7 +25,7 @@ module Pig::Permalinkable
   end
 
   def permalink_display_path
-    if Pig.config.nested_permalinks
+    if Pig.configuration.nested_permalinks
       "/#{permalink_full_path}/".squeeze '/'
     else
       "/#{permalink_path}/".squeeze '/'
