@@ -135,7 +135,7 @@ module Pig
         end
         # remove_abandoned_sir_trevor_images
         if @content_package.missing_view?
-          redirect_to content_packages_path(:open => @content_package)
+          redirect_to pig_content_packages_path(:open => @content_package)
         else
           redirect_to @content_package
         end

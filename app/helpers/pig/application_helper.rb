@@ -1,7 +1,7 @@
 module Pig
   module ApplicationHelper
 
-    # Gets page title - uses long_page_title if meta_title not set. If neither, or not a ym_content page, uses default.
+    # Gets page title - uses long_page_title if meta_title not set. If neither, or not a pig page, uses default.
     def get_meta_title
 
       meta_title = Settings.default_meta_title
@@ -20,8 +20,8 @@ module Pig
 
     end
 
-    # Gets meta tags - uses ym_content values or default except for meta image
-    # Uses the hero image if no meta image is set. If neither, or not a ym_content page, uses default
+    # Gets meta tags - uses pig values or default except for meta image
+    # Uses the hero image if no meta image is set. If neither, or not a pig page, uses default
     def get_meta_tags
       if @content_package.present?
 
@@ -50,7 +50,7 @@ module Pig
 
       meta_values = [meta_title, meta_description, meta_image, meta_keywords, meta_hide_from_robots]
 
-      ym_content_meta_tags(meta_values)
+      pig_meta_tags(meta_values)
     end
 
   end

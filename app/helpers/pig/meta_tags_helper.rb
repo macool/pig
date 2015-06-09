@@ -34,7 +34,7 @@ module Pig
         end
         [meta_title, meta_description, meta_image, meta_keywords, meta_hide_from_robots]
         # end
-      elsif meta_data = ::MetaDatum.where(page_slug: page_slug).first
+      elsif meta_data = Pig::MetaDatum.where(page_slug: page_slug).first
         meta_title = meta_data.title || Settings.default_meta_title
         meta_description = meta_data.description || Settings.default_meta_description
         meta_image = meta_data.image_uid ? "#{Settings.site_url}#{meta_data.image.thumb('300x300#').url}" : "#{Settings.site_url}#{image_path(Settings.default_fb_meta_image)}"
