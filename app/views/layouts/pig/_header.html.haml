@@ -9,16 +9,16 @@
               %i.fa.fa-home
               %span My content
           %li{:class => @content_packages && !@deleted_content_packages  ? 'active' : nil}
-            =link_to(pig_content_packages_path) do
+            =link_to(main_app.pig_content_packages_path) do
               %i.fa.fa-list
               %span Page list
           -if can? :manage, Pig::ContentType
             %li{:class => (@content_types && !@activity_items.nil?) ? 'active' : nil}
-              =link_to(pig_content_types_path) do
+              =link_to(main_app.pig_content_types_path) do
                 %i.fa.fa-file-text-o
                 %span Templates
           %li{:class => @deleted_content_packages ? 'active' : nil}
-            =link_to(deleted_pig_content_packages_path) do
+            =link_to(main_app.deleted_pig_content_packages_path) do
               %i.fa.fa-trash-o
               %span Deleted content
           -if defined?(YmDocuments)
@@ -28,17 +28,17 @@
                 %span Documents
           -if can? :manage, Pig::MetaDatum
             %li{:class => @meta_data ? 'active' : nil}
-              =link_to(pig_meta_data_path) do
+              =link_to(main_app.pig_meta_data_path) do
                 %i.fa.fa-code
                 %span Non CMS meta data
           -if (can? :manage, Pig::TagCategory) && (Pig::configuration.tags_feature)
             %li{:class => @tag_categories  ? 'active' : nil}
-              =link_to(pig_tags_path) do
+              =link_to(main_app.pig_tags_path) do
                 %i.fa.fa-tags
                 %span Tag Management
           -if (can? :manage, User)
             %li{:class => @users || @user ? 'active' : nil}
-              =link_to(pig_users_path) do
+              =link_to(main_app.pig_users_path) do
                 %i.fa.fa-file-text-o
                 %span User Management
           %li
@@ -53,9 +53,9 @@
         %ul.cms-nav-user-dropdown
           / -if current_user.blogger?
           /   %li=link_to('Blog posts', '/conversations/blogs?mine=true', :icon => 'pencil-square-o', :icon_first => true)
-          %li=link_to('Account settings', edit_pig_user_path(current_user), :icon => 'cog', :icon_first => true)
-          %li=link_to('Change password', change_password_path, :icon => 'unlock-alt', :icon_first => true)
-          %li=link_to('Sign out', sign_out_path, :method => :delete, :icon => 'sign-out', :icon_first => true)
+          %li=link_to('Account settings', main_app.edit_pig_user_path(current_user), :icon => 'cog', :icon_first => true)
+          %li=link_to('Change password', main_app.change_password_path, :icon => 'unlock-alt', :icon_first => true)
+          %li=link_to('Sign out', main_app.sign_out_path, :method => :delete, :icon => 'sign-out', :icon_first => true)
     -if current_user && @content_package
       -if can? :index, Pig::ContentPackage.new
         .cms-nav-controls
@@ -72,22 +72,22 @@
         %i.fa.fa-home
         %span My content
     %li{:class => @content_packages && !@deleted_content_packages  ? 'active' : nil}
-      =link_to(pig_content_packages_path) do
+      =link_to(main_app.pig_content_packages_path) do
         %i.fa.fa-list
         %span Page list
     -if can? :manage, Pig::ContentType
       %li{:class => (@content_types && @activity_items.nil?) ? 'active' : nil}
-        =link_to(pig_content_types_path) do
+        =link_to(main_app.pig_content_types_path) do
           %i.fa.fa-file-text-o
           %span Templates
-    -if defined?(YmDocuments)
+    -if defined?(Trough)
       %li{:class => @documents? 'active' : nil}
-        =link_to(ym_documents_engine.documents_path) do
+        =link_to(trough.documents_path) do
           %i.fa.fa-file-archive-o
           %span Documents
     -if (can? :manage, Pig::TagCategory) && (Pig::configuration.tags_feature)
       %li{:class => @tag_categories  ? 'active' : nil}
-        =link_to(pig_tags_path) do
+        =link_to(main_app.pig_tags_path) do
           %i.fa.fa-tags
           %span Tag Management
 
@@ -99,12 +99,12 @@
       %ul.dropdown-menu{:role => "menu"}
         -if can? :manage, Pig::MetaDatum
           %li{:class => @meta_data ? 'active' : nil}
-            =link_to(pig_meta_data_path) do
+            =link_to(main_app.pig_meta_data_path) do
               %i.fa.fa-code
               %span Non CMS meta data
         -if (can? :manage, User)
           %li{:class => @users || @user ? 'active' : nil}
-            =link_to(pig_users_path) do
+            =link_to(main_app.pig_users_path) do
               %i.fa.fa-file-text-o
               %span User Management
         %li
@@ -112,6 +112,6 @@
             %i.fa.fa-group
             %span Personas
         %li
-          =link_to(deleted_pig_content_packages_path) do
+          =link_to(main_app.deleted_pig_content_packages_path) do
             %i.fa.fa-trash-o
             %span Deleted content
