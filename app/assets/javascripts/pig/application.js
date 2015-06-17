@@ -29,8 +29,6 @@
 //= require pig/autocomplete-field
 //= require select2
 //= require_tree ./redactor_plugins
-//= require trough/application
-
 
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
