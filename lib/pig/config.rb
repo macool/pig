@@ -5,12 +5,14 @@ module Pig
                   :basic_redactor_plugins,
                   :redactor_plugins,
                   :cms_roles,
-                  :unpublished
+                  :unpublished,
+                  :additional_stylesheets
 
     def initialize(options = {})
       self.nested_permalinks = options[:nested_permalinks] || true
       self.tags_feature = options[:tags_feature] || true
       self.on_unpublished { redirect_to sign_in_path }
+      self.additional_stylesheets = options[:additional_stylesheets] || []
     end
 
     def on_unpublished(&block)
