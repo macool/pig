@@ -12,6 +12,8 @@ module Pig
     def initialize(options = {})
       self.nested_permalinks = options[:nested_permalinks] || true
       self.tags_feature = options[:tags_feature] || true
+      self.basic_redactor_plugins = options[:basic_redactor_plugins] || []
+      self.redactor_plugins = options[:redactor_plugins] || []
       self.on_unpublished { redirect_to sign_in_path }
       self.additional_stylesheets = options[:additional_stylesheets] || []
       self.additional_javascripts = options[:additional_javascripts] || []
