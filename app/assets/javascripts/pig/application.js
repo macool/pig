@@ -280,7 +280,8 @@ window.Pig = {
     getCookie: function() {
       var value = "; " + document.cookie;
       var parts = value.split("; " + "open" + "=");
-      if (parts.length == 2) return JSON.parse(parts.pop().split(";").shift());
+      cookie = parts.length == 2 ? JSON.parse(parts.pop().split(";").shift()) : [];
+      return cookie;
     },
     setCookie: function() {
       document.cookie = "open=" + JSON.stringify(Pig.Sitemap.getOpenNodes());
