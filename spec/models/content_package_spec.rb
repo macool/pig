@@ -145,12 +145,12 @@ RSpec.describe Pig::ContentPackage do
       content_package.person_id = User.first.id
       content_package.save
       expect(content_package.person_id).to eq(User.first.id)
-      expect(content_package.person).to eq(User.first)
+      expect(content_package.person).to eq(Pig::User.first)
     end
     it 'can be set as a user' do
       content_package.person = User.last
       content_package.save
-      expect(content_package.person).to eq(User.last)
+      expect(content_package.person).to eq(Pig::User.last)
     end
   end
 
