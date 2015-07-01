@@ -1,13 +1,13 @@
 When(/^I go to the new meta data page$/) do
-  visit new_pig_meta_datum_path
+  visit pig.new_meta_datum_path
 end
 
 When(/^I fill in the meta data form$/) do
   @meta_data = FactoryGirl.build(:meta_data)
-  fill_in 'pig_meta_datum_page_slug', with: @meta_data.page_slug
-  fill_in 'pig_meta_datum_title', with: @meta_data.title
-  fill_in 'pig_meta_datum_description', with: @meta_data.description
-  fill_in 'pig_meta_datum_keywords', with: @meta_data.keywords
+  fill_in 'meta_datum_page_slug', with: @meta_data.page_slug
+  fill_in 'meta_datum_title', with: @meta_data.title
+  fill_in 'meta_datum_description', with: @meta_data.description
+  fill_in 'meta_datum_keywords', with: @meta_data.keywords
   click_button 'Save'
 end
 
@@ -24,14 +24,14 @@ Given(/^that there (?:is|are) (\d+) meta data pages?$/) do |x|
 end
 
 When(/^I go to the meta data page$/) do
-  visit pig_meta_datum_path(@meta_data)
+  visit pig.meta_datum_path(@meta_data)
 end
 
 When(/^I update the meta data$/) do
-  fill_in 'pig_meta_datum_page_slug', with: 'Updated page slug'
-  fill_in 'pig_meta_datum_title', with: 'Updated title'
-  fill_in 'pig_meta_datum_description', with: 'Updated description'
-  fill_in 'pig_meta_datum_keywords', with: 'Updated keywords'
+  fill_in 'meta_datum_page_slug', with: 'Updated page slug'
+  fill_in 'meta_datum_title', with: 'Updated title'
+  fill_in 'meta_datum_description', with: 'Updated description'
+  fill_in 'meta_datum_keywords', with: 'Updated keywords'
   click_button 'Save'
 end
 
@@ -43,7 +43,7 @@ Then(/^the meta data should be updated$/) do
 end
 
 When(/^I go to the meta data index page$/) do
-  visit pig_meta_data_path
+  visit pig.meta_data_path
 end
 
 Then(/^I see all the meta data pages$/) do

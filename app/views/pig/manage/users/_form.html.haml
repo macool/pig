@@ -1,4 +1,4 @@
-=semantic_form_for(@user, cms_user_url_and_method_create_edit(@user)) do |form|
+=semantic_form_for([:manage, @user]) do |form|
   =form.inputs do
     .half-input
       =form.input :first_name

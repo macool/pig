@@ -24,7 +24,11 @@ module ActionDispatch
             if resource_type == "ContentPackage"
               resource_type = "Pig::ContentPackage"
             end
-            permalinkable = resource_type.constantize.included_modules.include?(Pig::Permalinkable)
+            begin
+              permalinkable = resource_type.constantize.included_modules.include?(Pig::Permalinkable)
+            rescue NameError
+              permalinkable = nil
+            end
             if permalinkable
               return Pig::Permalink.active.find_by_resource_type_and_resource_id(resource_type, options[:id])
             end

@@ -6,7 +6,7 @@
           .col-sm-6.col-sm-offset-3
             %h1=title 'Personas'
           .col-sm-3.cms-header-actions
-            =link_to('Add persona', new_pig_persona_path, :icon => 'plus', :class => 'btn btn-success')
+            =link_to('Add persona', pig.new_persona_path, :icon => 'plus', :class => 'btn btn-success')
 
   -@persona_groups.each do |group|
     .row
@@ -23,4 +23,4 @@
                   %h4=persona.name
                   %br
                   %p.text-small=persona.category
-                  =link_to('View / edit', edit_pig_persona_path(persona), :class => 'btn btn-primary btn-sm')
+                  =link_to('View / edit', pig.edit_persona_path(persona), :class => 'btn btn-primary btn-sm')

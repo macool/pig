@@ -73,7 +73,7 @@ module Pig
       case field_type
       when 'user'
         {
-          :collection => ::User.all,
+          :collection => Pig::User.all,
           :prompt => "None selected"
         }
       when 'resource'

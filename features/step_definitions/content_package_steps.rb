@@ -34,7 +34,7 @@ Given(/^there is a content package with an inactive permalink$/) do
 end
 
 When(/^I go to the sitemap$/) do
-  visit pig_content_packages_path
+  visit pig.content_packages_path
 end
 
 When(/^it changes parent$/) do
@@ -62,11 +62,11 @@ Then(/^I can edit the content packages$/) do
 end
 
 When(/^I fill in the new content package form and submit$/) do
-  visit new_pig_content_type_content_package_path(@content_type)
+  visit pig.new_content_type_content_package_path(@content_type)
   @content_package = FactoryGirl.build(:content_package, :content_type => @content_type, :author => @admin)
   select(@content_type)
-  fill_in('pig_content_package_name', :with => @content_package.name)
-  select(@content_package.author.full_name, :from => 'pig_content_package[author_id]')
+  fill_in('Name', :with => @content_package.name)
+  select(@content_package.author.full_name, :from => 'Author')
   click_button("Finish")
 end
 
@@ -77,26 +77,26 @@ Then(/^I am taken to edit the content package$/) do
 end
 
 When(/^I update the content package$/) do
-  visit edit_pig_content_package_path(@content_package)
-  fill_in('pig_content_package_title', :with => 'Modified title')
-  select(User.first, :from => 'pig_content_package_person_id')
-  attach_file('pig_content_package_photo', File.join(Rails.root, 'public/dragonfly/defaults/user.jpg'))
-  attach_file('pig_content_package_document', File.join(Rails.root, 'public/dragonfly/defaults/user.jpg'))
-  check('pig_content_package_special')
+  visit pig.edit_content_package_path(@content_package)
+  fill_in('Title', :with => 'Modified title')
+  select(Pig::User.first.full_name, :from => 'Person')
+  attach_file('Photo', File.join(Rails.root, 'public/dragonfly/defaults/user.jpg'))
+  attach_file('Document', File.join(Rails.root, 'public/dragonfly/defaults/user.jpg'))
+  check('Is this special?')
   click_button("Save")
 end
 
 Then(/^the content package should change$/) do
-  visit edit_pig_content_package_path(@content_package)
+  visit pig.edit_content_package_path(@content_package)
   expect(page).to have_xpath("//img[contains(@src, \"media\")]")
-  expect(find('#pig_content_package_special')).to be_checked
+  expect(find('#content_package_special')).to be_checked
   expect(find_field('Title').value).to eq('Modified title')
-  expect(find_field('Person').value).to eq(User.first.id.to_s)
+  expect(find_field('Person').value).to eq(Pig::User.first.id.to_s)
 end
 
 Given(/^I remove an image$/) do
-  visit edit_pig_content_package_path(@content_package)
-  check 'pig_content_package_remove_photo'
+  visit pig.edit_content_package_path(@content_package)
+  check 'content_package_remove_photo'
   click_button("Save")
 end
 
@@ -105,7 +105,7 @@ Then(/^the image should be removed$/) do
 end
 
 When(/^I go to the content package$/) do
-  visit pig_content_package_path(@content_package)
+  visit pig.content_package_path(@content_package)
 end
 
 Then(/^I should see all its content$/) do
@@ -115,7 +115,7 @@ Then(/^I should see all its content$/) do
 end
 
 When(/^I discuss the content package$/) do
-  visit edit_pig_content_package_path(@content_package)
+  visit pig.edit_content_package_path(@content_package)
   click_link('Discussion')
   fill_in('post_text', :with => "Some sample text")
   click_button("Post")
@@ -126,8 +126,8 @@ Then(/^the discussion count should increase$/) do
 end
 
 When(/^I mark the content package as ready to review$/) do
-  visit edit_pig_content_package_path(@content_package)
-  select("Ready to review", :from => 'pig_content_package[status]')
+  visit pig.edit_content_package_path(@content_package)
+  select("Ready to review", :from => 'content_package[status]')
   click_button("Mark as ready to review")
 end
 
@@ -140,8 +140,8 @@ Then(/^it is assigned back to the requester$/) do
 end
 
 When(/^I assign it to an author$/) do
-  visit edit_pig_content_package_path(@content_package)
-  select("#{@author.full_name} (#{@author.role})", :from => 'pig_content_package[author_id]', :visible => false)
+  visit pig.edit_content_package_path(@content_package)
+  select("#{@author.full_name} (#{@author.role})", :from => 'content_package[author_id]', :visible => false)
   click_button("Save")
 end
 
@@ -155,13 +155,13 @@ Then(/^the author should be emailed$/) do
 end
 
 When(/^I go to edit the content package$/) do
-  visit edit_pig_content_package_path(@content_package)
+  visit pig.edit_content_package_path(@content_package)
 end
 
 When(/^I fill in a content attribute with a (character|word) limit$/) do |word_character|
   word = word_character == 'word'
-  visit edit_pig_content_package_path(@content_package)
-  fill_in("pig_content_package_#{word ? 'text' : 'title'}", :with => (word ? "a " : "a") * 10, :visible => false)
+  visit pig.edit_content_package_path(@content_package)
+  fill_in("content_package_#{word ? 'text' : 'title'}", :with => (word ? "a " : "a") * 10, :visible => false)
 end
 
 Then(/^the (character|word) counter should increase$/) do |word_character|
@@ -170,13 +170,13 @@ end
 
 When(/^I exceed the (character|word) limit of a content attribute$/) do |word_character|
   word = word_character == 'word'
-  visit edit_pig_content_package_path(@content_package)
-  fill_in("pig_content_package_#{word ? 'text' : 'title'}", :with => (word ? "a " : "a") * 31, :visible => false)
+  visit pig.edit_content_package_path(@content_package)
+  fill_in("content_package_#{word ? 'text' : 'title'}", :with => (word ? "a " : "a") * 31, :visible => false)
 end
 
 Then(/^the (character|word) counter should go red$/) do |word_character|
   word = word_character == 'word'
-  expect(find("#pig_content_package_#{word ? 'text' : 'title'}_input")['class']).to include("word-count-exceeded")
+  expect(find("#content_package_#{word ? 'text' : 'title'}_input")['class']).to include("word-count-exceeded")
 end
 
 When(/^I visit its permalink$/) do
@@ -218,7 +218,7 @@ Then(/^I should get an error$/) do
 end
 
 Then(/^I should get redirected to the login page$/) do
-  expect(current_path).to eq("/login")
+  expect(current_path).to eq(pig.new_user_session_path)
 end
 
 Then(/^I should see the params$/) do

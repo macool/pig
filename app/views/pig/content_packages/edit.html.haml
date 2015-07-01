@@ -32,7 +32,7 @@
   });
 
 =semantic_form_for @content_package do |form|
-  .container.page-margin-bottom{data: {sir_trevor_upload_url: upload_sir_trevor_attachment_pig_content_package_path(@content_package)} }
+  .container.page-margin-bottom{data: {sir_trevor_upload_url: pig.upload_sir_trevor_attachment_content_package_path(@content_package)} }
     .row
       .col-xs-12
         .cms-page-header
@@ -112,7 +112,7 @@
                             %h5.mb-1=group
                             =form.input :personas, :as => :check_boxes, :collection => group.personas, :label => false, :member_label => :to_s
                   .clearfix
-                  =form.input :requested_by, :collection => User.where(:role => 'admin')
+                  =form.input :requested_by, :collection => Pig::User.where(:role => 'admin')
                   =form.input :due_date, :order => [:day, :month, :year], :include_blank => false, :start_year => Date.today.year
                   .form-group
                     %h4.col-primary Review frequency
@@ -141,7 +141,7 @@
           .cms-edit-status.cms-well
             %div{:class => ("hidden" unless current_user.role != "author")}
               %label{for: "content_package_author_id"} Assigned To
-              =form.input :author_id, :as => :select, :collection => User.where("role<>''").order(:role, :last_name).map { |u| ["#{u.full_name} (#{u.role})", u.id, {:'data-role' => u.role }] }, :include_blank => true, :label => false
+              =form.input :author_id, :as => :select, :collection => Pig::User.where("role<>''").order(:role, :last_name).map { |u| ["#{u.full_name} (#{u.role})", u.id, {:'data-role' => u.role }] }, :include_blank => true, :label => false
               %label{for: "content_package_status"} Status
               =form.input :status, :as => :select, :collection => Pig::ContentPackage.statuses(current_user).invert, :include_blank => false, :label => false
               #content_package_publish_at_fields{:class => content_package_publish_at_class}
@@ -195,7 +195,7 @@
                 =@content_package.id
               %label.col-primary Template
               %p
-                =link_to(@content_package.content_type, edit_pig_content_type_path(@content_package.content_type))
+                =link_to(@content_package.content_type, pig.edit_content_type_path(@content_package.content_type))
               %label.col-primary Content requested by
               %p
                 =@content_package.requested_by.try(:full_name)

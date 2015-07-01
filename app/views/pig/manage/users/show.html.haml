@@ -17,15 +17,18 @@
           -if @user.role.present?
             =@user.role
           -else
-            =link_if_can("Set a role for this user", [:edit, @user])
+            - if can?(:edit, @user)
+              =link_to("Set a role for this user", pig.edit_manage_user_path(@user))
         .clearfix.section-margin
         .label.upper Biography
         -if @user.bio.present?
           =@user.bio
         -else
-          =link_if_can("Write a bio for this user", [:edit, @user])
+          - if can?(:edit, @user)
+            =link_to("Write a bio for this user", pig.edit_manage_user_path(@user))
       .col-md-3
-        =link_if_can("Edit user", [:edit, @user] ,:class => 'btn btn-success  pull-right')
+        -if can?(:edit, @user)
+          =link_to("Edit user", pig.edit_manage_user_path(@user) ,:class => 'btn btn-success  pull-right')
         .btn.pull-right=link_to('See all users', '/cms/cms_users')
     -if @assigned_content.present? 
       .row.section-margin
@@ -45,5 +48,4 @@
                     %td.table-action
                       =link_to('View', content_package, :class => 'btn btn-xs btn-default') unless content_package.viewless? || content_package.missing_view?
                       -if can? :edit, content_package
-                        =link_to('Edit', edit_pig_content_package_path(content_package), :class => 'btn btn-xs btn-success')
-
+                        =link_to('Edit', pig.edit_pig_content_package_path(content_package), :class => 'btn btn-xs btn-success')

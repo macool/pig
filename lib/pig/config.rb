@@ -14,7 +14,7 @@ module Pig
       self.tags_feature = options[:tags_feature] || true
       self.basic_redactor_plugins = options[:basic_redactor_plugins] || []
       self.redactor_plugins = options[:redactor_plugins] || []
-      self.on_unpublished { redirect_to sign_in_path }
+      self.on_unpublished { redirect_to pig.new_user_session_path }
       self.additional_stylesheets = options[:additional_stylesheets] || []
       self.additional_javascripts = options[:additional_javascripts] || []
     end

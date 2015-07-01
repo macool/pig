@@ -1,12 +1,13 @@
 module Pig
   class Permalink < ActiveRecord::Base
-    include YmCore::Model
+
+    include Pig::Concerns::Models::Core
+
     self.table_name = 'pig_permalinks'
 
     belongs_to :resource, :polymorphic => true
 
     validates :full_path, :presence => true, :uniqueness => {:case_sensitive => false, :scope => :active}
-
     validate :path_does_not_match_existing_route
     validate :path_is_valid_url
 
@@ -21,7 +22,6 @@ module Pig
     end
 
     def generate_unique_path!(title = resource.to_s)
-
       if path.blank? && title.present?
         path_name_root = title.parameterize
         unique_path_name = path_name_root.dup

@@ -26,4 +26,5 @@ end
 
 After do |scenario|
   # save_and_open_page if scenario.failed?
+  Cucumber.wants_to_quit = true if scenario.failed?
 end

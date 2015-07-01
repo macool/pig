@@ -1,95 +1,29 @@
-GIT
-  remote: git@gitlab.yoomee.com:yoomee/ym_assets.git
-  revision: 373e4ce512e2a462c3f34c3893d6dac8ed4aa5d6
-  specs:
-    ym_assets (0.0.1)
-
-GIT
-  remote: git@gitlab.yoomee.com:yoomee/ym_core.git
-  revision: ed11dd4bf47665938825d509548b8761ab27af99
-  branch: rails-4
-  specs:
-    ym_core (1.1.10)
-      bootstrap-sass (~> 3.0)
-      bootstrap-will_paginate (~> 0.0.6)
-      dragonfly (~> 0.9.10)
-      formtastic (~> 2.3.0.rc3)
-      formtastic-bootstrap (~> 3.0)
-      haml-rails
-      html_truncator (~> 0.2)
-      jquery-rails
-      jquery-ui-rails
-      rack-cache
-      rails (~> 4.1.0)
-      rails_config (~> 0.2.6)
-      randumb
-      rinku
-      sass-rails (>= 4.0.3)
-      will_paginate (~> 3.0.3)
-
-GIT
-  remote: git@gitlab.yoomee.com:yoomee/ym_posts.git
-  revision: 41568bbc65b6216f814204e1a7d4704f0b3eb0c1
-  branch: rails-4
-  specs:
-    ym_posts (1.0.6)
-      jquery-rails
-      remotipart (~> 1.0)
-      ym_core (~> 1.0)
-      ym_notifications (~> 1.0)
-      ym_tags (~> 1.0)
-      ym_users (~> 1.0)
-      ym_videos (~> 2.0)
-
-GIT
-  remote: git@gitlab.yoomee.com:yoomee/ym_tags.git
-  revision: 5ec7c5afcbdc71496ea98b1ef7a0bbe59ecab813
-  branch: rails-4
-  specs:
-    ym_tags (1.0.4)
-      acts-as-taggable-on (~> 3.0)
-      rails3-jquery-autocomplete
-      ym_core (~> 1.0)
-
-GIT
-  remote: git@gitlab.yoomee.com:yoomee/ym_users.git
-  revision: fc3583c9585398a43674fde07c94ac398df2b872
-  branch: rails-4
-  specs:
-    ym_users (1.1.1)
-      cancancan (~> 1.8)
-      devise (~> 3.0)
-      rails (~> 4.0)
-      ym_core
-
-GIT
-  remote: git@gitlab.yoomee.com:yoomee/ym_videos.git
-  revision: ebfea0944a6e7c3585123733f3151f9497cc1832
-  branch: rails-4
-  specs:
-    ym_videos (2.0.0)
-      rails (~> 4.0)
-      video_info (~> 0.4.0)
-
 PATH
   remote: .
   specs:
     pig (0.0.1)
-      acts-as-taggable-on (~> 3.2)
+      acts-as-taggable-on
+      bootstrap-sass
       cancancan
       cocoon
-      coffee-rails (~> 4.0.0)
+      coffee-rails
+      devise
       dragonfly (~> 0.9.15)
-      formtastic-bootstrap (~> 3.0)
+      formtastic
+      formtastic-bootstrap
       geocoder
+      haml-rails
+      jquery-rails
+      jquery-ui-rails
       public_suffix
       rack-cache
-      rails (~> 4.0)
-      stringex (~> 1.3.2)
-      ym_users (~> 1.1.1)
+      rails
+      rails_config
+      stringex
+      will_paginate
+      will_paginate-bootstrap
 
 GEM
-  remote: https://yoomee:wLjuGMTu30AvxVyIrq3datc73LVUkvo@gems.yoomee.com/
   remote: https://rubygems.org/
   specs:
     actionmailer (4.1.10)
@@ -121,19 +55,17 @@ GEM
     acts-as-taggable-on (3.5.0)
       activerecord (>= 3.2, < 5)
     arel (5.0.1.20140414130214)
-    autoprefixer-rails (5.2.0)
+    autoprefixer-rails (5.2.1)
       execjs
       json
     bcrypt (3.1.10)
-    bootstrap-sass (3.3.4.1)
+    bootstrap-sass (3.3.5.1)
       autoprefixer-rails (>= 5.0.0.1)
-      sass (>= 3.2.19)
-    bootstrap-will_paginate (0.0.10)
-      will_paginate
+      sass (>= 3.3.0)
     builder (3.2.2)
     byebug (4.0.5)
       columnize (= 0.9.0)
-    cancancan (1.10.1)
+    cancancan (1.12.0)
     capybara (2.4.4)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -145,7 +77,7 @@ GEM
     cliver (0.3.2)
     cocoon (1.2.6)
     coderay (1.1.0)
-    coffee-rails (4.0.1)
+    coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
     coffee-script (2.4.1)
@@ -186,11 +118,11 @@ GEM
       railties (>= 3.0.0)
     ffi (1.9.6)
     formatador (0.2.5)
-    formtastic (2.3.1)
-      actionpack (>= 3.0)
-    formtastic-bootstrap (3.0.0)
-      formtastic (>= 2.2)
-    geocoder (1.2.8)
+    formtastic (3.1.3)
+      actionpack (>= 3.2.13)
+    formtastic-bootstrap (3.1.0)
+      formtastic (>= 3.0)
+    geocoder (1.2.9)
     gherkin (2.12.2)
       multi_json (~> 1.3)
     guard (2.12.1)
@@ -220,16 +152,13 @@ GEM
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
     hitimes (1.2.2)
-    hpricot (0.8.6)
     html2haml (2.0.0)
       erubis (~> 2.7.0)
       haml (~> 4.0.0)
       nokogiri (~> 1.6.0)
       ruby_parser (~> 3.5)
-    html_truncator (0.4.1)
-      nokogiri (~> 1.5)
     i18n (0.7.0)
-    jquery-rails (3.1.2)
+    jquery-rails (3.1.3)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
@@ -283,9 +212,7 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.1.10)
       sprockets-rails (~> 2.0)
-    rails3-jquery-autocomplete (1.0.15)
-      rails (>= 3.2)
-    rails_config (0.2.7)
+    rails_config (0.4.2)
       activesupport (>= 3.0)
     railties (4.1.10)
       actionpack (= 4.1.10)
@@ -293,17 +220,11 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
-    randumb (0.5.0)
-      activerecord (>= 3.0.0)
-      activesupport (>= 3.0.0)
-      rake
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    remotipart (1.2.1)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
-    rinku (1.7.3)
     rspec (3.2.0)
       rspec-core (~> 3.2.0)
       rspec-expectations (~> 3.2.0)
@@ -327,13 +248,7 @@ GEM
     rspec-support (3.2.2)
     ruby_parser (3.7.0)
       sexp_processor (~> 4.1)
-    sass (3.4.14)
-    sass-rails (5.0.3)
-      railties (>= 4.0.0, < 5.0)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (~> 1.1)
+    sass (3.4.15)
     sexp_processor (4.6.0)
     shellany (0.0.1)
     shoulda-matchers (2.8.0)
@@ -349,24 +264,21 @@ GEM
     stringex (1.3.3)
     thor (0.19.1)
     thread_safe (0.3.5)
-    tilt (1.4.1)
+    tilt (2.0.1)
     timers (4.0.1)
       hitimes
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    video_info (0.4.0)
-      hpricot (~> 0.8.4)
     warden (1.2.3)
       rack (>= 1.0)
     websocket-driver (0.5.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
     will_paginate (3.0.7)
+    will_paginate-bootstrap (1.0.1)
+      will_paginate (>= 3.0.3)
     xpath (2.0.0)
       nokogiri (~> 1.3)
-    ym_notifications (1.0.14)
-      ym_core (~> 1.0)
-      ym_users (~> 1.0)
 
 PLATFORMS
   ruby
@@ -385,9 +297,6 @@ DEPENDENCIES
   rspec-rails
   shoulda-matchers
   sqlite3
-  ym_assets!
-  ym_core!
-  ym_posts!
-  ym_tags!
-  ym_users!
-  ym_videos!
+
+BUNDLED WITH
+   1.10.4

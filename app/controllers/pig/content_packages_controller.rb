@@ -27,7 +27,7 @@ module Pig
     def create
       if @content_package.save
         @content_package.record_activity!(current_user, "created")
-        redirect_to edit_pig_content_package_path(@content_package)
+        redirect_to pig.edit_content_package_path(@content_package)
       else
         render :action => 'new'
       end
@@ -135,7 +135,7 @@ module Pig
         end
         # remove_abandoned_sir_trevor_images
         if @content_package.missing_view?
-          redirect_to pig_content_packages_path(:open => @content_package)
+          redirect_to pig.content_packages_path(:open => @content_package)
         else
           redirect_to @content_package
         end
@@ -158,15 +158,14 @@ module Pig
 
     private
     def content_package_params
-      permitted_params = [*params[:pig_content_package].try(:keys) + [:persona_ids => []]]
+      permitted_params = [*params[:content_package].try(:keys) + [:persona_ids => []]]
       if @content_package && Pig::configuration.tags_feature
         permitted_params << [:taxonomy_tags => @content_package.content_type.tag_categories.map{|x| { x.slug => [] }}.reduce(:merge)]
       end
-      params.require(:pig_content_package).permit(permitted_params)
+      params.require(:content_package).permit(permitted_params)
     end
 
     def get_view_data
-      # added double colon to access global scope... #TODO: this needs reviewing
       @persona_groups = Pig::PersonaGroup.all.includes(:personas)
       @activity_items = @content_package.activity_items.includes(:user, :resource).paginate(:page => 1, :per_page => 5)
       @non_meta_content_attributes = @content_package.content_attributes.where(:meta => false)
@@ -194,7 +193,7 @@ module Pig
           end
         else
           # If there isn't a matching permalink handle it with rails (Default is 404)
-          raise ActionController::RoutingError.new('Not Found')
+          raise ::ActionController::RoutingError.new('Not Found')
         end
       else
         if (@content_package && @content_package.permalink.nil?) || ContentPackage.member_routes.reject { |x| x[:action] == "show" }.any?{|x| x[:action] == params[:action]}

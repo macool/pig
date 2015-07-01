@@ -5,7 +5,7 @@ module Pig
     belongs_to :user
     belongs_to :resource, :polymorphic => true
     belongs_to :parent_resource, :polymorphic => true
-    validate :user, :presence => true
+    validates :user, :presence => true
 
     class << self
 

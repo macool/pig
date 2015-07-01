@@ -1,3 +1,5 @@
+Formtastic::Helpers::FormHelper.builder = FormtasticBootstrap::FormBuilder
+
 module Formtastic
   module Helpers
     module InputHelper
@@ -38,7 +40,7 @@ module Formtastic
 end
 
 FormtasticBootstrap::Inputs::DateSelectInput::FRAGMENT_CLASSES = {
-    :year   => "col-xs-4",
-    :month  => "col-xs-4",
-    :day    => "col-xs-4"
-  }
+  :year   => "col-xs-4",
+  :month  => "col-xs-4",
+  :day    => "col-xs-4"
+}

@@ -1,0 +1,14 @@
+!!!5
+%html
+  %head
+    =render('layouts/pig/head')
+    =csrf_meta_tags
+  -body_tag do
+    .cms-wrapper
+      .container
+        .row
+          .col-sm-3
+          .col-sm-6
+            =yield
+            .push
+          .col-sm-3

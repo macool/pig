@@ -37,7 +37,7 @@ FactoryGirl.define do
     sequence(:position)
   end
 
-  factory :user, :aliases => [:author, :requested_by]  do
+  factory :user, aliases: [:author, :requested_by], class: Pig::User  do
     first_name "Charles"
     sequence(:last_name) {|n| "Barrett #{n}"}
     sequence(:email) {|n| "charles@barrett-#{n}.com"}

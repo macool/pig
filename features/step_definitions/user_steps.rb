@@ -8,7 +8,7 @@ Given /^I am logged in as an (.*)$/ do |role|
 end
 
 When(/^I go to the dashboard$/) do
-  visit pig_content_path
+  visit pig.content_path
 end
 
 Given(/^there are (\d+) users$/) do |n|
@@ -24,18 +24,18 @@ Given(/^there are (\d+) users$/) do |n|
 end
 
 When(/^I fill in the new cms user form and submit$/) do
-  visit new_pig_user_path
+  visit pig.new_manage_user_path
   @user = FactoryGirl.build(:user, role: 'author')
-  fill_in "pig_user_first_name", :with => @user.first_name
-  fill_in "pig_user_last_name", :with => @user.last_name
-  fill_in "pig_user_email", :with => @user.email
-  fill_in "pig_user_password", :with => @user.password
-  select(@user.role, :from => 'pig_user_role')
+  fill_in "user_first_name", :with => @user.first_name
+  fill_in "user_last_name", :with => @user.last_name
+  fill_in "user_email", :with => @user.email
+  fill_in "user_password", :with => @user.password
+  select(@user.role, :from => 'user_role')
   click_button('Save')
 end
 
 Then(/^the user is (created|updated)$/) do |action|
-  visit pig_users_path(@user)
+  visit pig.manage_users_path(@user)
   expect(page).to have_content(@user.first_name)
   expect(page).to have_content(@user.last_name)
   if action == 'updated'
@@ -45,15 +45,15 @@ Then(/^the user is (created|updated)$/) do |action|
 end
 
 When(/^I fill in the edit cms user form and submit$/) do
-  visit edit_pig_user_path(@user)
-  fill_in "pig_user_last_name", :with => "Edited"
-  select(@user.role, :from => 'pig_user_role')
+  visit pig.edit_manage_user_path(@user)
+  fill_in "user_last_name", :with => "Edited"
+  select(@user.role, :from => 'user_role')
   click_button('Save')
-  @user = User.find(@user.id)
+  @user = Pig::User.find(@user.id)
 end
 
 When(/^I visit the cms user index$/) do
-  visit pig_users_path
+  visit pig.manage_users_path
   expect(page).to have_content("ADD NEW USER")
 end
 
@@ -71,7 +71,7 @@ When(/^I set the user as inactive$/) do
 end
 
 Then(/^the user is inactive$/) do
-  @user = User.find(@user.id)
+  @user = Pig::User.find(@user.id)
   expect(@user.active).to be_falsey
 end
 

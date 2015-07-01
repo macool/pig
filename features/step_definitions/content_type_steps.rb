@@ -11,7 +11,7 @@ Given(/^there (is|are) (\d+) content types?$/) do |ia,n|
 end
 
 When(/^I go to the list of content types$/) do
-  visit pig_content_types_path
+  visit pig.content_types_path
 end
 
 Then(/^I see the content types$/) do
@@ -21,9 +21,9 @@ Then(/^I see the content types$/) do
 end
 
 When(/^I fill in the new content type form and submit$/) do
-  visit new_pig_content_type_path
+  visit pig.new_content_type_path
   @content_type = FactoryGirl.build(:content_type)
-  fill_in('pig_content_type_name', :with => @content_type.name)
+  fill_in('content_type_name', :with => @content_type.name)
   @content_type.content_attributes.each_with_index do |content_attribute, idx|
     click_link('Add another content attribute') unless idx.zero?
     all(".nested-fields input[id$='_name']")[idx].set(content_attribute.name)
@@ -41,18 +41,18 @@ Then(/^the content type is created$/) do
 end
 
 When(/^I update the content type$/) do
-  visit edit_pig_content_type_path(@content_type)
-  fill_in('pig_content_type_name', :with => 'Modified name')
+  visit pig.edit_content_type_path(@content_type)
+  fill_in('content_type_name', :with => 'Modified name')
   click_button("Update Content type")
 end
 
 Then(/^the content type should change$/) do
-  visit edit_pig_content_type_path(@content_type)
-  expect(find_field('pig_content_type[name]').value).to eq('Modified name')
+  visit pig.edit_content_type_path(@content_type)
+  expect(find_field('content_type[name]').value).to eq('Modified name')
 end
 
 When(/^I duplicate the content type$/) do
-  visit duplicate_pig_content_type_path(@content_type)
+  visit pig.duplicate_content_type_path(@content_type)
 end
 
 Then(/^I see a new content type with all the same attributes$/) do
@@ -61,19 +61,19 @@ Then(/^I see a new content type with all the same attributes$/) do
       expected_value = content_attribute.send(attribute)
       if expected_value.is_a?(TrueClass) || expected_value.is_a?(FalseClass)
         if expected_value
-          expect(find_field("pig_content_type[content_attributes_attributes][#{idx}][#{attribute}]")).to be_checked
+          expect(find_field("content_type[content_attributes_attributes][#{idx}][#{attribute}]")).to be_checked
         else
-          expect(find_field("pig_content_type[content_attributes_attributes][#{idx}][#{attribute}]")).to_not be_checked
+          expect(find_field("content_type[content_attributes_attributes][#{idx}][#{attribute}]")).to_not be_checked
         end
       elsif expected_value.to_s.present?
-        expect(find_field("pig_content_type[content_attributes_attributes][#{idx}][#{attribute}]").value.to_s).to eq(expected_value.to_s)
+        expect(find_field("content_type[content_attributes_attributes][#{idx}][#{attribute}]").value.to_s).to eq(expected_value.to_s)
       end
     end
   end
 end
 
 When(/^I duplicate the first content type onto the second$/) do
-  visit duplicate_pig_content_type_path(@content_types.first, :to => @content_types.last)
+  visit pig.duplicate_content_type_path(@content_types.first, :to => @content_types.last)
 end
 
 Then(/^I see a second content type with all the attributes of the first$/) do
@@ -85,12 +85,12 @@ Then(/^I see a second content type with all the attributes of the first$/) do
       expected_value = content_attribute.send(attribute)
       if expected_value.is_a?(TrueClass) || expected_value.is_a?(FalseClass)
         if expected_value
-          expect(find_field("pig_content_type[content_attributes_attributes][#{idx}][#{attribute}]")).to be_checked
+          expect(find_field("content_type[content_attributes_attributes][#{idx}][#{attribute}]")).to be_checked
         else
-          expect(find_field("pig_content_type[content_attributes_attributes][#{idx}][#{attribute}]")).to_not be_checked
+          expect(find_field("content_type[content_attributes_attributes][#{idx}][#{attribute}]")).to_not be_checked
         end
       elsif expected_value.to_s.present?
-        expect(find_field("pig_content_type[content_attributes_attributes][#{idx}][#{attribute}]").value.to_s).to eq(expected_value.to_s)
+        expect(find_field("content_type[content_attributes_attributes][#{idx}][#{attribute}]").value.to_s).to eq(expected_value.to_s)
       end
     end
   end

@@ -2,15 +2,29 @@ require "pig/engine"
 require "pig/config"
 require 'stringex'
 require 'formtastic-bootstrap'
-require 'ym_users'
 require 'rack/cache'
 require 'dragonfly'
 require 'geocoder'
 require 'acts-as-taggable-on'
+require 'devise'
+require 'cancancan'
+require 'haml-rails'
+require 'cocoon'
+require 'rails_config'
+require 'jquery-rails'
+require 'jquery-ui-rails'
+require 'bootstrap-sass'
+require 'will_paginate'
+require 'will_paginate-bootstrap'
+require 'formtastic'
 
-require_relative 'pig/routing'
-require_relative "pig/permalinkable"
-require_relative "pig/activity/recordable"
+require "pig/permalinkable"
+require "pig/activity/recordable"
+
+# Concerns
+require "pig/concerns/models/core"
+require "pig/concerns/models/roles"
+require "pig/concerns/models/name"
 
 module Pig
 
@@ -30,10 +44,3 @@ module Pig
 end
 
 Dir[File.dirname(__FILE__) + '/pig/permalinks/*.rb'].each {|file| require file }
-# # if defined?(YmDocuments)
-# #   Dir[File.dirname(__FILE__) + '/ym_documents/**/*.rb'].each {|file| require file }
-# # end
-
-require 'cocoon'
-# require 'oembed'
-# OEmbed::Providers.register(OEmbed::Providers::Flickr,OEmbed::Providers::Instagram,OEmbed::Providers::Scribd,OEmbed::Providers::SoundCloud,OEmbed::Providers::Slideshare,OEmbed::Providers::Youtube,OEmbed::Providers::Vimeo)

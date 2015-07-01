@@ -1,7 +1,7 @@
 module Pig
   class ContentPackageMailer < ActionMailer::Base
 
-    helper YmCore::UrlHelper
+    helper Pig::UrlHelper
 
     default :from => "\"#{Settings.site_name}\" <#{Settings.site_noreply_email}>"
 
