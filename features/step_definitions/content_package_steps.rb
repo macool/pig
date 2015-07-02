@@ -224,3 +224,27 @@ end
 Then(/^I should see the params$/) do
   expect(URI.parse(current_url).query).to eq(@params)
 end
+
+Given(/^one of the content packages is named "(.*?)"$/) do |name|
+  Pig::ContentPackage.first.update_attribute(:name, name)
+end
+
+When(/^I go to the list of content packages$/) do
+  visit pig.content_packages_path
+end
+
+When(/^I search for "(.*?)"$/) do |term|
+  search_field = find('#content_search_link')
+  search_field.set term
+  # We need to press down here to trigger the ajax call, just setting with capybara doesn't trigger autocomplete 
+  search_field.native.send_keys(:Down)
+  wait_for_ajax
+  search_field.native.send_keys(:Down, :Return)
+  wait_for_ajax
+end
+
+Then(/^I should see the content package named "(.*?)" highlighted$/) do |name|
+  content_package = Pig::ContentPackage.where(name: name).first
+  row = page.find("tr[id=content-package-#{content_package.id}]")
+  row[:class].include?('.highlight')
+end

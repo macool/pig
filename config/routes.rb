@@ -28,12 +28,13 @@ Pig::Engine.routes.draw do
 
   get '/content' => 'content_types#dashboard'
   post '/attachments' => 'attachments#create'
-  
+
   resources :content_packages do
     collection do
       get 'filter/:filter' => 'content_packages#index', :as => 'filter'
       get 'deleted'
       get 'activity'
+      get 'search'
     end
     member do
       get 'children'
@@ -41,7 +42,6 @@ Pig::Engine.routes.draw do
       get 'reorder'
       put 'save_order'
       put 'restore'
-      get 'search'
       get 'activity'
       post 'upload_sir_trevor_attachment'
     end

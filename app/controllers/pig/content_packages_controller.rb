@@ -119,8 +119,17 @@ module Pig
     end
 
     def search
-      @results = ContentPackage.search(params[:q], :with => {:parent_id => @content_package.id}, :page => params[:page], :per_page => params[:per_page] || 20)
-      render_content_package_view
+      if defined?(Riddle)
+        term = Riddle.escape(params[:term])
+      else
+        term = params[:term]
+      end
+      render :json => ContentPackage.search(term).includes(:permalink).map { |cp| {
+          id: cp.id,
+          label: cp.name.truncate(60),
+          value: cp.permalink_display_path,
+          open_url: pig.content_packages_path(open: cp.id)
+      }}
     end
 
     def show
@@ -221,5 +230,3 @@ module Pig
     end
   end
 end
-
-
