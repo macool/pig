@@ -17,6 +17,7 @@ module Pig
       ActiveSupport.on_load :action_controller do
         helper Pig::ApplicationHelper
         helper Pig::MetaTagsHelper
+        helper Pig::LayoutHelper
       end
     end
   end
