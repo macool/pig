@@ -39,7 +39,7 @@
               =link_to(pig.tags_path) do
                 %i.fa.fa-tags
                 %span Tag Management
-          -if can? :manage, User
+          -if can? :manage, Pig::User
             %li{ class: @users || @user ? 'active' : nil }
               =link_to(pig.manage_users_path) do
                 %i.fa.fa-file-text-o
