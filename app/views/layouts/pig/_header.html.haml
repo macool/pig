@@ -4,40 +4,43 @@
       .dropdown.cms-nav-dropdown-toggle
         =link_to('CMS', '#', 'data-toggle' => 'dropdown', :icon => 'caret-down', :icon_last => true, :class => 'cms-nav-brand--logo')
         %ul.cms-nav-dropdown
-          %li{:class => !@content_packages && !@activity_items.nil?  ? 'active' : nil}
-            =link_to('/content') do
-              %i.fa.fa-home
-              %span My content
-          %li{:class => @content_packages && !@deleted_content_packages  ? 'active' : nil}
+
+          -navigation_items.each do |item|
+            %li{ class: item[:is_active] }
+              =link_to(item[:url]) do
+                %i.fa.fa-home
+                %span=item[:title]
+
+          %li{ class: @content_packages && !@deleted_content_packages ? 'active' : nil }
             =link_to(pig.content_packages_path) do
               %i.fa.fa-list
               %span Page list
           -if can? :manage, Pig::ContentType
-            %li{:class => (@content_types && !@activity_items.nil?) ? 'active' : nil}
+            %li{ class: (@content_types && !@activity_items.nil?) ? 'active' : nil }
               =link_to(pig.content_types_path) do
                 %i.fa.fa-file-text-o
                 %span Templates
-          %li{:class => @deleted_content_packages ? 'active' : nil}
+          %li{ class: @deleted_content_packages ? 'active' : nil }
             =link_to(pig.deleted_content_packages_path) do
               %i.fa.fa-trash-o
               %span Deleted content
           -if defined?(YmDocuments)
-            %li{:class => @documents? 'active' : nil}
+            %li{ class: @documents ? 'active' : nil }
               =link_to(ym_documents_engine.documents_path) do
                 %i.fa.fa-file-archive-o
                 %span Documents
           -if can? :manage, Pig::MetaDatum
-            %li{:class => @meta_data ? 'active' : nil}
+            %li{ class: @meta_data ? 'active' : nil }
               =link_to(pig.meta_data_path) do
                 %i.fa.fa-code
                 %span Non CMS meta data
-          -if (can? :manage, Pig::TagCategory) && (Pig::configuration.tags_feature)
-            %li{:class => @tag_categories  ? 'active' : nil}
+          -if (can? :manage, Pig::TagCategory) && (Pig.configuration.tags_feature)
+            %li{ class: @tag_categories ? 'active' : nil }
               =link_to(pig.tags_path) do
                 %i.fa.fa-tags
                 %span Tag Management
-          -if (can? :manage, Pig::User)
-            %li{:class => @users || @user ? 'active' : nil}
+          -if can? :manage, User
+            %li{ class: @users || @user ? 'active' : nil }
               =link_to(pig.manage_users_path) do
                 %i.fa.fa-file-text-o
                 %span User Management
@@ -46,70 +49,39 @@
               %i.fa.fa-group
               %span Personas
 
-    =link_to("Return to website", '/', :class => 'cms-nav--return-link')
+    =link_to('Return to website', main_app.root_path, class: 'cms-nav--return-link')
     .cms-nav-user
       .dropdown
         =link_to('', '#', 'data-toggle' => 'dropdown', :icon => 'user', :icon_last => true)
         %ul.cms-nav-user-dropdown
-          %li=link_to('Account settings', pig.edit_user_registration_path, :icon => 'cog', :icon_first => true)
-          %li=link_to('Change password', pig.user_password_path, :icon => 'unlock-alt', :icon_first => true)
-          %li=link_to('Sign out', pig.destroy_user_session_path, :method => :delete, :icon => 'sign-out', :icon_first => true)
+          %li=link_to('Account settings', pig.edit_user_registration_path, icon: 'cog', icon_first: true)
+          %li=link_to('Change password', pig.user_password_path, icon: 'unlock-alt', icon_first: true)
+          %li=link_to('Sign out', pig.destroy_user_session_path, method: :delete, icon: 'sign-out', icon_first: true)
     -if current_user && @content_package
       -if can? :index, Pig::ContentPackage.new
         .cms-nav-controls
           -if @content_package && (action_name == 'show' || @show_cms_nav_edit_link)
-            =link_to('Edit this page', pig.edit_content_package_path(@content_package), :class => 'btn btn-success btn-sm') if can?(:update, @content_package)
+            =link_to('Edit this page', pig.edit_content_package_path(@content_package), class: 'btn btn-success btn-sm') if can?(:update, @content_package)
             .cms-nav-status
               Status:
               =@content_package.status
 
-.affix-spacer{"data-offset-bottom" => "0", "data-offset-top" => "60", "data-spy" => "affix"}
+-max_navigation_items = 4
+-navigation_items.each_with_index do |item, index|
+  =content_for index <= max_navigation_items ? :main_items : :more_menu_items do
+    -if item[:visible] ? item[:visible] : true
+      %li{ class: item[:is_active].call(self) ? 'active' : '' }
+        =link_to(item[:url]) do
+          %i.fa{ class: "fa-#{item[:icon]}" }
+          %span=item[:title]
+
+.affix-spacer{ data: { offset_bottom: '0', offset_top: '60', data_spy: 'affix' } }
   %ul.cms-nav-tabs
-    %li{:class => !@content_packages && !@activity_items.nil?  ? 'active' : nil}
-      =link_to(pig.content_path) do
-        %i.fa.fa-home
-        %span My content
-    %li{:class => @content_packages && !@deleted_content_packages  ? 'active' : nil}
-      =link_to(pig.content_packages_path) do
-        %i.fa.fa-list
-        %span Page list
-    -if can? :manage, Pig::ContentType
-      %li{:class => (@content_types && @activity_items.nil?) ? 'active' : nil}
-        =link_to(pig.content_types_path) do
-          %i.fa.fa-file-text-o
-          %span Templates
-    -if defined?(Trough)
-      %li{:class => @documents? 'active' : nil}
-        =link_to(trough.documents_path) do
-          %i.fa.fa-file-archive-o
-          %span Documents
-    -if (can? :manage, Pig::TagCategory) && (Pig::configuration.tags_feature)
-      %li{:class => @tag_categories  ? 'active' : nil}
-        =link_to(pig.tags_path) do
-          %i.fa.fa-tags
-          %span Tag Management
-
-    %li.dropdown
-      %a.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
-        %span More
-        %i.fa.fa-caret-down
-
-      %ul.dropdown-menu{:role => "menu"}
-        -if can? :manage, Pig::MetaDatum
-          %li{:class => @meta_data ? 'active' : nil}
-            =link_to(pig.meta_data_path) do
-              %i.fa.fa-code
-              %span Non CMS meta data
-        -if (can? :manage, Pig::User)
-          %li{:class => @users || @user ? 'active' : nil}
-            =link_to(pig.manage_users_path) do
-              %i.fa.fa-file-text-o
-              %span User Management
-        %li
-          =link_to(pig.personas_path) do
-            %i.fa.fa-group
-            %span Personas
-        %li
-          =link_to(pig.deleted_content_packages_path) do
-            %i.fa.fa-trash-o
-            %span Deleted content
+    = yield :main_items
+    - if navigation_items.length > max_navigation_items
+      %li.dropdown
+        %a.dropdown-toggle{ 'aria-expanded' => 'false', 'data-toggle' => 'dropdown', :href => '#', :role => 'button' }
+          %span More
+          %i.fa.fa-caret-down
+        %ul.dropdown-menu{ role: 'menu' }
+          =yield :more_menu_items

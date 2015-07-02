@@ -18,8 +18,9 @@ require 'will_paginate'
 require 'will_paginate-bootstrap'
 require 'formtastic'
 
-require "pig/permalinkable"
-require "pig/activity/recordable"
+require 'pig/permalinkable'
+require 'pig/activity/recordable'
+require 'pig/core/plugins'
 
 # Concerns
 require "pig/concerns/models/core"
