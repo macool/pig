@@ -2,7 +2,7 @@ module Pig
   class ApplicationController < ActionController::Base
 
     rescue_from CanCan::AccessDenied do |exception|
-      instance_eval(&Pig.configuration.unpublished)
+      redirect_to pig.new_user_session_path
     end
 
     def current_ability

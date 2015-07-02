@@ -10,6 +10,8 @@
 
    ======================================================================= */
 
+@import 'bootstrap/variables';
+
 @import 'sass/scaffold/reset';
 @import 'sass/scaffold/media-queries';
 @import 'sass/scaffold/grid';
@@ -45,5 +47,8 @@
 @import 'sass/sidebar/datepicker';
 
 @import 'sass/collapse/collapse';
+
+@import 'bootstrap/mixins/alerts';
+@import 'bootstrap/alerts';
 
 

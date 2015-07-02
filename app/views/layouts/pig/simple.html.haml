@@ -6,9 +6,8 @@
   -body_tag do
     .cms-wrapper
       .container
-        .row
-          .col-sm-3
-          .col-sm-6
+        .row-fluid
+          .col-sm-6.col-sm-offset-3
+            =render 'layouts/pig/flash'
             =yield
-            .push
-          .col-sm-3
+            .push.col

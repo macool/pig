@@ -1,5 +1,14 @@
 module Pig
   class ContentPackagesController < ApplicationController
+
+    rescue_from CanCan::AccessDenied do |exception|
+      if action_name == 'show'
+        instance_eval(&Pig.configuration.unpublished)
+      else
+        redirect_to pig.new_user_session_path
+      end
+    end
+
     layout 'layouts/application', only: :show
     load_and_authorize_resource
     # Define an around filter for all controller actions that could potentially be routed to from a permalink

@@ -247,7 +247,7 @@ window.Pig = {
           content_package_id = row.attr('id').split('-').slice(-1)[0];
           link.attr('data-loaded', 0);
           setTimeout("Pig.Sitemap.loading(" + content_package_id + ")", 250);
-          return $.get("/content_packages/" + content_package_id + "/children").success(function() {
+          return $.get(row.data('children-url')).success(function() {
             link.attr('data-loaded', 1);
             // link.data('open', 1);
             link.attr('data-open', 1);

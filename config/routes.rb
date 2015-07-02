@@ -1,15 +1,12 @@
-Rails.application.routes.draw do
-  get '/content_package/:id' => 'pig/content_packages#show'
-  get '/content_packages/:id' => 'pig/content_packages#show'
-  Pig::ContentPackage.member_routes.each do |route|
-    send(route[:method], route[:route].present? ? "*path/#{route[:route]}" : "*path" , to: "pig/content_packages##{route[:action]}")
-  end
-end
-
 Pig::Engine.routes.draw do
   root 'content_types#dashboard'
 
-  devise_for :users, class_name: 'Pig::User', module: :devise
+  devise_for :users, class_name: 'Pig::User', module: :devise, controllers: {
+    registrations: 'pig/registrations',
+    sessions: 'pig/sessions',
+    confirmations: 'pig/confirmations',
+    passwords: 'pig/passwords'
+  }
 
   resources :content_types do
     resources :content_packages, :only => :new
@@ -71,3 +68,12 @@ Pig::Engine.routes.draw do
     resources :tag_categories
   end
 end
+
+Rails.application.routes.draw do
+  get '/content_package/:id' => 'pig/content_packages#show'
+  get '/content_packages/:id' => 'pig/content_packages#show'
+  Pig::ContentPackage.member_routes.each do |route|
+    send(route[:method], route[:route].present? ? "*path/#{route[:route]}" : "*path" , to: "pig/content_packages##{route[:action]}")
+  end
+end
+
