@@ -11,10 +11,7 @@
     %center=status(content_package.status)
   %td{:class => "td-status td-status-#{content_package.status}"}
     %center
-      -if content_package.author == current_user
-        You
-      -else
-        =content_package.author
+      =cell('pig/content_package', content_package).list(current_user: current_user)
   %td{:class => "td-status td-status-#{content_package.status}"}
     =content_package.due_date.try(:strftime, '%b %d, %Y')
   %td
