@@ -37,6 +37,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-sass'
   s.add_dependency 'will_paginate'
   s.add_dependency 'will_paginate-bootstrap'
+  s.add_dependency 'cells'
+  s.add_dependency 'cells-haml'
 
   s.add_development_dependency "sqlite3"
 

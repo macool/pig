@@ -17,6 +17,8 @@ require 'bootstrap-sass'
 require 'will_paginate'
 require 'will_paginate-bootstrap'
 require 'formtastic'
+require 'cells'
+require 'cells-haml'
 
 require 'pig/permalinkable'
 require 'pig/activity/recordable'
