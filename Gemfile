@@ -7,6 +7,7 @@ gemspec
 
 
 group :development, :test do
+  gem "sqlite3"
   gem 'guard'
   gem "guard-rspec", require: false
   gem "guard-cucumber", require: false
