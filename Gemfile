@@ -6,8 +6,12 @@ source 'https://rubygems.org'
 gemspec
 
 
-group :development, :test do
+group :test do
   gem "sqlite3"
+  gem 'therubyracer'
+end
+
+group :development, :test do
   gem 'guard'
   gem "guard-rspec", require: false
   gem "guard-cucumber", require: false
