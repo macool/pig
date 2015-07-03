@@ -6,6 +6,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'factory_girl_rails'
 require 'shoulda/matchers'
+require 'devise'
 
 ENGINE_RAILS_ROOT=File.join(File.dirname(__FILE__), '../')
 Dir[File.join(ENGINE_RAILS_ROOT, "spec/support/**/*.rb")].each {|f| require f }
@@ -54,4 +55,13 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
+
+  config.before(:each, type: :controller) do
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+  end
+
+  RSpec.configure do |config|
+    config.include Devise::TestHelpers, :type => :controller
+    config.extend ControllerMacros, :type => :controller
+  end
 end

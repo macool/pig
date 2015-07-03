@@ -2,7 +2,6 @@ Pig::Engine.routes.draw do
   root 'content_types#dashboard'
 
   devise_for :users, class_name: 'Pig::User', module: :devise, controllers: {
-    registrations: 'pig/registrations',
     sessions: 'pig/sessions',
     confirmations: 'pig/confirmations',
     passwords: 'pig/passwords'
@@ -17,9 +16,9 @@ Pig::Engine.routes.draw do
       put 'reorder' => 'content_types#save_order'
     end
   end
-  
+
   namespace :manage do
-    resources :users do
+    resources :users, expect: :show do
       member do
         post :set_active
       end
@@ -76,4 +75,3 @@ Rails.application.routes.draw do
     send(route[:method], route[:route].present? ? "*path/#{route[:route]}" : "*path" , to: "pig/content_packages##{route[:action]}")
   end
 end
-

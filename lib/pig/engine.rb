@@ -18,6 +18,8 @@ module Pig
         helper Pig::ApplicationHelper
         helper Pig::MetaTagsHelper
         helper Pig::LayoutHelper
+        helper Pig::NavigationHelper
+        helper Pig::ContentHelper
       end
     end
   end

@@ -53,8 +53,7 @@
       .dropdown
         =link_to('', '#', 'data-toggle' => 'dropdown', :icon => 'user', :icon_last => true)
         %ul.cms-nav-user-dropdown
-          %li=link_to('Account settings', pig.edit_user_registration_path, icon: 'cog', icon_first: true)
-          %li=link_to('Change password', pig.user_password_path, icon: 'unlock-alt', icon_first: true)
+          %li=link_to('Account settings', pig.edit_manage_user_path(current_user), icon: 'cog', icon_first: true)
           %li=link_to('Sign out', pig.destroy_user_session_path, method: :delete, icon: 'sign-out', icon_first: true)
     -if current_user && @content_package
       -if can? :index, Pig::ContentPackage.new
