@@ -87,3 +87,11 @@ Scenario: I can assign a content package to an author
   When I assign it to an author
   Then the content package author should change
   And the author should be emailed
+
+@javascript
+Scenario: I can view the content packages using a content type
+  Given there is 1 content type
+  And there is 1 content package of this type
+  When I go to the list of content types
+  And I open the tree for the type
+  Then I should see the content package

@@ -15,7 +15,7 @@
                 %th.text-left{:colspan => 4} Content template / Name
             %tbody
               -@content_types.each do |content_type|
-                %tr.content-type{:id => "content-type-#{content_type.id}", :class => "#{'has-children' unless content_type.content_packages.count.zero?}", :data => {:depth => 0}}
+                %tr.content-type{:id => "content-type-#{content_type.id}", :class => "#{'has-children' unless content_type.content_packages.count.zero?}", :data => {depth: 0, open_url: pig.children_content_type_path(content_type)}}
                   %td.td-name.col-md-10
                     .name
                       -unless content_type.content_packages.count.zero?

@@ -114,7 +114,7 @@ window.Pig = {
           content_type_id = row.attr('id').split('-').slice(-1)[0];
           link.data('loaded', 0);
           setTimeout("Pig.ContentTypes.loading(" + content_type_id + ")", 250);
-          return $.get("/content_types/" + content_type_id + "/children").success(function() {
+          return $.get(row.data('open-url')).success(function() {
             link.data('loaded', 1);
             link.data('open', 1);
             link.find('i.sitemap-caret').removeClass('fa-spin').removeClass('fa-spinner').removeClass('fa-caret-right');

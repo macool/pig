@@ -103,3 +103,14 @@ Then(/^I see a second content type with all the attributes of the first$/) do
     end
   end
 end
+
+When(/^I open the tree for the type$/) do
+  within "#content-type-#{@content_type.id}" do
+    find('.td-name').click
+  end
+  wait_for_ajax
+end
+
+Then(/^I should see the content package$/) do
+  expect(page).to have_content(@content_package.name)
+end

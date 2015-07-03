@@ -1,17 +1,20 @@
 
-Given(/^there (?:is|are) (\d+) (unpublished )?content packages?\s?(not\s)?(?:assigned to me)?$/) do |n, unpublished, assigned|
+Given(/^there (?:is|are) (\d+) (unpublished )?content packages?\s?(not\s)?(?:assigned to me\s)?(of this type)?$/) do |n, unpublished, assigned, using_type|
   if n.to_i.zero?
     Pig::ContentPackage.destroy_all
   end
   @content_packages = [].tap do |arr|
     n.to_i.times do |i|
       if assigned.try(:strip) == 'not'
-        arr << FactoryGirl.create(:content_package, :title => "Content package #{i}")
+        attrs = { title: "Content package #{i}" }
       elsif unpublished.present?
-        arr << FactoryGirl.create(:content_package, :title => "Content package #{i}", :status => "draft" )
+        attrs = { title: "Content package #{i}", status: 'draft' }
       else
-        arr << FactoryGirl.create(:content_package, :title => "Content package #{i}", :author => @current_user )
+        attrs = { title: "Content package #{i}", author: @current_user }
       end
+
+      attrs[:content_type] = @content_type if using_type
+      arr << FactoryGirl.create(:content_package, attrs)
     end
   end
   @admin = FactoryGirl.create(:user, :admin)
@@ -236,7 +239,7 @@ end
 When(/^I search for "(.*?)"$/) do |term|
   search_field = find('#content_search_link')
   search_field.set term
-  # We need to press down here to trigger the ajax call, just setting with capybara doesn't trigger autocomplete 
+  # We need to press down here to trigger the ajax call, just setting with capybara doesn't trigger autocomplete
   search_field.native.send_keys(:Down)
   wait_for_ajax
   search_field.native.send_keys(:Down, :Return)
