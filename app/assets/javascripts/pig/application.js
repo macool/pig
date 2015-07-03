@@ -126,9 +126,9 @@ window.Pig = {
         Pig.ContentTypes.seedId = $(this).data('content-type-id');
         return $('#duplicate-modal').modal();
       });
-      return $('.js-duplicate-submit').on('click', function() {
+      return $('.js-duplicate-submit').on('click', function(event) {
         var duplicateTo, path;
-        path = "/content_types/" + Pig.ContentTypes.seedId + "/duplicate";
+        path = $(event.currentTarget).data('duplicate-url').replace(':id', Pig.ContentTypes.seedId)
         duplicateTo = $('#duplicate_to').val();
         if (duplicateTo !== "") {
           path += "?to=" + duplicateTo;

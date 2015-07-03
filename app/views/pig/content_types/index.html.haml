@@ -51,6 +51,6 @@
         =select_tag(:duplicate_to, options_from_collection_for_select(@content_types, "id", "name"), :prompt => "A new content template")
         %br
       .modal-footer
-        %button.btn.btn-primary.js-duplicate-submit.pull-right{:type => "button", :data => {:dismiss => "modal"}} Duplicate
+        %button.btn.btn-primary.js-duplicate-submit.pull-right{:type => "button", :data => {:dismiss => "modal", duplicate_url: pig.duplicate_content_type_path(id: ':id')}} Duplicate
         %button.btn.btn-default.pull-right{:type => "button", :data => {:dismiss => "modal"}} Cancel
         .clearfix

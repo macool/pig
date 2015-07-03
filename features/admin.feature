@@ -20,6 +20,7 @@ Scenario: Updating a content type
   When I update the content type
   Then the content type should change
 
+@javascript
 Scenario: Duplicating a content type
   Given there are 1 content type
   When I duplicate the content type

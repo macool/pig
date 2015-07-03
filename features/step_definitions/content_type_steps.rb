@@ -52,7 +52,15 @@ Then(/^the content type should change$/) do
 end
 
 When(/^I duplicate the content type$/) do
-  visit pig.duplicate_content_type_path(@content_type)
+  visit pig.content_types_path
+  within "#content-type-#{@content_type.id}" do
+    click_link "More"
+    click_link "Duplicate..."
+  end
+
+  within "#duplicate-modal" do
+    click_button "Duplicate"
+  end
 end
 
 Then(/^I see a new content type with all the same attributes$/) do
