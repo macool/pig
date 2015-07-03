@@ -8,46 +8,9 @@
           -navigation_items.each do |item|
             %li{ class: item[:is_active] }
               =link_to(item[:url]) do
-                %i.fa.fa-home
+                %i{class: "fa fa-#{item[:icon]}"}
                 %span=item[:title]
 
-          %li{ class: @content_packages && !@deleted_content_packages ? 'active' : nil }
-            =link_to(pig.content_packages_path) do
-              %i.fa.fa-list
-              %span Page list
-          -if can? :manage, Pig::ContentType
-            %li{ class: (@content_types && !@activity_items.nil?) ? 'active' : nil }
-              =link_to(pig.content_types_path) do
-                %i.fa.fa-file-text-o
-                %span Templates
-          %li{ class: @deleted_content_packages ? 'active' : nil }
-            =link_to(pig.deleted_content_packages_path) do
-              %i.fa.fa-trash-o
-              %span Deleted content
-          -if defined?(YmDocuments)
-            %li{ class: @documents ? 'active' : nil }
-              =link_to(ym_documents_engine.documents_path) do
-                %i.fa.fa-file-archive-o
-                %span Documents
-          -if can? :manage, Pig::MetaDatum
-            %li{ class: @meta_data ? 'active' : nil }
-              =link_to(pig.meta_data_path) do
-                %i.fa.fa-code
-                %span Non CMS meta data
-          -if (can? :manage, Pig::TagCategory) && (Pig.configuration.tags_feature)
-            %li{ class: @tag_categories ? 'active' : nil }
-              =link_to(pig.tags_path) do
-                %i.fa.fa-tags
-                %span Tag Management
-          -if can? :manage, Pig::User
-            %li{ class: @users || @user ? 'active' : nil }
-              =link_to(pig.manage_users_path) do
-                %i.fa.fa-file-text-o
-                %span User Management
-          %li
-            =link_to(pig.personas_path) do
-              %i.fa.fa-group
-              %span Personas
     =link_to('Return to website', '/', class: 'cms-nav--return-link')
     .cms-nav-user
       .dropdown
