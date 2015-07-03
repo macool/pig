@@ -25,5 +25,5 @@
                   .well{:id => "content_attribute_ids_#{content_attribute.id}"}
                     =content_attribute
         %fieldset.form-actions
-          =link_to('Save order', reorder_pig_content_type_path(@content_type), :method => :put, :class => 'btn btn-success sortable-submit pull-right')
+          =link_to('Save order', pig.reorder_content_type_path(@content_type), :method => :put, :class => 'btn btn-success sortable-submit pull-right')
           .clearfix
