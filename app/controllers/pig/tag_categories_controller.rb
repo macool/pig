@@ -1,10 +1,7 @@
 module Pig
   class TagCategoriesController < ApplicationController
 
-    def self.included(base)
-      base.layout 'pig/application'
-      base.load_and_authorize_resource
-    end
+    load_and_authorize_resource
 
     def new
     end
@@ -18,6 +15,9 @@ module Pig
     end
 
     def edit
+    end
+
+    def index
     end
 
     def update

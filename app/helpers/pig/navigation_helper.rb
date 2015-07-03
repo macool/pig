@@ -26,7 +26,7 @@ module Pig
       nav_items << {
         visible: proc { can? :manage, Pig::TagCategory },
         is_active: proc { @tag_categories },
-        url: pig.tags_path,
+        url: pig.tag_categories_path,
         title: 'Tag Management',
         icon: 'tags'
       }
