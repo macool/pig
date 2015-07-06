@@ -35,7 +35,7 @@
                     =link_to('View', meta_datum)
                 %td
                   - if can?(:edit, meta_datum)
-                    link_to('Edit', [:edit, meta_datum])
+                    =link_to('Edit', [:edit, meta_datum])
 
         -if can? :new, Pig::MetaDatum
           =link_to('Add new meta data', pig.new_meta_datum_path, :icon => 'plus', :class => 'btn btn-success pull-right')
