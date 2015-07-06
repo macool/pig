@@ -6,6 +6,9 @@ module Pig
       Dir.glob(Rails.root + "app/decorators/**/*_decorator*.rb").each do |c|
         require_dependency(c)
       end
+      # Make all main app helpers available to the content packages controller
+      # for use in the content type views
+      Pig::ContentPackagesController.helper Rails.application.helpers
     end
 
     config.generators do |g|
