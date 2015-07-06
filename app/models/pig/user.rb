@@ -7,12 +7,12 @@ module Pig
     include Pig::Concerns::Models::Roles
     include Pig::Concerns::Models::Name
 
-    devise :database_authenticatable, :recoverable, :rememberable, 
-      :trackable, :registerable
+    devise :database_authenticatable, :recoverable, :rememberable,
+      :trackable, :registerable, :validatable
 
     image_accessor :image
-    send(:validates_property, 
-         :format, :of => :image, :in => [:jpeg, :jpg, :png, :gif, :bmp], 
+    send(:validates_property,
+         :format, :of => :image, :in => [:jpeg, :jpg, :png, :gif, :bmp],
          :case_sensitive => false, :message => "must be an image")
 
 

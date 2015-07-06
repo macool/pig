@@ -10,7 +10,7 @@ module Pig
       assign(:activity_items, instance_double('ActivityItems',
                                               total_pages: 0,
                                               current_page: 1))
-      view.stub(:current_user).and_return(admin)
+      allow(view).to receive(:current_user).and_return(admin)
     end
 
     it 'should order assigned to by surname, regardless of role' do

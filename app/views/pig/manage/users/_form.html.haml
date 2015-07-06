@@ -1,4 +1,4 @@
-=semantic_form_for([:manage, @user]) do |form|
+=semantic_form_for([pig, :manage, @user]) do |form|
   =form.inputs do
     .half-input
       =form.input :first_name
@@ -8,12 +8,11 @@
     =form.input :email
     -if current_user.is_admin?
       =form.input :role, :as => :select, :collection => Pig::User.available_roles, :include_blank => false
-    -if @user.new_record?
-      =form.input :password
-    -else
-      =form.input :bio, :input_html => {:rows => 5, :class => 'span4'}
-      =form.input :image, :as => :image
-      =form.input :active
+    =form.input :password
+    =form.input :password_confirmation
+    =form.input :bio, :input_html => {:rows => 5, :class => 'span4'}
+    =form.input :image, :as => :image
+    =form.input :active
   =hidden_field_tag :return_to, params[:return_to] if params[:return_to]
   =form.actions do
     =form.action :submit, :label => 'Save', :button_html => {:class => 'btn btn-success pull-right'}

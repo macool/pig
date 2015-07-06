@@ -20,6 +20,18 @@ module Pig
             .with(bio: 'Hi my name is test')
           patch :update, id: user.id, user: { bio: 'Hi my name is test' }
         end
+
+        it "updates password" do
+          expect_any_instance_of(Pig::User).to receive(:update_attributes)
+            .with(password: 'password', password_confirmation: 'password')
+          patch :update, id: user.id, user: { password: 'password', password_confirmation: 'password' }
+        end
+
+        it "ignores blank passwords" do
+          expect_any_instance_of(Pig::User).to receive(:update_attributes)
+            .with({bio: 'FooBar'})
+          patch :update, id: user.id, user: { bio: 'FooBar', password: '', password_confirmation: '' }
+        end
       end
 
       describe "GET #show" do

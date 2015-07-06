@@ -34,6 +34,7 @@ module Pig
 
     def update
       if @user.update_attributes(user_params)
+        sign_in(@user, bypass: true) if @user == current_user
         redirect_to pig.manage_user_path(@user)
       else
         render :action => "edit"
@@ -54,7 +55,11 @@ module Pig
     private
 
       def user_params
-        params.require(:user).permit(permitted_user_parameters.push(:role, :password))
+        if params[:user][:password].blank? || params[:user][:password_confirmation].blank?
+          params[:user].delete(:password)
+          params[:user].delete(:password_confirmation)
+        end
+        params.require(:user).permit(permitted_user_parameters.push(:role, :password, :password_confirmation))
       end
 
       def permitted_user_parameters
