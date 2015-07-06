@@ -20,5 +20,9 @@ module Pig
     it "should show content authored by the user" do
       expect(rendered).to have_content(content_package.name)
     end
+
+    it "should have a link to show all users" do
+      expect(rendered).to have_link('See all users', href: pig.manage_users_path)
+    end
   end
 end

@@ -29,8 +29,8 @@
       .col-md-3
         -if can?(:edit, @user)
           =link_to("Edit user", pig.edit_manage_user_path(@user) ,:class => 'btn btn-success  pull-right')
-        .btn.pull-right=link_to('See all users', '/cms/cms_users')
-    -if @assigned_content.present? 
+        .btn.pull-right=link_to('See all users', pig.manage_users_path)
+    -if @assigned_content.present?
       .row.section-margin
         .col-xs-12
           .allocated_content
