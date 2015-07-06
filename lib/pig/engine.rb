@@ -20,6 +20,7 @@ module Pig
         helper Pig::LayoutHelper
         helper Pig::NavigationHelper
         helper Pig::ContentHelper
+        helper Pig::TitleHelper
       end
     end
   end
