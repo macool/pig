@@ -15,7 +15,7 @@
   .row
     .col-md-8.col-md-offset-2
       .form-container
-        =semantic_form_for @content_package do |form|
+        =semantic_form_for [pig, @content_package] do |form|
           =form.inputs do
             =form.input :parent_id, :as => :hidden
             =form.input :name, :placeholder => "Select a name for your content"
@@ -47,7 +47,7 @@
 
             #collapseAuthor.collapse
               =form.inputs do
-                =form.input :requested_by, :collection => Pig::User.where(:role => 'admin')
+                =form.input :requested_by, :collection => Pig::User.where(:role => 'admin').order('LOWER(last_name)')
                 =form.input :author, :collection => Pig::User.where("role<>''").map { |u| ["#{u.full_name} (#{u.role})", u.id] }
                 =form.input :due_date, :order => [:day, :month, :year], :include_blank => false, :start_year => Date.today.year
                 =form.input :review_frequency, :as => :radio, :collection => Pig::ContentPackage.review_frequencies.invert
