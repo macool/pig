@@ -5,7 +5,7 @@
         .image-wrapper
           =image_for(@user, "200x200#")
       .col-sm-7
-        %h3.mt-0=title(@user)
+        %h3.mt-0=title(cell('pig/user', @user))
         .col-sm-2.p0
           .label.upper Status
           =@user.active ? 'Active' : 'Inactive'
@@ -39,7 +39,7 @@
                 %tr
                   %th.text-left{colspan: 4}
                     Content assigned to
-                    =title(@user.first_name)
+                    =cell('pig/user', @user)
               %tbody
                 -@assigned_content.each do |content_package|
                   %tr
