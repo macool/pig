@@ -1,5 +1,5 @@
 
-Given(/^there (?:is|are) (\d+) (unpublished )?content packages?\s?(not\s)?(?:assigned to me\s)?(of this type)?$/) do |n, unpublished, assigned, using_type|
+Given(/^there (?:is|are) (\d+)( unpublished)? content packages?( not\s)?(?: assigned to me)?( of this type)?$/) do |n, unpublished, assigned, using_type|
   if n.to_i.zero?
     Pig::ContentPackage.destroy_all
   end
