@@ -60,8 +60,6 @@ RSpec.configure do |config|
     @request.env["devise.mapping"] = Devise.mappings[:user]
   end
 
-  RSpec.configure do |config|
-    config.include Devise::TestHelpers, :type => :controller
-    config.extend ControllerMacros, :type => :controller
-  end
+  config.include Devise::TestHelpers, :type => :controller
+  config.extend ControllerMacros, :type => :controller
 end
