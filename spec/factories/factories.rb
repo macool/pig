@@ -43,6 +43,7 @@ FactoryGirl.define do
     sequence(:email) {|n| "charles@barrett-#{n}.com"}
     password "password"
     role "admin"
+    bio "I am an original bio"
 
     trait :author do
       before(:create) { |user| user.role = "author" }

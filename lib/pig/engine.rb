@@ -24,7 +24,9 @@ module Pig
         helper Pig::NavigationHelper
         helper Pig::ContentHelper
         helper Pig::TitleHelper
+        helper Pig::ImageHelper
       end
+
     end
   end
 end

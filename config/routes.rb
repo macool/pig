@@ -18,7 +18,7 @@ Pig::Engine.routes.draw do
   end
 
   namespace :manage do
-    resources :users, expect: :show do
+    resources :users do
       member do
         post :set_active
       end
