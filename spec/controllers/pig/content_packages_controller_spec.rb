@@ -35,12 +35,27 @@ module Pig
             .with(name: 'Foo')
           patch :update, id: content_package.id, content_package: {name: 'Foo'}
         end
-        
+
         it "passed parent_id to update attributes" do
           allow(Pig::ContentPackage).to receive(:find).and_return(content_package)
           expect(content_package).to receive(:update_attributes)
             .with(parent_id: "2")
           patch :update, id: content_package.id, content_package: {parent_id: "2"}
+        end
+      end
+
+      describe "DELETE destroy" do
+        let(:content_package) { FactoryGirl.create(:content_package) }
+
+        it "should redirect to deleted content packages page" do
+          delete :destroy, id: content_package.id
+          expect(response).to redirect_to(deleted_content_packages_path)
+        end
+
+        it "should call destroy on the content package" do
+          allow(Pig::ContentPackage).to receive(:find).and_return(content_package)
+          expect(content_package).to receive(:destroy)
+          delete :destroy, id: content_package.id
         end
       end
     end
