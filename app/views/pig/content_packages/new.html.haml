@@ -48,7 +48,7 @@
             #collapseAuthor.collapse
               =form.inputs do
                 =form.input :requested_by, :collection => Pig::User.where(:role => 'admin').order('LOWER(last_name)')
-                =form.input :author, :collection => Pig::User.where("role<>''").map { |u| ["#{u.full_name} (#{u.role})", u.id] }
+                =form.input :author, :collection => Pig::User.order('LOWER(last_name)').where("role<>''").map { |u| ["#{u.full_name} (#{u.role})", u.id] }
                 =form.input :due_date, :order => [:day, :month, :year], :include_blank => false, :start_year => Date.today.year
                 =form.input :review_frequency, :as => :radio, :collection => Pig::ContentPackage.review_frequencies.invert
 
