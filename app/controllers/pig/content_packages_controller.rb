@@ -9,8 +9,9 @@ module Pig
       end
     end
 
-    layout 'layouts/application', only: :show
+    layout 'layouts/application', only: [:show, :home]
     load_and_authorize_resource
+    skip_load_resource :home
     # Define an around filter for all controller actions that could potentially be routed to from a permalink
     around_action :redirect_to_permalink, :only => ContentPackage.member_routes.collect{ |x| x[:action] }
 
@@ -133,7 +134,11 @@ module Pig
     end
 
     def show
-      # @content_package = ContentPackage.includes(:content_chunks => :content_attribute).find(params[:id])
+      render_content_package_view
+    end
+
+    def home
+      @content_package = Pig.configuration.homepage.call
       render_content_package_view
     end
 
