@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'acts-as-taggable-on'
   s.add_dependency 'formtastic'
   s.add_dependency 'formtastic-bootstrap'
-  s.add_dependency "cancancan"
+  s.add_dependency 'cancancan'
   s.add_dependency 'rack-cache'
   s.add_dependency 'dragonfly', '~>0.9.15'
   s.add_dependency 'devise'

@@ -21,16 +21,9 @@ module Pig
     scope :all_users, -> { where(role: Pig::configuration.cms_roles) }
 
     class << self
-
       def available_roles
         Pig::configuration.cms_roles || []
       end
-
     end
-
-    def yoomee_staff?
-      admin? && email.in?(YOOMEE_EMAILS)
-    end
-
   end
 end

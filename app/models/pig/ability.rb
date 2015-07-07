@@ -9,6 +9,9 @@ module Pig
         :manage_view_name,
         :manage_viewless,
         :manage_singleton
+      ],
+      'Pig::ContentPackage' => [
+        :manage_slug
       ]
     }
 
@@ -20,7 +23,6 @@ module Pig
       return unless user
 
       can [:edit, :show, :update], Pig::User, id: user.id
-
       if user.role_is?(:developer)
         can :manage, :all
       elsif user.role_is?(:admin)
@@ -43,4 +45,3 @@ module Pig
     end
   end
 end
-

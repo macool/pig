@@ -57,7 +57,7 @@
               =link_to('#tags', 'data-toggle' => 'tab') do
                 %i.fa.fa-tags
                 %span Tags
-          -if current_user.admin?
+          -if can? :manage_settings, @content_package
             %li
               =link_to('#settings', 'data-toggle' => 'tab') do
                 %i.fa.fa-cog
@@ -96,38 +96,39 @@
                                   =check_box_tag "content_package[taxonomy_tags][#{category.slug}][]", tag, @content_package.taxonomy_from(category).include?(tag)
                                   =tag
                           .clearfix
-          -if current_user.admin?
-            #settings.tab-pane
-              .cms-form-well
-                =form.inputs do
-                  =form.input :content_type_id, :as => :hidden
-                  =form.input :name
-                  =form.input :notes, :label => 'Content objective/goal', :input_html => {:rows => 4}
-                  .form-group#content_package_personas
-                    %h4.col-primary Personas
-                    %hr
-                    -@persona_groups.each_slice(2) do |groups|
-                      .row
-                        -groups.each do |group|
-                          .col-md-6
-                            %h5.mb-1=group
-                            =form.input :personas, :as => :check_boxes, :collection => group.personas, :label => false, :member_label => :to_s
-                  .clearfix
-                  =form.input :requested_by, :collection => Pig::User.where(:role => 'admin').order('lower(last_name)')
-                  =form.input :due_date, :order => [:day, :month, :year], :include_blank => false, :start_year => Date.today.year
-                  .form-group
-                    %h4.col-primary Review frequency
-                    .check_boxes
-                      =form.input :review_frequency, :as => :radio, :collection => Pig::ContentPackage.review_frequencies.invert, :label => false
-                .form-group
-                  %h4.col-primary Page settings
+        -if can? :manage_settings, @content_package
+          #settings.tab-pane
+            .cms-form-well
+              =form.inputs do
+                =form.input :content_type_id, :as => :hidden
+                =form.input :name
+                =form.input :notes, :label => 'Content objective/goal', :input_html => {:rows => 4}
+                .form-group#content_package_personas
+                  %h4.col-primary Personas
                   %hr
-                  =form.inputs do
-                    =parent_content_package_select(form)
-                    =form.input :permalink_path, :prepend => @content_package.parent && @content_package.parent.respond_to?(:permalink_display_path) && Pig.configuration.nested_permalinks ? @content_package.parent.permalink_display_path : '/' unless @content_package.viewless?
-                    =form.input :slug if current_user.yoomee_staff?
-                    =form.input :logged_in_only, :as => :content_boolean, :label => "Only logged in users can view this"
-                    =form.input :hide_from_robots, :as => :content_boolean, :label => "Exclude from search engine indexing"
+                  -@persona_groups.each_slice(2) do |groups|
+                    .row
+                      -groups.each do |group|
+                        .col-md-6
+                          %h5.mb-1=group
+                          =form.input :personas, :as => :check_boxes, :collection => group.personas, :label => false, :member_label => :to_s
+                .clearfix
+                =form.input :requested_by, :collection => Pig::User.where(:role => 'admin').order('lower(last_name)')
+                =form.input :due_date, :order => [:day, :month, :year], :include_blank => false, :start_year => Date.today.year
+                .form-group
+                  %h4.col-primary Review frequency
+                  .check_boxes
+                    =form.input :review_frequency, :as => :radio, :collection => Pig::ContentPackage.review_frequencies.invert, :label => false
+              .form-group
+                %h4.col-primary Page settings
+                %hr
+                =form.inputs do
+                  =parent_content_package_select(form)
+                  =form.input :permalink_path, :prepend => @content_package.parent && @content_package.parent.respond_to?(:permalink_display_path) && Pig.configuration.nested_permalinks ? @content_package.parent.permalink_display_path : '/' unless @content_package.viewless?
+                  -if can? :manage_slug, @content_package
+                    =form.input :slug
+                  =form.input :logged_in_only, :as => :content_boolean, :label => "Only logged in users can view this"
+                  =form.input :hide_from_robots, :as => :content_boolean, :label => "Exclude from search engine indexing"
 
         .cms-sidebar-actions
           -if current_user.role == "author"
