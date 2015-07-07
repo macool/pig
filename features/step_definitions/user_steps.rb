@@ -75,5 +75,3 @@ Then(/^the user is inactive$/) do
   @user = Pig::User.find(@user.id)
   expect(@user.active).to be_falsey
 end
-
-

@@ -6,7 +6,7 @@ module Pig
         extend ::ActiveSupport::Concern
 
         included do
-          scope :role_is, 
+          scope :role_is,
             lambda {|role| base.where('role IN (?)', [*role].collect(&:to_s)) }
         end
 

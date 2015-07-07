@@ -2,37 +2,43 @@ module Pig
   class Ability
     include CanCan::Ability
 
+    DEVELOPER_ABILITIES = {
+      'Pig::ContentType' => [
+        :manage_description,
+        :manage_package_name,
+        :manage_view_name,
+        :manage_viewless,
+        :manage_singleton
+      ]
+    }
+
     def initialize(user)
       can :show, Pig::ContentPackage do |content_package|
         content_package.visible_to_user?(nil)
       end
 
-      if user
-        if user.admin?
-          # admin ability
-          can :manage, :all
-        elsif user.role == "author"
-          # author ability
-          can [:edit, :update], Pig::ContentPackage, :author_id => user.id
-          can [:show], Pig::ContentPackage
-          can [:dashboard], Pig::ContentType
-        elsif user.role == "editor"
-          # editor ability
-          can [:edit, :update], Pig::ContentPackage, :author_id => user.id
-          can [:manage], Pig::ContentPackage
-          can [:dashboard], Pig::ContentType
-        elsif user.role == "blogger"
-          can [:create], Pig::ContentPackage, :content_type_id => Pig::ContentType.blogger_id
-          can [:edit, :show, :update], Pig::ContentPackage do |content_package|
-            content_package.content_type_id == Pig::ContentType.blogger_id && content_package.author_id == user.id
+      return unless user
+
+      can [:edit, :show, :update], Pig::User, id: user.id
+
+      if user.role_is?(:developer)
+        can :manage, :all
+      elsif user.role_is?(:admin)
+        can :manage, :all
+        DEVELOPER_ABILITIES.each do |klass, actions|
+          actions.each do |action|
+            cannot action, klass.constantize
           end
-          can :contributor_blog_posts, Pig::ContentPackage
         end
-        # user ability
-        can :show, Pig::ContentPackage do |content_package|
-          content_package.visible_to_user?(user)
-        end
-        can [:edit, :show, :update], User, id: user.id
+      elsif user.role_is?(:editor)
+        can [:edit, :update], Pig::ContentPackage, :author_id => user.id
+        can [:manage], Pig::ContentPackage
+        can [:dashboard], Pig::ContentType
+      elsif user.role_is?(:author)
+        can [:edit, :update], Pig::ContentPackage, :author_id => user.id
+        can [:show], Pig::ContentPackage
+        can [:dashboard], Pig::ContentType
+        can :contributor_blog_posts, Pig::ContentPackage
       end
     end
   end

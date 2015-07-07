@@ -43,15 +43,20 @@
               Settings
         .cms-form-well
           =form.input :name, :label => 'Template name'
-          -if current_user.yoomee_staff?
+          -if can? :manage_description, @content_type
             =form.input :description, :label => "Content objective/goal", :input_html => {:rows => 4}
+          -if can? :manage_package_name, @content_type
             =form.input :package_name
+          -if can? :manage_view_name, @content_type
             =form.input :view_name
+          -if can?(:manage_viewless, @content_type) || can?(:manage_singleton, @content_type)
             .form-group
               %h4 Advanced
               .check_boxes.form-group
-                =form.input :viewless
-                =form.input :singleton
+                -if can? :manage_viewless, @content_type
+                  =form.input :viewless
+                -if can? :manage_singleton, @content_type
+                  =form.input :singleton
           -if Pig::configuration.tags_feature
             .form-group
               %h4 Tag categories
