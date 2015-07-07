@@ -8,7 +8,7 @@ module Pig
 
     def create
       if @tag_category.save
-        redirect_to tags_path
+        redirect_to pig.tag_categories_path
       else
         render :new, error: "Sorry there was a problem saving this category: #{@tag_category.errors.full_messages.to_sentence}"
       end
@@ -25,7 +25,7 @@ module Pig
       if @tag_category.update(tag_category_params)
         removed = old_tags - @tag_category.taxonomy_list
         ActsAsTaggableOn::Tagging.where(tagger: @tag_category, tag: Tag.where(name: removed)).destroy_all
-        redirect_to tags_path
+        redirect_to pig.tag_categories_path
       else
         render 'edit'
       end

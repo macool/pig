@@ -1,6 +1,6 @@
 - if flash[:notice].present?
   %div.alert.alert-info
-    = flash[:notice]
+    != flash[:notice]
 - if flash[:alert].present?
   %div.alert.alert-danger
-    = flash[:alert]
+    != flash[:alert]

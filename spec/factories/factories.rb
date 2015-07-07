@@ -106,4 +106,13 @@ FactoryGirl.define do
     sequence(:keywords) { |n| "Meta keywords #{n}" }
   end
 
+  factory :tag_category, class: Pig::TagCategory do
+    sequence(:name) {|n| "Tag name #{n}" }
+    sequence(:slug) {|n| "Tag slug #{n}" }
+  end
+
+  factory :tag, class: ActsAsTaggableOn::Tag do
+    sequence(:name) {|n| "Tag #{n}" }
+  end
+
 end

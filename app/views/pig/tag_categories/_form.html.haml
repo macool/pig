@@ -19,7 +19,7 @@
           =f.inputs do
             =f.input :name, hint: 'This can be anything you like'
             =f.input :slug, label: "Unique identifier", hint: 'Try and make this the same as the name'
-            =f.input :taxonomy_list, as: :select, collection: options_for_select(TagCategory.tag_counts_on("taxonomy").map { |tag| [tag.name, tag.name, data: {count: @tag_category.tag_count_for(tag)}] }, @tag_category.taxonomy.collect(&:name)), multiple: true, input_html: { class: 'select2' }
+            =f.input :taxonomy_list, as: :select, collection: options_for_select(Pig::TagCategory.tag_counts_on("taxonomy").map { |tag| [tag.name, tag.name, data: {count: @tag_category.tag_count_for(tag)}] }, @tag_category.taxonomy.collect(&:name)), multiple: true, input_html: { class: 'select2' }
           =f.actions do
             =f.action :submit, label: 'Save', :button_html => {:class => 'btn btn-success pull-right'}
             .clearfix
