@@ -6,6 +6,6 @@
         %ul.cms-tag-list
           -@tag_categories.each do |cat|
             %li
-              =link_to(cat.name, edit_tag_category_path(cat))
+              =link_to(cat.name, pig.edit_tag_category_path(cat))
         %hr
-        .text-center=link_to('New Tag Category', new_tag_category_path, :class => 'btn btn-success', :icon => 'plus')
+        .text-center=link_to('New Tag Category', pig.new_tag_category_path, :class => 'btn btn-success', :icon => 'plus')

@@ -15,7 +15,7 @@
   .row
     .col-sm-8.col-sm-offset-2
       .cms-form-well
-        =semantic_form_for @tag_category do |f|
+        =semantic_form_for [pig, @tag_category] do |f|
           =f.inputs do
             =f.input :name, hint: 'This can be anything you like'
             =f.input :slug, label: "Unique identifier", hint: 'Try and make this the same as the name'

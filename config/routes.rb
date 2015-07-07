@@ -65,7 +65,7 @@ Pig::Engine.routes.draw do
   resources :redactor_image_uploads, :only => [:index, :create]
 
   if Pig::configuration.tags_feature
-    resources :tag_categories, path: :tags
+    resources :tag_categories, path: :tags, except: [:show, :destroy]
   end
 end
 
