@@ -3,8 +3,6 @@ module Pig
     include CanCan::Ability
 
     def initialize(user)
-
-      # open ability
       can :show, Pig::ContentPackage do |content_package|
         content_package.visible_to_user?(nil)
       end
@@ -35,8 +33,8 @@ module Pig
           content_package.visible_to_user?(user)
         end
         can [:edit, :show, :update], User, id: user.id
-
       end
     end
   end
 end
+

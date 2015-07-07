@@ -17,6 +17,13 @@ module Pig
           expect(response).to redirect_to(new_user_session_path)
         end
       end
+
+      describe "GET #show" do
+        it "should redirect to permalink" do
+          get :show, id: content_package.id
+          expect(response).to redirect_to(content_package.permalink.full_path)
+        end
+      end
     end
 
     context "signed in" do

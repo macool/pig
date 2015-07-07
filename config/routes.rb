@@ -1,6 +1,8 @@
 Pig::Engine.routes.draw do
   root 'content_types#dashboard'
 
+  get 'not-authorized' => 'application#not_authorized'
+
   devise_for :users, class_name: 'Pig::User', module: :devise, controllers: {
     sessions: 'pig/sessions',
     confirmations: 'pig/confirmations',

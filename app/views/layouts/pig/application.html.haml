@@ -6,6 +6,8 @@
   -body_tag do
     .cms-wrapper
       =render("layouts/pig/header")
+      .container
+        =render 'layouts/pig/flash'
       =yield
       .push
     =render("layouts/pig/footer")

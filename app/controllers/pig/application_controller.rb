@@ -4,11 +4,21 @@ module Pig
     layout "pig/application"
 
     rescue_from CanCan::AccessDenied do |exception|
-      redirect_to pig.new_user_session_path
+      if current_user
+        redirect_to pig.not_authorized_path, alert: exception.message
+      else
+        redirect_to pig.new_user_session_path, alert: exception.message
+      end
     end
 
-    def current_ability
-      @current_ability ||= Pig::Ability.new(current_user)
+    def not_authorized
     end
+
+    protected
+
+      def current_ability
+        @current_ability ||= Pig::Ability.new(current_user)
+      end
+
   end
 end

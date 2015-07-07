@@ -18,6 +18,20 @@ module Pig
       end
     end
 
+    context "signed in with user of role without permission to view page" do
+      login_no_role
+      requests = ['index']
+
+      let(:index) { get :index }
+
+      requests.each do |request|
+        it "should redirect #{request} to not authorized page" do
+          eval(request)
+          expect(response).to redirect_to(not_authorized_path)
+        end
+      end
+    end
+
     context "signed in" do
       login_admin
 
