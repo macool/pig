@@ -3,8 +3,6 @@ module Pig
 
     include Pig::Concerns::Models::Core
 
-    self.table_name = 'pig_permalinks'
-
     belongs_to :resource, :polymorphic => true
 
     validates :full_path, :presence => true, :uniqueness => {:case_sensitive => false, :scope => :active}

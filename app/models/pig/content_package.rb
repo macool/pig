@@ -5,8 +5,6 @@ module Pig
     include Pig::Permalinkable
     include Pig::Recordable
 
-    self.table_name = 'pig_content_packages'
-
     belongs_to :content_type
     belongs_to :parent, :class_name => "ContentPackage"
     has_many :content_chunks, -> { includes :content_attribute }

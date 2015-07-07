@@ -1,5 +1,6 @@
 module Pig
   class User < ActiveRecord::Base
+    
     include Pig::Concerns::Models::Roles
     include Pig::Concerns::Models::Name
 
@@ -17,8 +18,6 @@ module Pig
          in: [:jpeg, :jpg, :png, :gif, :bmp],
          case_sensitive: false,
          message: 'must be an image')
-
-    self.table_name = 'users'
 
     scope :all_users, -> { where(role: Pig.configuration.cms_roles) }
 

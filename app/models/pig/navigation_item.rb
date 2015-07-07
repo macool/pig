@@ -1,7 +1,6 @@
 module Pig
   class NavigationItem < ActiveRecord::Base
-    self.table_name = 'pig_navigation_items'
-
+    
     belongs_to :parent, :class_name => 'NavigationItem'
     belongs_to :resource, :polymorphic => true
     has_one :grandparent, :through => :parent, :source => :parent

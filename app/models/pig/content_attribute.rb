@@ -1,6 +1,6 @@
 module Pig
   class ContentAttribute < ActiveRecord::Base
-    self.table_name = 'pig_content_attributes'
+
     belongs_to :content_type
     belongs_to :default_attribute, :class_name => 'ContentAttribute'
     after_validation :set_meta_title, :if => :meta?

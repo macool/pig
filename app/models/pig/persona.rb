@@ -1,7 +1,6 @@
 module Pig
   class Persona < ActiveRecord::Base
-    self.table_name = 'pig_personas'
-
+    
     belongs_to :group, :class_name => "PersonaGroup"
     image_accessor :image
     file_accessor :file

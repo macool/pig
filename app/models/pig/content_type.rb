@@ -1,7 +1,6 @@
 module Pig
   class ContentType < ActiveRecord::Base
-    self.table_name = 'pig_content_types'
-
+    
     has_many :content_attributes, -> { order(:position, :id) }
     has_many :content_packages, -> { where(:deleted_at => nil)}
     has_many :resource_tag_categories, as: :taggable_resource
