@@ -138,7 +138,7 @@ module Pig
     end
 
     def home
-      @content_package = Pig.configuration.homepage.call
+      @content_package = instance_eval(&Pig.configuration.homepage)
       render_content_package_view
     end
 
