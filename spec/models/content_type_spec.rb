@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe Pig::ContentType do
 
   let (:content_type) { FactoryGirl.build(:content_type) }
+  it { should validate_presence_of(:name) }
+  it { should validate_uniqueness_of(:name) }
 
   it 'is valid' do
     expect(content_type.valid?).to be_truthy

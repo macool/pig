@@ -1,12 +1,12 @@
 module Pig
   class ContentType < ActiveRecord::Base
-    
+
     has_many :content_attributes, -> { order(:position, :id) }
     has_many :content_packages, -> { where(:deleted_at => nil)}
     has_many :resource_tag_categories, as: :taggable_resource
     has_many :tag_categories, through: :resource_tag_categories
 
-    validates_presence_of :name
+    validates :name, uniqueness: true, presence: true
     accepts_nested_attributes_for :content_attributes, :allow_destroy => true
     before_create(:set_content_attribute_positions)
     before_destroy(:destroyable?)
