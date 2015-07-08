@@ -72,7 +72,11 @@ FactoryGirl.define do
     publish_at Date.today - 1.day
     sequence(:slug){|n| "content_package_#{n}" }
     after(:build) do |content_package|
-      FactoryGirl.create(:activity_item, :resource_type => "ContentPackage", :resource => content_package, user: content_package.author || FactoryGirl.create(:user, :author))
+      FactoryGirl.create(:activity_item,
+      :resource_type => "ContentPackage",
+      :resource => content_package,
+      user: content_package.author || FactoryGirl.create(:user, :author),
+      text: 'created')
     end
 
     factory :viewless_content_package do

@@ -10,8 +10,7 @@
           .col-md-4
             =link_to pig.filter_content_packages_path(:filter => 'draft'), :class => "btn btn-block btn-primary" do
               %span.btn-number
-                =Pig::ContentPackage.where(:status => 'draft').count
-              Drafts
+                =pluralize(Pig::ContentPackage.where(:status => 'draft').count, 'Draft')
           .col-md-4
             =link_to pig.filter_content_packages_path(:filter => 'pending'), :class => "btn btn-block btn-success" do
               %span.btn-number

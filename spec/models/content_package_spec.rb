@@ -13,6 +13,7 @@ RSpec.describe Pig::ContentPackage do
   it { should have_one(:permalink).conditions(active: true) }
   it { should have_many(:permalinks) }
   it { should belong_to(:parent) }
+  it { should have_many(:activity_items) }
 
   it 'is valid' do
     content_package.valid?

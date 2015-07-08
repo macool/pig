@@ -24,7 +24,6 @@ module Pig
       it "routes to #update" do
         expect(:put => "/tags/1").to route_to("pig/tag_categories#update", :id => "1")
       end
-
     end
   end
 end

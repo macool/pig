@@ -6,6 +6,6 @@
   -else
     =activity.text.try(:capitalize)
     by
-    %span=activity.User.full_name
+    %span=activity.user.full_name
   .small-text="#{time_ago_in_words(activity.created_at)} ago"
   .clearfix
