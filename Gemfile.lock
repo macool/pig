@@ -56,6 +56,7 @@ GEM
       tzinfo (~> 1.1)
     acts-as-taggable-on (3.5.0)
       activerecord (>= 3.2, < 5)
+    addressable (2.3.8)
     arel (5.0.1.20140414130214)
     autoprefixer-rails (5.2.1)
       execjs
@@ -172,6 +173,8 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (1.8.2)
+    launchy (2.4.3)
+      addressable (~> 2.3)
     libv8 (3.16.14.11)
     listen (2.8.5)
       celluloid (>= 0.15.2)
@@ -304,6 +307,7 @@ DEPENDENCIES
   guard
   guard-cucumber
   guard-rspec
+  launchy
   pig!
   poltergeist
   pry
