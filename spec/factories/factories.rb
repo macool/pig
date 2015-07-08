@@ -1,7 +1,7 @@
 FactoryGirl.define do
 
   factory :content_type, class: Pig::ContentType do
-    sequence(:name) { |n| "Blog post #{n}" }
+    sequence(:name) { |n| "Content type #{n}" }
     description "Share your latest news"
     singleton false
     view_name 'show'
