@@ -107,8 +107,12 @@ FactoryGirl.define do
   end
 
   factory :tag_category, class: Pig::TagCategory do
-    sequence(:name) {|n| "Tag name #{n}" }
-    sequence(:slug) {|n| "Tag slug #{n}" }
+    sequence(:name) {|n| "Tag category name #{n}" }
+    sequence(:slug) {|n| "Tag category slug #{n}" }
+
+    trait(:with_tags) do
+      taxonomy_list 'Foo, Bar'
+    end
   end
 
   factory :tag, class: ActsAsTaggableOn::Tag do
