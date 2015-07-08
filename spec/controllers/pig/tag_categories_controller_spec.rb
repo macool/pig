@@ -142,6 +142,14 @@ module Pig
             put :update, { id: tag_category.to_param, tag_category: valid_attributes }, valid_session
             expect(response).to redirect_to(tag_categories_path)
           end
+
+          it 'deletes taggings that are not used' do
+            tag_category = TagCategory.create! valid_attributes.merge(taxonomy_list: ['Foo', 'Bar'])
+
+            put :update, { id: tag_category.to_param, tag_category: valid_attributes.merge(taxonomy_list: ['Foo']) }, valid_session
+            tag_count = ActsAsTaggableOn::Tagging.where(tagger: tag_category, tag: ActsAsTaggableOn::Tag.where(name: 'Bar')).count
+            expect(tag_count).to eq(0)
+          end
         end
 
         context 'with invalid params' do

@@ -21,10 +21,7 @@ module Pig
     end
 
     def update
-      old_tags = @tag_category.taxonomy_list
       if @tag_category.update(tag_category_params)
-        removed = old_tags - @tag_category.taxonomy_list
-        ActsAsTaggableOn::Tagging.where(tagger: @tag_category, tag: ActsAsTaggableOn::Tag.where(name: removed)).destroy_all
         redirect_to pig.tag_categories_path
       else
         render 'edit'
