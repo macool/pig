@@ -15,7 +15,7 @@ module Pig
       if @content_type.save
         redirect_to pig.content_types_path
       else
-        render :action => 'edit'
+        render action: 'new'
       end
     end
 
@@ -25,7 +25,7 @@ module Pig
       else
         flash[:error] = "Unable to delete this content template"
       end
-      redirect_to pig.content_packages_path(:anchor => 'content-types')
+      redirect_to pig.content_types_path
     end
 
     def dashboard
@@ -96,7 +96,7 @@ module Pig
       params = content_type_params
       params = convert_sir_trevor_settings(params)
       if @content_type.update_attributes(params)
-        redirect_to pig.content_packages_path
+        redirect_to pig.content_types_path
       else
         render :action => 'edit'
       end
@@ -105,6 +105,7 @@ module Pig
     private
 
     def content_type_params
+      params[:content_type][:content_attributes_attributes] ||= []
       params.require(:content_type).permit(
         :name,
         :description,

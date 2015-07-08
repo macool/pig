@@ -9,7 +9,7 @@ Pig::Engine.routes.draw do
     passwords: 'pig/passwords'
   }
 
-  resources :content_types do
+  resources :content_types, except: :show do
     resources :content_packages, :only => :new
     member do
       get 'children'
