@@ -75,6 +75,12 @@ Scenario: Searching for a content package
   And I search for "Foo"
   Then I should see the content package named "Foo" highlighted
 
+@editor
+Scenario: Adding a content package as a child of another content package
+  Given there is 1 content package
+  When I add a child to the content package
+  Then the content package should appear as a child in the sitemap
+
 @javascript
 @wip
 Scenario: Discussing a content package
