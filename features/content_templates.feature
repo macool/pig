@@ -1,5 +1,4 @@
 Feature: Content Templates
-  As an admin
   In order to define how content appears
   The CMS has content templates
 
