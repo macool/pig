@@ -71,7 +71,7 @@ FactoryGirl.define do
     status "published"
     publish_at Date.today - 1.day
     sequence(:slug){|n| "content_package_#{n}" }
-    after(:build) do |content_package|
+    after(:create) do |content_package|
       FactoryGirl.create(:activity_item,
       :resource_type => "ContentPackage",
       :resource => content_package,
@@ -81,9 +81,6 @@ FactoryGirl.define do
 
     factory :viewless_content_package do
       association :content_type, :viewless
-      after :create do |content_package|
-        content_package.permalink.destroy!
-      end
     end
   end
 
