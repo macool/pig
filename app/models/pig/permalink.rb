@@ -14,12 +14,7 @@ module Pig
 
     scope :active, -> { where(active: true) }
 
-    def initialize(*args)
-      super(*args)
-      generate_unique_path!
-    end
-
-    def generate_unique_path!(title = resource.to_s)
+    def generate_unique_path!(title)
       if path.blank? && title.present?
         path_name_root = title.parameterize
         unique_path_name = path_name_root.dup
@@ -34,7 +29,7 @@ module Pig
     end
 
     def resource_path
-      "/#{resource_type.tableize}/#{resource_id}"
+      "#{Pig::Engine.routes._generate_prefix({})}/#{resource_type.demodulize.tableize}/#{resource_id}"
     end
 
     def self.find_from_url(url)

@@ -203,9 +203,7 @@ module Pig
     describe 'Having the correct URL' do
 
       it 'has a permalink if not viewless' do
-        content_package.build_permalink
-        content_package.permalink_path = nil
-        content_package.valid?
+        cp = FactoryGirl.create(:content_package, permalink_path: nil)
         expect(content_package.permalink_path).not_to be_blank
       end
 
@@ -226,17 +224,18 @@ module Pig
       end
 
       it "updates the permalinks of all descendants when it is saved" do
-
+        content_package.save
+        
         # level 1
-        cp_v = FactoryGirl.create(:content_package, :parent => content_package, slug: 'cp_v', permalink_path: 'first')
+        cp_v = FactoryGirl.create(:content_package, :parent => content_package, permalink_path: 'first')
         # level 2
-        cp_v_n = FactoryGirl.create(:viewless_content_package, :parent => cp_v, slug: 'cp_v_n')
-        cp_v_v = FactoryGirl.create(:content_package, :parent => cp_v, slug: 'cp_v_v')
+        cp_v_n = FactoryGirl.create(:viewless_content_package, :parent => cp_v)
+        cp_v_v = FactoryGirl.create(:content_package, :parent => cp_v)
         # level 3
-        cp_v_n_n = FactoryGirl.create(:viewless_content_package, :parent => cp_v_n, slug: 'cp_v_n_n')
-        cp_v_n_v = FactoryGirl.create(:content_package, :parent => cp_v_n, slug: 'cp_v_n_v')
-        cp_v_v_n = FactoryGirl.create(:viewless_content_package, :parent => cp_v_v, slug: 'cp_v_v_n')
-        cp_v_v_v = FactoryGirl.create(:content_package, :parent => cp_v_v, slug: 'cp_v_v_v')
+        cp_v_n_n = FactoryGirl.create(:viewless_content_package, :parent => cp_v_n)
+        cp_v_n_v = FactoryGirl.create(:content_package, :parent => cp_v_n)
+        cp_v_v_n = FactoryGirl.create(:viewless_content_package, :parent => cp_v_v)
+        cp_v_v_v = FactoryGirl.create(:content_package, :parent => cp_v_v)
         cps = [content_package, cp_v, cp_v_n, cp_v_v, cp_v_n_n, cp_v_n_v, cp_v_v_n, cp_v_v_v]
 
         original_paths = []

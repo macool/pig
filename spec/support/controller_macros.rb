@@ -10,4 +10,8 @@ module ControllerMacros
       sign_in FactoryGirl.create(:user, role: nil)
     end
   end
+
+  def self.attributes_with_foreign_keys(*args)
+    FactoryGirl.build(*args).attributes.delete_if { |k, v| ["id", "type", "created_at", "updated_at"].member?(k) }
+  end
 end

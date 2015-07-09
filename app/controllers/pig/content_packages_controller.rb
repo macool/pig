@@ -37,7 +37,7 @@ module Pig
     def create
       if @content_package.save
         @content_package.record_activity!(current_user, "created")
-        redirect_to pig.edit_content_package_path(@content_package)
+        redirect_to edit_content_package_path(@content_package)
       else
         render :action => 'new'
       end
@@ -158,9 +158,9 @@ module Pig
         end
         # remove_abandoned_sir_trevor_images
         if @content_package.missing_view?
-          redirect_to pig.content_packages_path(:open => @content_package)
+          redirect_to content_packages_path(:open => @content_package)
         else
-          redirect_to @content_package
+          redirect_to content_package_path(@content_package)
         end
       else
         #TODO change to flash[:error] when the style has been made

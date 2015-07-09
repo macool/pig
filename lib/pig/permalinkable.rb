@@ -1,28 +1,30 @@
 module Pig::Permalinkable
 
   extend ActiveSupport::Concern
+
   included do
+    attr_writer :permalink_path
     has_one :permalink, -> { where(:active => true) }, :as => :resource, :autosave => true
     has_many :permalinks, :as => :resource, :autosave => true, :dependent => :destroy
     validates :permalink, :presence => true, unless: 'viewless?', on: :update
-    # before_validation :set_permalink_path #, :set_permalink_full_path
+    before_validation :set_permalink, :set_permalink_full_path
     after_validation :set_permalink_errors
     after_save :sync_child_full_paths
   end
 
   def permalink_path
-    permalink.try(:path)
+    @permalink_path || permalink.try(:path)
   end
 
   def permalink_full_path
     permalink.try(:full_path)
   end
 
-  def permalink_path=(val)
-    (self.permalink || self.build_permalink).path = val
-    set_permalink_path
-    set_permalink_full_path
-  end
+  # def permalink_path=(val)
+  #   (self.permalink || self.build_permalink).path = val
+  #   set_permalink_path
+  #   set_permalink_full_path
+  # end
 
   def permalink_display_path
     if Pig.configuration.nested_permalinks
@@ -39,14 +41,13 @@ module Pig::Permalinkable
     errors.add(:permalink_path, permalink_errors) if permalink_errors.present?
   end
 
-  def set_permalink_path
-    return true unless permalink
-    if permalink.path.present?
-      self.permalink.path = permalink.path.to_url
+  def set_permalink
+    permalink = (self.permalink || self.build_permalink)
+    if @permalink_path
+      permalink.path = @permalink_path
     else
-      self.permalink.generate_unique_path!(to_s)
+      permalink.generate_unique_path!(to_s)
     end
-    set_permalink_full_path
   end
 
   def set_permalink_full_path

@@ -1,3 +1,4 @@
+require "pig/permalinks/url_for_patch"
 require "pig/engine"
 require "pig/config"
 require 'stringex'

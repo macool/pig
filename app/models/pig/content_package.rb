@@ -378,10 +378,10 @@ module Pig
       self.next_review = Date.today + self.review_frequency.months
     end
 
-    def set_permalink_path_with_viewless
-      content_type.try(:viewless?) ? true : set_permalink_path_without_viewless
+    def set_permalink_with_viewless
+      content_type.try(:viewless?) ? true : set_permalink_without_viewless
     end
-    alias_method_chain(:set_permalink_path, :viewless)
+    alias_method_chain(:set_permalink, :viewless)
 
     def set_status
       if self.status_changed? && self.author_id then

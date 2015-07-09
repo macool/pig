@@ -67,6 +67,7 @@ Pig::Engine.routes.draw do
   if Pig::configuration.tags_feature
     resources :tag_categories, path: :tags, except: [:show, :destroy]
   end
+
 end
 
 Rails.application.routes.draw do
