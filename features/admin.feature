@@ -4,33 +4,6 @@ Feature: CMS admin
   As an admin
   I want to manage the CMS
 
-Scenario: Viewing a list of content types
-  Given there are 3 content types
-  When I go to the list of content types
-  Then I see the content types
-
-@javascript
-Scenario: Creating a content type
-  Given there are 0 content types
-  When I fill in the new content type form and submit
-  Then the content type is created
-
-Scenario: Updating a content type
-  Given there is 1 content type
-  When I update the content type
-  Then the content type should change
-
-@javascript
-Scenario: Duplicating a content type
-  Given there are 1 content type
-  When I duplicate the content type
-  Then I see a new content type with all the same attributes
-
-Scenario: Adding the content attributes of one content type to another
-  Given there are 2 content types
-  When I duplicate the first content type onto the second
-  Then I see a second content type with all the attributes of the first
-
 Scenario: Viewing a list of content packages
   Given there are 3 content packages
   When I go to the sitemap
@@ -87,11 +60,3 @@ Scenario: I can assign a content package to an author
   When I assign it to an author
   Then the content package author should change
   And the author should be emailed
-
-@javascript
-Scenario: I can view the content packages using a content type
-  Given there is 1 content type
-  And there is 1 content package of this type
-  When I go to the list of content types
-  And I open the tree for the type
-  Then I should see the content package
