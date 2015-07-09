@@ -9,6 +9,7 @@ gemspec
 group :test do
   gem "sqlite3"
   gem 'therubyracer'
+  gem 'simplecov', :require => false
 end
 
 group :development, :test do

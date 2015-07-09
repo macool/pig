@@ -115,6 +115,7 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     dragonfly (0.9.15)
       multi_json (~> 1.0)
       rack
@@ -266,6 +267,11 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
+    simplecov (0.10.0)
+      docile (~> 1.1.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     slop (3.6.0)
     sprockets (3.1.0)
       rack (~> 1.0)
@@ -314,6 +320,7 @@ DEPENDENCIES
   pry-byebug
   rspec-rails
   shoulda-matchers
+  simplecov
   sqlite3
   therubyracer
 
