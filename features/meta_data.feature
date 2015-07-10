@@ -1,6 +1,5 @@
 @admin
 Feature: Meta data for pages not in the CMS
-  As an admin
   In order to add meta data to pages that are not in the cms
   I want to add meta data to a non cms page
 
