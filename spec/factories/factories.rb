@@ -54,6 +54,12 @@ FactoryGirl.define do
     trait :developer do
       after(:create) {|user| user.role = "developer" }
     end
+    trait :editor do
+      after(:create) {|user| user.role = "editor" }
+    end
+    trait :author do
+      after(:create) {|user| user.role = "author" }
+    end
   end
 
   factory :activity_item, class: Pig::ActivityItem do
