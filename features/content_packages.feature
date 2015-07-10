@@ -15,35 +15,29 @@ Scenario: Creating a content package
   When I fill in the new content package form and submit
   Then I am taken to edit the content package
 
+@editor
+@sane
+Scenario: Requesting a content package
+  Given there is 1 content type
+  When I request a new content package of this type
+  Then the request is created
+
+@author
+Scenario: Fulfill a content package request
+  Given there is 1 content package request
+  When I create a content package for the request
+  Then I the requester is notified
+
 @author
 Scenario: Edit a content package
   Given there is 1 content package
   When I update the content package
   Then the content package should change
 
-@author
-Scenario: Removing an image
-  Given there is 1 content package
-  And I update the content package
-  And I remove an image
-  Then the image should be removed
-
 Scenario: Viewing a content package
   Given there is 1 content package
   When I go to the content package
   Then I should see all its content
-
-@author
-Scenario: Viewing a list of persona groups
-  Given there are 3 persona groups
-  When I go to the list of personas
-  Then I see the persona groups
-
-@author
-Scenario: Viewing a list of personas
-  Given there are 3 personas
-  When I go to the list of personas
-  Then I see the personas
 
 @editor
 Scenario: Deleting a content package
@@ -80,6 +74,13 @@ Scenario: Adding a content package as a child of another content package
   Given there is 1 content package
   When I add a child to the content package
   Then the content package should appear as a child in the sitemap
+
+@editor
+Scenario: Moving a child content package to another parent
+  Given there are 1 content package
+  And there is a content package with a parent
+  When I add move the child to a new parent
+  Then the content package should move to the new parent
 
 @javascript
 @wip
