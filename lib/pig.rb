@@ -1,3 +1,6 @@
+# Require devise before engine to override views in engine
+require 'devise'
+
 require "pig/permalinks/url_for_patch"
 require "pig/engine"
 require "pig/config"
@@ -7,7 +10,6 @@ require 'rack/cache'
 require 'dragonfly'
 require 'geocoder'
 require 'acts-as-taggable-on'
-require 'devise'
 require 'cancancan'
 require 'haml-rails'
 require 'cocoon'

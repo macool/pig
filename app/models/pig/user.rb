@@ -8,7 +8,6 @@ module Pig
            :recoverable,
            :rememberable,
            :trackable,
-           :registerable,
            :validatable
 
     image_accessor :image
