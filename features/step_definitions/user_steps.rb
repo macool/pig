@@ -5,6 +5,13 @@ Given /^I am logged in as an (.*)$/ do |role|
   @current_user = user
 end
 
+Given /^I am logged in as any user$/ do
+  user = FactoryGirl.create(:user, :author)
+  allow_any_instance_of(Pig::ApplicationController)
+    .to receive(:current_user).and_return(user)
+  @current_user = user
+end
+
 When(/^I go to the dashboard$/) do
   visit pig.content_path
 end
