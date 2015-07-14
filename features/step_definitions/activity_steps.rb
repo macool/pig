@@ -4,9 +4,11 @@ end
 
 When(/^I choose to see older activity$/) do
   click_link "See older activity"
-  Timeout.timeout(Capybara.default_wait_time) do
-    loop until page.evaluate_script('jQuery.active').zero?
-  end
+  wait_for_ajax
+end
+
+When(/^I am on the activity tab$/) do
+  click_link "Activity"
 end
 
 Then(/^I should see the "(.*?)" activity$/) do |action|
