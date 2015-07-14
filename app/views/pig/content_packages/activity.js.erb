@@ -4,5 +4,5 @@
 <% if @activity_items.total_pages == @activity_items.current_page %>
   $(".js-older-activities").remove();
   <% else %>
-  $(".js-older-activities").attr('href', "<%= activity_pig_content_packages_path(:page => @page) %>")
+  $(".js-older-activities").attr('href', "<%= pig.activity_content_packages_path(:page => @page) %>")
 <% end %>
