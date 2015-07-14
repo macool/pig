@@ -10,6 +10,7 @@ Scenario: Viewing a list of content packages I need to write
   When I go to the dashboard
   Then I see the content packages
 
+@wip
 Scenario: Viewing a list of content packages which someone needs to write
   Given I am logged in as an author
   And there are 3 content packages assigned to no one
