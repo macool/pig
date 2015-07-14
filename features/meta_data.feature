@@ -45,7 +45,7 @@ Scenario Outline: Delete meta data
     | developer |
     | admin     |
 
-Scenario Outline: Check that meta data shows up on the page
+Scenario: Check that meta data shows up on the page
   Given that there is 1 meta data page
   And the meta data page refers to itself
   When I go to the meta data page
