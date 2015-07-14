@@ -14,6 +14,7 @@ module Pig
     skip_load_resource :home
     # Define an around filter for all controller actions that could potentially be routed to from a permalink
     around_action :redirect_to_permalink, :only => ContentPackage.member_routes.collect{ |x| x[:action] }
+    before_action :set_editing_user, only: [:create, :delete, :update, :destroy]
 
     def activity
       if request.xhr?
@@ -36,7 +37,6 @@ module Pig
 
     def create
       if @content_package.save
-        @content_package.record_activity!(current_user, "created")
         redirect_to edit_content_package_path(@content_package)
       else
         render :action => 'new'
@@ -151,7 +151,6 @@ module Pig
       content_package_params["updated_at"] = DateTime.now
       if @content_package.update_attributes(content_package_params)
         flash[:notice] = "Updated \"#{@content_package}\""
-        @content_package.record_activity!(current_user, "updated")
         if @content_package.status == 'published' && previous_status != 'published'
           @content_package.published_at = DateTime.now
           @content_package.save
@@ -225,6 +224,10 @@ module Pig
           redirect_to @content_package.permalink.full_path + params_for_redirect, status: 301
         end
       end
+    end
+
+    def set_editing_user
+      @content_package.editing_user = current_user
     end
 
     private

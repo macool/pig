@@ -3,7 +3,7 @@ module Pig
 
     # include YmCore::Model
     include Pig::Permalinkable
-    include Pig::Recordable
+    include Pig::Concerns::Recordable
 
     belongs_to :content_type
     belongs_to :parent, :class_name => "ContentPackage"

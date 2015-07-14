@@ -38,7 +38,7 @@ module Pig
         can [:dashboard], Pig::ContentType
       elsif user.role_is?(:author)
         can [:edit, :update], Pig::ContentPackage, :author_id => user.id
-        can [:show], Pig::ContentPackage
+        can [:show, :activity], Pig::ContentPackage
         can [:dashboard], Pig::ContentType
         can :contributor_blog_posts, Pig::ContentPackage
       end

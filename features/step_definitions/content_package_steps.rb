@@ -13,6 +13,7 @@ Given(/^there (?:is|are) (\d+)( unpublished)? content packages?( not\s)?(?: assi
       end
 
       attrs[:content_type] = @content_type if using_type
+      attrs[:editing_user] = @current_user
       arr << FactoryGirl.create(:content_package, attrs)
     end
   end
@@ -249,4 +250,31 @@ Then(/^I should see the content package named "(.*?)" highlighted$/) do |name|
   content_package = Pig::ContentPackage.where(name: name).first
   row = page.find("tr[id=content-package-#{content_package.id}]")
   row[:class].include?('.highlight')
+end
+
+When(/^the content package is deleted$/) do
+  @content_package.slug = ''
+  @content_package.delete
+end
+
+When(/^the content package is destroyed$/) do
+  @content_package.destroy
+end
+
+Given(/^the content package has recent activity$/) do
+  for i in 1..5 do
+    @content_package.record_activity!(@current_user, "updated")
+  end
+end
+
+Then(/^I should see the recent activity$/) do
+  expect(first(".cms-activity-feed li")).to have_text("#{@content_package.name} was updated by #{@content_package.author.full_name}")
+end
+
+Then(/^I should see more activity$/) do
+  expect(all(".cms-activity-feed li").count).to eq(6)
+end
+
+When(/^the content package is updated$/) do
+  @content_package.update_attribute(:name, 'New name')
 end
