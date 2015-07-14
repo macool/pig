@@ -1,4 +1,4 @@
-Given(/^there (?:is|are) (\d+)( unpublished)? content packages?( not\s)?(?: assigned to me)?( of this type)?$/) do |n, unpublished, assigned, using_type|
+Given(/^there (?:is|are) (\d+)( unpublished)? content packages?( not\s)?(?: assigned to me)?(?: assigned to no one)?( of this type)?$/) do |n, unpublished, assigned, using_type|
   if n.to_i.zero?
     Pig::ContentPackage.destroy_all
   end
@@ -277,4 +277,8 @@ end
 
 When(/^the content package is updated$/) do
   @content_package.update_attribute(:name, 'New name')
+end
+
+Then(/^I see the content packages in the open requests area$/) do
+  pending # express the regexp above with the code you wish you had
 end
