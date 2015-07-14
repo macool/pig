@@ -10,6 +10,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec/dummy/config/envi
 
 require 'cucumber/rails'
 require 'capybara/poltergeist'
+require 'capybara/email'
 
 require 'factory_girl_rails'
 require File.expand_path(File.dirname(__FILE__) + '/../../spec/factories/factories')
@@ -71,3 +72,4 @@ end
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
 World(AjaxHelpers)
+World(Capybara::Email::DSL)
