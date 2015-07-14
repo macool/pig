@@ -23,7 +23,6 @@ require 'cells-haml'
 
 require 'pig/link'
 require 'pig/permalinkable'
-require 'pig/activity/recordable'
 require 'pig/core/plugins'
 
 # Concerns
