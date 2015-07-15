@@ -59,12 +59,17 @@ module Pig
           params[:user].delete(:password)
           params[:user].delete(:password_confirmation)
         end
-        params.require(:user).permit(permitted_user_parameters.push(:role, :password, :password_confirmation))
+        params.require(:user).permit(permitted_user_parameters.push(:password, :password_confirmation))
       end
 
       def permitted_user_parameters
         permitted_params = %w(bio email first_name image last_name remove_image retained_image active)
-        permitted_params << 'role' if current_user.admin?
+        if can?(:alter_role, @user)
+          req_role = params[:user][:role]
+          if req_role.present? && req_role.to_sym.in?(current_user.available_roles)
+            permitted_params << 'role'
+          end
+        end
         permitted_params
       end
   end

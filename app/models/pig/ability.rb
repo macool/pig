@@ -27,6 +27,10 @@ module Pig
         can :manage, :all
       elsif user.role_is?(:admin)
         can :manage, :all
+        cannot :alter_role, Pig::User
+        can :alter_role, Pig::User do |other_user|
+          other_user.role.to_sym.in?(user.available_roles)
+        end
         DEVELOPER_ABILITIES.each do |klass, actions|
           actions.each do |action|
             cannot action, klass.constantize
