@@ -26,8 +26,9 @@ Scenario Outline: Creating a content package
     | editor    |
 
 @sane
+@wip
 Scenario Outline: Requesting a content package
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there is 1 content type
   When I request a new content package of this type
   Then the request is created
@@ -37,8 +38,9 @@ Scenario Outline: Requesting a content package
     | admin     |
     | editor    |
 
+@wip
 Scenario Outline: Fulfill a content package request
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there is 1 content package request
   When I create a content package for the request
   Then I the requester is notified
@@ -50,7 +52,7 @@ Scenario Outline: Fulfill a content package request
     | author    |
 
 Scenario Outline: Edit a content package
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there is 1 content package
   When I update the content package
   Then the content package should change
@@ -61,7 +63,7 @@ Scenario Outline: Edit a content package
     | editor    |
 
 Scenario Outline: Publish a content package
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there is 1 unpublished content package
   When I publish the content package
   Then the content package should be published
@@ -77,7 +79,7 @@ Scenario: Viewing a content package
   Then I should see all its content
 
 Scenario Outline: Deleting a content package
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there is 1 content package
   When I delete the content package
   Then It should no longer be visible in the sitemap
@@ -89,7 +91,7 @@ Scenario Outline: Deleting a content package
     | editor    |
 
 Scenario Outline: Restoring a content package
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there is 1 deleted content package
   When I restore the content package
   Then it should appear in the sitemap
@@ -100,21 +102,21 @@ Scenario Outline: Restoring a content package
     | admin     |
     | editor    |
 
+@allow-rescue
 Scenario Outline: Destroying a content package
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there is 1 deleted content package
   When I destroy the content package
-  When I go to the content package
+  And I try go to the deleted content package
   Then I should get a 404
   Examples:
     | role      |
     | developer |
     | admin     |
-    | editor    |
 
 @javascript
 Scenario Outline: Searching for a content package
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there are 3 content packages
   And one of the content packages is named "Foo"
   When I go to the list of content packages
@@ -142,7 +144,7 @@ Scenario Outline: Adding a content package as a child of another content package
     | editor    |
 
 Scenario Outline: Moving a child content package to another parent
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there are 1 content package
   And there is a content package with a parent
   When I add move the child to a new parent
@@ -156,7 +158,7 @@ Scenario Outline: Moving a child content package to another parent
 @javascript
 @wip
 Scenario Outline: Discussing a content package
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there is 1 content package
   When I discuss the content package
   Then the discussion count should increase
@@ -170,7 +172,7 @@ Scenario Outline: Discussing a content package
 
 @javascript
 Scenario Outline: I can assign a content package to an author
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there is 1 content package
   When I assign it to an author
   Then the content package author should change
