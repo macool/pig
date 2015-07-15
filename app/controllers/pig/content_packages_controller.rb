@@ -14,7 +14,7 @@ module Pig
     skip_load_resource :home
     # Define an around filter for all controller actions that could potentially be routed to from a permalink
     around_action :redirect_to_permalink, :only => ContentPackage.member_routes.collect{ |x| x[:action] }
-    before_action :set_editing_user, only: [:create, :delete, :update, :destroy]
+    before_action :set_editing_user, only: [:create, :delete, :update, :destroy, :ready_to_review]
 
     def activity
       if request.xhr?
@@ -142,30 +142,16 @@ module Pig
       render_content_package_view
     end
 
+    def ready_to_review
+      get_view_data
+      @content_package.status = "pending"
+      update_content_package
+    end
+
     def update
       get_view_data
-      previous_status = @content_package.status
-      # Because of the way pig uses method missing to update each content chunk just using
-      # touch: true on the association would result in an update on the content package for every chunk
-      # Because of this the updated_at time is set here
-      content_package_params["updated_at"] = DateTime.now
-      if @content_package.update_attributes(content_package_params)
-        flash[:notice] = "Updated \"#{@content_package}\""
-        if @content_package.status == 'published' && previous_status != 'published'
-          @content_package.published_at = DateTime.now
-          @content_package.save
-        end
-        # remove_abandoned_sir_trevor_images
-        if @content_package.missing_view?
-          redirect_to content_packages_path(:open => @content_package)
-        else
-          redirect_to content_package_path(@content_package)
-        end
-      else
-        #TODO change to flash[:error] when the style has been made
-        flash[:notice] = "Sorry there was a problem saving this page: #{@content_package.errors.full_messages.to_sentence}"
-        render :action => 'edit'
-      end
+      @content_package.skip_status_transition = true
+      update_content_package
     end
 
     def upload_sir_trevor_attachment
@@ -192,6 +178,31 @@ module Pig
       @activity_items = @content_package.activity_items.includes(:user, :resource).paginate(:page => 1, :per_page => 5)
       @non_meta_content_attributes = @content_package.content_attributes.where(:meta => false)
       @meta_content_attributes = @content_package.content_attributes.where(:meta => true)
+    end
+
+    def update_content_package
+      # Because of the way pig uses method missing to update each content chunk just using
+      # touch: true on the association would result in an update on the content package for every chunk
+      # Because of this the updated_at time is set here
+      previous_status = @content_package.status
+      content_package_params["updated_at"] = DateTime.now
+      if @content_package.update_attributes(content_package_params)
+        flash[:notice] = "Updated \"#{@content_package}\""
+        if @content_package.status == 'published' && previous_status != 'published'
+          @content_package.published_at = DateTime.now
+          @content_package.save
+        end
+        # remove_abandoned_sir_trevor_images
+        if @content_package.missing_view?
+          redirect_to content_packages_path(:open => @content_package)
+        else
+          redirect_to content_package_path(@content_package)
+        end
+      else
+        #TODO change to flash[:error] when the style has been made
+        flash[:notice] = "Sorry there was a problem saving this page: #{@content_package.errors.full_messages.to_sentence}"
+        render :action => 'edit'
+      end
     end
 
     def render_content_package_view
