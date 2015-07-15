@@ -9,7 +9,7 @@ When(/^I go to the dashboard$/) do
   visit pig.content_path
 end
 
-Given(/^there are (\d+) users$/) do |n|
+Given(/^there (?:are|is) (\d+) user(?:s)?$/) do |n|
   if n.to_i.zero?
     Pig::User.where('id != ?', @current_user.id).destroy_all
   end
@@ -72,4 +72,37 @@ end
 Then(/^the user is inactive$/) do
   @user = Pig::User.find(@user.id)
   expect(@user.active).to be_falsey
+end
+
+Then(/^the user should( not)? be made an (.*)$/) do |not_equal, role|
+  if not_equal
+    expect(@user.reload.role).to_not eq(role)
+  else
+    expect(@user.reload.role).to eq(role)
+  end
+end
+
+Given(/^the user is a (.*)$/) do |role|
+  @user.update_attribute(:role, role)
+end
+
+When(/^I visit the manage account page$/) do
+  visit pig.edit_manage_user_path(@current_user)
+end
+
+When(/^I make a change to my account$/) do
+  fill_in 'First name', with: 'Foo'
+  click_button 'Save'
+end
+
+Then(/^my account is updated$/) do
+  expect(@current_user.reload.first_name).to eq('Foo')
+  visit pig.manage_user_path(@current_user)
+  expect(page).to have_text('Foo')
+end
+
+When(/^I change the role of the user to (.*)$/) do |role|
+  visit pig.edit_manage_user_path(@user)
+  select(role, from: 'user_role')
+  click_button('Save')
 end
