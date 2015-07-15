@@ -54,4 +54,3 @@
         =link_to("Content list", pig.content_packages_path, :class => 'btn btn-primary btn-block') if can? :read, Pig::ContentPackage
         =link_to("Users & permissions", pig.manage_users_path, :class => 'btn btn-primary btn-block')# TODO if can? :read,
         =link_to("Manage personas", pig.personas_path, :class => 'btn btn-primary btn-block') if can? :manage, Pig::Persona
-        =link_to("Request content template", '#', :class => 'btn btn-default btn-block disabled') # TODO if can? :manage, Pig::Persona
