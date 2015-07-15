@@ -21,6 +21,13 @@ module Pig
 
     scope :all_users, -> { where(role: Pig.configuration.cms_roles) }
 
+    def available_roles
+      all_roles = Pig::User.available_roles
+      all_roles.reject do |r|
+        all_roles.rindex(r.to_sym) < all_roles.rindex(role.to_sym)
+      end
+    end
+
     class << self
       def available_roles
         Pig.configuration.cms_roles || []

@@ -6,7 +6,7 @@
       =form.input :last_name
     .clearfix
     =form.input :email
-    -if current_user.is_admin?
+    -if can? :manage_role, @user
       =form.input :role, :as => :select, :collection => Pig::User.available_roles, :include_blank => false
     =form.input :password
     =form.input :password_confirmation
