@@ -77,6 +77,7 @@ FactoryGirl.define do
     status "published"
     publish_at Date.today - 1.day
     sequence(:slug){|n| "content_package_#{n}" }
+    editing_user { FactoryGirl.create(:user) }
 
     factory :viewless_content_package do
       association :content_type, :viewless
