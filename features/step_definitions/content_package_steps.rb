@@ -1,4 +1,4 @@
-Given(/^there (?:is|are) (\d+)( unpublished)? content packages?( not\s)?(?: assigned to me)?(?: assigned to no one)?( of this type)?$/) do |n, unpublished, assigned, using_type|
+Given(/^there (?:is|are) (\d+)( unpublished)?( deleted)? content packages?( not\s)?(?: assigned to me)?(?: assigned to no one)?( of this type)?$/) do |n, unpublished, deleted, assigned, using_type|
   if n.to_i.zero?
     Pig::ContentPackage.destroy_all
   end
@@ -13,7 +13,8 @@ Given(/^there (?:is|are) (\d+)( unpublished)? content packages?( not\s)?(?: assi
       end
 
       attrs[:content_type] = @content_type if using_type
-      attrs[:editing_user] = @current_user
+      attrs[:deleted_at] = DateTime.now if deleted
+      attrs[:editing_user] = @current_user || FactoryGirl.build(:user)
       arr << FactoryGirl.create(:content_package, attrs)
     end
   end
@@ -228,7 +229,9 @@ Then(/^I should see the params$/) do
 end
 
 Given(/^one of the content packages is named "(.*?)"$/) do |name|
-  Pig::ContentPackage.first.update_attribute(:name, name)
+  cp = Pig::ContentPackage.first
+  cp.editing_user = @current_user
+  cp.update_attribute(:name, name)
 end
 
 When(/^I go to the list of content packages$/) do
@@ -260,6 +263,10 @@ When(/^the content package is destroyed$/) do
   @content_package.destroy
 end
 
+When(/^the content package is restored$/) do
+  @content_package.restore
+end
+
 Given(/^the content package has recent activity$/) do
   for i in 1..5 do
     @content_package.record_activity!(@current_user, "updated")
@@ -280,4 +287,90 @@ end
 
 Then(/^I see the content packages in the open requests area$/) do
   pending # express the regexp above with the code you wish you had
+end
+
+When(/^I publish the content package$/) do
+  visit pig.edit_content_package_path(@content_package)
+  select('Published', from: 'Status')
+  click_button('Save changes')
+end
+
+Then(/^the content package should be published$/) do
+  @content_package.reload
+  expect(@content_package.status).to eq("published")
+end
+
+When(/^I delete the content package$/) do
+  @content_package.slug = ''
+  @content_package.save
+  visit pig.content_packages_path
+  within "tr#content-package-#{@content_package.id}" do
+    click_link 'More'
+    click_link 'Delete'
+  end
+end
+
+When(/^I destroy the content package$/) do
+  @deleted_content_package_id = @content_package.id
+  visit pig.deleted_content_packages_path
+  within "tr#deleted-content-package-#{@content_package.id}" do
+    click_link 'Destroy'
+  end
+end
+
+When(/^I try go to the deleted content package$/) do
+  visit pig.content_package_path(@deleted_content_package_id)
+end
+
+Then(/^It should no longer be visible in the sitemap$/) do
+  expect(page).to have_no_selector("tr#content-package-#{@content_package.id}")
+end
+
+Then(/^it should appear in the list of deleted content packages$/) do
+  visit pig.deleted_content_packages_path
+  expect(page).to have_content(@content_package.name)
+end
+
+When(/^I restore the content package$/) do
+  visit pig.deleted_content_packages_path
+  within "tr#deleted-content-package-#{@content_package.id}" do
+    click_link 'Restore'
+  end
+end
+
+Then(/^it should appear in the sitemap$/) do
+  visit pig.content_packages_path
+  expect(page).to have_selector("tr#content-package-#{@content_package.id}")
+end
+
+Then(/^It shouldn't appear in the list of deleted content packages$/) do
+  visit pig.deleted_content_packages_path
+  expect(page).to have_no_selector("tr#deleted-content-package-#{@content_package.id}")
+end
+
+When(/^I add a child to the content package$/) do
+  visit pig.content_packages_path
+  within "tr#content-package-#{@content_package.id}" do
+    click_link 'More'
+    click_link 'Add child'
+  end
+end
+
+When(/^I fill in the new child content package form and submit$/) do
+  content_type = Pig::ContentType.first
+  content_package = FactoryGirl.build(:content_package, :content_type => content_type, :author => @admin)
+  find('#content_package_content_type_input .custom-combobox-toggle').click
+  find('li.ui-menu-item', text: content_type.name).click
+  fill_in('Name', :with => content_package.name)
+  click_button "Assign author"
+  select(content_package.author.full_name, :from => 'Author')
+  click_button("Finish")
+  @content_package = Pig::ContentPackage.last
+end
+
+Then(/^the content package should appear as a child in the sitemap$/) do
+  visit pig.content_packages_path
+  first("tr#content-package-#{Pig::ContentPackage.first.id} td").click
+  wait_for_ajax
+  expect(page).to have_selector("tr#content-package-#{@content_package.id}")
 end

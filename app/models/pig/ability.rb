@@ -39,6 +39,7 @@ module Pig
       elsif user.role_is?(:editor)
         can [:edit, :update], Pig::ContentPackage, :author_id => user.id
         can [:manage], Pig::ContentPackage
+        cannot :destroy,  Pig::ContentPackage
         can [:dashboard], Pig::ContentType
       elsif user.role_is?(:author)
         can [:edit, :update], Pig::ContentPackage, :author_id => user.id
