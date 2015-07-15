@@ -51,3 +51,46 @@ Then(/^the tag category should be updated$/) do
   expect(@tag_category.slug).to eq('new-foo')
   expect(@tag_category.taxonomy_list).to_not include(@tag_to_remove)
 end
+
+When(/^I assign the tag category to a content type$/) do
+  @content_type = FactoryGirl.create(:content_type)
+  visit pig.edit_content_type_path(@content_type)
+  find(:xpath, "//input[@name='content_type[tag_category_ids][]' and @value='#{@tag_category.id}']").set(true)
+  click_button('Update Content type')
+end
+
+Then(/^the tag is available when creating an instance of the content type$/) do
+  @content_package = FactoryGirl.create(:content_package, content_type: @content_type)
+  visit(pig.edit_content_package_path(@content_package))
+  click_link('Tags')
+  expect(page).to have_text(@tag_category.name)
+end
+
+Given(/^there is (\d+) content type with a tag category$/) do |count|
+  @tag_category = FactoryGirl.create(:tag_category, :with_tags)
+  @content_types = []
+  count.to_i.times do
+    @content_types <<
+      FactoryGirl.create(:content_type, tag_category_ids: [@tag_category.id])
+  end
+  @content_type = @content_types.first
+end
+
+When(/^I create a content package and tag it$/) do
+  @content_package = FactoryGirl.create(:content_package, content_type: @content_type, author: @current_user)
+  visit(pig.edit_content_package_path(@content_package))
+  click_link('Tags')
+  click_button(@tag_category.name)
+  @tag = @tag_category.taxonomy_list.first
+  find(:xpath, "//input[@name='content_package[taxonomy_tags][#{@tag_category.slug}][]' and @value='#{@tag}']").set(true)
+  click_button('Save changes')
+end
+
+Then(/^the content package is created with the tag$/) do
+  expect(@content_package.reload.taxonomy.collect(&:name)).to include(@tag)
+  visit(pig.edit_content_package_path(@content_package))
+  click_link('Tags')
+  click_button(@tag_category.name)
+  tag_input = find(:xpath, "//input[@name='content_package[taxonomy_tags][#{@tag_category.slug}][]' and @value='#{@tag}']")
+  expect(tag_input.checked?).to be_truthy
+end

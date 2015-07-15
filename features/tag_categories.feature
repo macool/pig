@@ -1,7 +1,5 @@
 @javascript
-@admin
 Feature: CMS tag management
-  As an admin
   In order to manage tag categories and there tags
   I want a tag managemnent interdace
 
@@ -34,7 +32,6 @@ Scenario Outline: Assigning a tag category to a content type
     | role      |
     | developer |
     | admin     |
-    | editor    |
 
 Scenario Outline: Choosing a tag when creating a content package
   Given I am logged in as an <role>
