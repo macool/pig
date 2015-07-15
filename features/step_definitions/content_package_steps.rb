@@ -130,7 +130,6 @@ end
 
 When(/^I mark the content package as ready to review$/) do
   visit pig.edit_content_package_path(@content_package)
-  select("Ready to review", :from => 'content_package[status]')
   click_button("Mark as ready to review")
 end
 

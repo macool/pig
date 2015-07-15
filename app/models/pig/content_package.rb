@@ -15,12 +15,13 @@ module Pig
     belongs_to :requested_by, :class_name => 'Pig::User'
     has_many :sir_trevor_images
 
+    attr_accessor :skip_status_transition
+
     before_create :set_next_review
     before_save :set_status
     after_save :save_content_chunks
     after_save :invalidate_parent_cache
     after_destroy :destroy_parent_cache
-
 
     validates :name, :content_type, :requested_by, :review_frequency, :presence => true
     validate :required_attributes
@@ -33,8 +34,6 @@ module Pig
     delegate :tag_categories, to: :content_type
 
     image_accessor :meta_image
-
-
 
     scope :root, -> { where(:parent_id => nil, :deleted_at => nil).order(:position, :id) }
     scope :published, -> { where(:status => 'published').where('publish_at <= ? OR publish_at IS NULL', Date.today) }
@@ -384,6 +383,7 @@ module Pig
     alias_method_chain(:set_permalink, :viewless)
 
     def set_status
+      return if self.skip_status_transition
       if self.status_changed? && self.author_id then
         case self.status
         when 'draft'

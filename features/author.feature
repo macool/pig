@@ -23,8 +23,15 @@ Scenario: Viewing a list of my content packages
   When I go to the sitemap
   Then I can edit the content packages
 
+@javascript
 Scenario: Set content package as ready to review
   Given I am logged in as an author
   And there is 1 content package assigned to me
   When I mark the content package as ready to review
   Then it is assigned back to the requester
+
+Scenario: Edit a content package assigned to me
+  Given I am logged in as an author
+  And there is 1 content package assigned to me
+  When I update the content package
+  Then the content package should change
