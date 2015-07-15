@@ -127,7 +127,6 @@ Scenario Outline: Searching for a content package
     | editor    |
     | author    |
 
-
 @javascript
 Scenario Outline: Adding a content package as a child of another content package
   Given I am logged in as an <role>
