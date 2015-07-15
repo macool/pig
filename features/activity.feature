@@ -29,6 +29,13 @@ Scenario: When a content package is destroyed an activity should be recorded
   And I visit the dashboard
   Then I should see the "permanently deleted" activity
 
+Scenario: When a content package is destroyed an activity should be recorded
+  Given I am logged in as any user
+  And there is 1 deleted content packages
+  When the content package is restored
+  And I visit the dashboard
+  Then I should see the "restored" activity
+
 Scenario: When a content package is destroyed its activities are still visible
   Given I am logged in as any user
   And there is 1 content package
