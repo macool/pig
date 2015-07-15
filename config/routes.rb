@@ -44,6 +44,7 @@ Pig::Engine.routes.draw do
       put 'restore'
       get 'activity'
       post 'upload_sir_trevor_attachment'
+      patch 'ready_to_review'
     end
   end
 

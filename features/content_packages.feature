@@ -12,7 +12,6 @@ Scenario Outline: Viewing a list of content packages
     | developer |
     | admin     |
     | editor    |
-    | author    |
 
 Scenario Outline: Creating a content package
   Given I am logged in as an <role>
