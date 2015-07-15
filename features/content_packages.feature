@@ -59,7 +59,6 @@ Scenario Outline: Edit a content package
     | developer |
     | admin     |
     | editor    |
-    | author    |
 
 Scenario Outline: Publish a content package
   Given I am logged in as a <role>
@@ -82,7 +81,7 @@ Scenario Outline: Deleting a content package
   And there is 1 content package
   When I delete the content package
   Then It should no longer be visible in the sitemap
-  And it shouldn't appear in the list of deleted content packages
+  And it should appear in the list of deleted content packages
   Examples:
     | role      |
     | developer |
@@ -126,12 +125,14 @@ Scenario Outline: Searching for a content package
     | developer |
     | admin     |
     | editor    |
-    | author    |
 
+@javascript
 Scenario Outline: Adding a content package as a child of another content package
-  Given I am logged in as a <role>
+  Given I am logged in as an <role>
   And there is 1 content package
   When I add a child to the content package
+  And I fill in the new child content package form and submit
+  And I update the content package
   Then the content package should appear as a child in the sitemap
   Examples:
     | role      |

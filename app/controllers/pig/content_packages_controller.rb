@@ -14,7 +14,7 @@ module Pig
     skip_load_resource :home
     # Define an around filter for all controller actions that could potentially be routed to from a permalink
     around_action :redirect_to_permalink, :only => ContentPackage.member_routes.collect{ |x| x[:action] }
-    before_action :set_editing_user, only: [:create, :delete, :update, :destroy, :ready_to_review]
+    before_action :set_editing_user, only: [:create, :delete, :update, :destroy, :ready_to_review, :restore]
 
     def activity
       if request.xhr?
