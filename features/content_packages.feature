@@ -145,9 +145,9 @@ Scenario Outline: Adding a content package as a child of another content package
 
 Scenario Outline: Moving a child content package to another parent
   Given I am logged in as an <role>
-  And there are 1 content package
   And there is a content package with a parent
-  When I add move the child to a new parent
+  And there are 1 content package
+  When I move the child to a new parent
   Then the content package should move to the new parent
   Examples:
     | role      |

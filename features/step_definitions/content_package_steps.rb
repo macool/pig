@@ -14,7 +14,7 @@ Given(/^there (?:is|are) (\d+)( unpublished)?( deleted)? content packages?( not\
 
       attrs[:content_type] = @content_type if using_type
       attrs[:deleted_at] = DateTime.now if deleted
-      attrs[:editing_user] = @current_user || FactoryGirl.build(:user)
+      attrs[:editing_user] = @current_user || FactoryGirl.create(:user)
       arr << FactoryGirl.create(:content_package, attrs)
     end
   end
@@ -365,12 +365,24 @@ When(/^I fill in the new child content package form and submit$/) do
   click_button "Assign author"
   select(content_package.author.full_name, :from => 'Author')
   click_button("Finish")
-  @content_package = Pig::ContentPackage.last
+  @child_content_package = Pig::ContentPackage.last
 end
 
 Then(/^the content package should appear as a child in the sitemap$/) do
   visit pig.content_packages_path
-  first("tr#content-package-#{Pig::ContentPackage.first.id} td").click
   wait_for_ajax
-  expect(page).to have_selector("tr#content-package-#{@content_package.id}")
+  find("tr#content-package-#{@content_package.id} td:first-of-type").click
+  wait_for_ajax
+  expect(page).to have_selector("tr#content-package-#{@child_content_package.id}")
+end
+
+When(/^I move the child to a new parent$/) do
+  visit pig.edit_content_package_path(@content_package)
+  click_link "Settings"
+  select(@parent_content_package.name, from: "Parent")
+  click_button('Save changes')
+end
+
+Then(/^the content package should move to the new parent$/) do
+  @content_package.parent = @parent_content_package
 end
