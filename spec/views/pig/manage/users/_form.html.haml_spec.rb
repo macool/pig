@@ -5,6 +5,8 @@ RSpec.describe 'pig/manage/users/_form', type: :view do
   before(:each) do
     assign(:user, user)
     allow(view).to receive(:current_user).and_return(user)
+    ability = Pig::Ability.new(user)
+    allow(controller).to receive(:current_ability).and_return(ability)
     render
   end
 
