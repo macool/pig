@@ -10,10 +10,11 @@ RSpec.describe "pig/content_types/dashboard", type: :view do
   end
 
   it "renders the recent activity" do
-    content_package = FactoryGirl.create(:content_package)
+    user = FactoryGirl.create(:user)
+    content_package = FactoryGirl.create(:content_package, editing_user: user)
     assign(:activity_items, content_package.activity_items.all )
     render
-    expect(rendered).to have_text("#{content_package.name} was created by #{content_package.author.full_name}")
+    expect(rendered).to have_text("#{content_package.name} was created by #{user.full_name}")
   end
 
   it "renders the number of draft content packages" do

@@ -12,7 +12,8 @@ module Pig
                                               current_page: 1))
       assign(:content_package, FactoryGirl.create(:content_package,
                                                   author: admin,
-                                                  requested_by: admin))
+                                                  requested_by: admin,
+                                                  editing_user: admin))
       allow(view).to receive(:current_user).and_return(admin)
       @ability = Ability.new(admin)
       allow(controller).to receive(:current_ability).and_return(@ability)

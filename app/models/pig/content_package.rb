@@ -112,8 +112,11 @@ module Pig
     def delete
       return true if deleted?
       if deletable?
-        self.update_attribute(:deleted_at, Time.now)
-        children.all.each(&:delete)
+        update_attribute(:deleted_at, Time.now)
+        children.all.each do |child|
+          child.editing_user = editing_user
+          child.delete
+        end
       else
         false
       end
