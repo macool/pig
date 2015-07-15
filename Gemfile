@@ -22,6 +22,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
   gem 'cucumber-rails', :require => false
+  gem 'capybara-email'
   gem 'database_cleaner'
   gem "poltergeist"
   gem "launchy"

@@ -5,7 +5,6 @@ Pig::Engine.routes.draw do
 
   devise_for :users, class_name: 'Pig::User', module: :devise, controllers: {
     sessions: 'pig/sessions',
-    confirmations: 'pig/confirmations',
     passwords: 'pig/passwords'
   }
 

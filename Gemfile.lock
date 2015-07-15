@@ -75,6 +75,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-email (2.4.0)
+      capybara (~> 2.4)
+      mail
     cells (4.0.2)
       tilt (>= 1.4, < 3)
       uber (~> 0.0.9)
@@ -307,6 +310,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  capybara-email
   cucumber-rails
   database_cleaner
   factory_girl_rails
