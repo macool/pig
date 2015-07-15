@@ -135,7 +135,7 @@
 
         .cms-sidebar-actions
           -if current_user.role == "author"
-            =form.action :submit, :label => "Save Changes", :button_html => {:class => "btn btn-success pull-right", data: { form_action: pig.content_package_path(@content_package) } }
+            =form.action :submit, :label => "Save changes", :button_html => {:class => "btn btn-success pull-right", data: { form_action: pig.content_package_path(@content_package) } }
             =form.action :submit, :label => "Mark as ready to review", :button_html => {:class => "btn pull-right", data: { form_action: pig.ready_to_review_content_package_path(@content_package) } }
           -else
             =form.action :submit, :label => "Save changes", :button_html => {:class => "btn btn-success pull-right"}
