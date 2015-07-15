@@ -125,6 +125,8 @@ Scenario Outline: Searching for a content package
     | developer |
     | admin     |
     | editor    |
+    | author    |
+
 
 @javascript
 Scenario Outline: Adding a content package as a child of another content package
