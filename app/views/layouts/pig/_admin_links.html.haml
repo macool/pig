@@ -1,0 +1,7 @@
+-if current_user
+  .strip-section.admin-links
+    .container
+      =options_panel do
+        =link_if_can("Edit page", [:edit, content], :class => 'admin-links__link')
+        -link_if_can("Delete page", [:destroy, content], :confirm => "Are you sure?", :class => 'admin-links__link')
+        =link_if_can("New page", [:new, content], :class => 'admin-links__link')

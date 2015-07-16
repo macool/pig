@@ -7,6 +7,10 @@ module Pig::LayoutHelper
     concat content_tag(:body, capture(&block), options)
   end
 
+  def pig_admin_header(content_package)
+    render 'layouts/pig/admin_links', content: content_package
+  end
+
   private
   def id_for_body_tag
     is_home? ? 'home' : 'inside'
