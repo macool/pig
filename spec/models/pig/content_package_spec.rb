@@ -236,7 +236,7 @@ module Pig
         cp_v_n_v = FactoryGirl.create(:content_package, :parent => cp_v_n)
         cp_v_v_n = FactoryGirl.create(:viewless_content_package, :parent => cp_v_v)
         cp_v_v_v = FactoryGirl.create(:content_package, :parent => cp_v_v)
-        cps = [content_package, cp_v, cp_v_n, cp_v_v, cp_v_n_n, cp_v_n_v, cp_v_v_n, cp_v_v_v]
+        cps = [content_package, cp_v, cp_v_v, cp_v_v_v]
 
         original_paths = []
         cps.each do |cp|

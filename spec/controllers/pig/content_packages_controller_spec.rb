@@ -24,7 +24,7 @@ module Pig
       login_admin
       describe "GET #index" do
         it "assigns all content_packages as @content_packages" do
-          content_package = ContentPackage.create! valid_attributes
+          content_package = FactoryGirl.create(:content_package)
           get :index, {}, valid_session
           expect(assigns(:content_packages).to_a).to eq([content_package])
         end
@@ -32,7 +32,7 @@ module Pig
 
       describe "GET #show" do
         it "assigns the requested content_package as @content_package" do
-          content_package = ContentPackage.create! valid_attributes
+          content_package = FactoryGirl.create(:content_package)
           get :show, {:id => content_package.to_param}, valid_session
           expect(assigns(:content_package)).to eq(content_package)
         end
@@ -47,7 +47,7 @@ module Pig
 
       describe "GET #edit" do
         it "assigns the requested content_package as @content_package" do
-          content_package = ContentPackage.create! valid_attributes
+          content_package = FactoryGirl.create(:content_package)
           get :edit, {:id => content_package.to_param}, valid_session
           expect(assigns(:content_package)).to eq(content_package)
         end
@@ -93,20 +93,20 @@ module Pig
           }
 
           it "updates the requested content_package" do
-            content_package = ContentPackage.create! valid_attributes
+            content_package = FactoryGirl.create(:content_package)
             put :update, {:id => content_package.to_param, :content_package => new_attributes}, valid_session
             content_package.reload
             expect(assigns(:content_package).name).to eq('New name')
           end
 
           it "assigns the requested content_package as @content_package" do
-            content_package = ContentPackage.create! valid_attributes
+            content_package = FactoryGirl.create(:content_package)
             put :update, {:id => content_package.to_param, :content_package => valid_attributes}, valid_session
             expect(assigns(:content_package)).to eq(content_package)
           end
 
           it "redirects to the content_package" do
-            content_package = ContentPackage.create! valid_attributes
+            content_package = FactoryGirl.create(:content_package)
             put :update, {:id => content_package.to_param, :content_package => valid_attributes}, valid_session
             expect(response).to redirect_to(content_package)
           end
@@ -114,13 +114,13 @@ module Pig
 
         context "with invalid params" do
           it "assigns the content_package as @content_package" do
-            content_package = ContentPackage.create! valid_attributes
+            content_package = FactoryGirl.create(:content_package)
             put :update, {:id => content_package.to_param, :content_package => invalid_attributes}, valid_session
             expect(assigns(:content_package)).to eq(content_package)
           end
 
           it "re-renders the 'edit' template" do
-            content_package = ContentPackage.create! valid_attributes
+            content_package = FactoryGirl.create(:content_package)
             put :update, {:id => content_package.to_param, :content_package => invalid_attributes}, valid_session
             expect(response).to render_template("edit")
           end
@@ -129,14 +129,14 @@ module Pig
 
       describe "DELETE #destroy" do
         it "destroys the requested content_package" do
-          content_package = ContentPackage.create! valid_attributes
+          content_package = FactoryGirl.create(:content_package)
           expect {
             delete :destroy, {:id => content_package.to_param}, valid_session
           }.to change(ContentPackage, :count).by(-1)
         end
 
         it "redirects to the content_packages list" do
-          content_package = ContentPackage.create! valid_attributes
+          content_package = FactoryGirl.create(:content_package)
           delete :destroy, {:id => content_package.to_param}, valid_session
           expect(response).to redirect_to(deleted_content_packages_path)
         end

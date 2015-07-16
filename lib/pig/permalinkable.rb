@@ -64,8 +64,11 @@ module Pig::Permalinkable
       end
     elsif permalink && permalink.previous_changes[:full_path]
       children.each do |x|
-        x.permalinks.create(:active => false, :path => x.permalink.path, :full_path => "#{x.permalink.full_path}") unless x.permalink.nil? || ENV['RAKE_PERMALINK_RUNNING'] == 'true'
-        x.save!
+        unless x.viewless?
+          x.permalinks.create(:active => false, :path => x.permalink.path, :full_path => "#{x.permalink.full_path}") unless x.permalink.nil? || ENV['RAKE_PERMALINK_RUNNING'] == 'true'
+          x.editing_user = editing_user
+          x.save!
+        end
       end
     end
   end
