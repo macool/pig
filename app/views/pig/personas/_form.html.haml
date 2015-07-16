@@ -1,6 +1,6 @@
 .col-sm-8.col-sm-offset-2
   .cms-form-well
-    =semantic_form_for @persona do |form|
+    =semantic_form_for [pig, @persona] do |form|
       =form.inputs do
         =form.input :group, :prompt => "Please select...", :collection => Pig::PersonaGroup.all.map{|p| [p.to_s, p.id] } << ['Add a new group...', 0], :selected => (@persona.group_name.nil? ? @persona.group_id : 0)
         =form.input :group_name, :label => "New group name", :input_html => {:disabled => @persona.group_name.nil?}, :wrapper_html => {:class => "#{'hide' if @persona.group_name.nil?}"}
@@ -16,6 +16,8 @@
         =form.input :file, :as => :file_with_preview, :label => "Full persona"
       =form.actions do
         =form.action :submit, :button_html => {:class => 'btn btn-success pull-right'}
+        - unless @persona.new_record?
+          =link_to 'Delete', pig.persona_path(@persona), method: :delete, data: { confirm: 'Are you sure you want to remove this persona? This action cannot be undone.' }, class: 'btn btn-danger'
       .clearfix
 
   :javascript
