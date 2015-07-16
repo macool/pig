@@ -64,7 +64,7 @@ Scenario Outline: View the content template of a specific content package
   Given I am logged in as an <role>
   And there is 1 content package
   When I go to edit the content package
-  Then I should can see the content template it is using
+  Then I can see the content template it is using
   Examples:
     | role      |
     | developer |
@@ -87,7 +87,8 @@ Scenario Outline: Create a content package from a content template
   Given I am logged in as an <role>
   And there is 1 content type
   When I go to the list of content types
-  Then I can add a new content package from the content template
+  And I choose to add new content package from the content template
+  Then a new content package is built with this type
   Examples:
     | role      |
     | developer |
@@ -96,10 +97,8 @@ Scenario Outline: Create a content package from a content template
 Scenario Outline: Create a new content package choosing the template from a list
   Given I am logged in as an <role>
   And there is 1 content type
-  When I go to create a new content package
-  And choose the content template from a list
-  And fill in the content package form
-  Then the content package is created
+  When I fill in the new content package form and submit
+  Then the content package is created with the correct type
   Examples:
     | role      |
     | developer |

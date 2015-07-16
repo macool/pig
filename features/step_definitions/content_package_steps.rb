@@ -67,7 +67,7 @@ end
 
 When(/^I fill in the new content package form and submit$/) do
   visit pig.new_content_type_content_package_path(@content_type)
-  @content_package = FactoryGirl.build(:content_package, :content_type => @content_type, :author => @admin)
+  @content_package = FactoryGirl.build(:content_package, :content_type => @content_type, :author => @current_user)
   select(@content_type)
   fill_in('Name', :with => @content_package.name)
   select(@content_package.author.full_name, :from => 'Author')
