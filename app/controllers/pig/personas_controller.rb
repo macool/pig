@@ -30,6 +30,11 @@ module Pig
       end
     end
 
+    def destroy
+      @persona.destroy
+      redirect_to pig.personas_path, notice: 'Persona removed.'
+    end
+
     private
     def persona_params
       params.require(:persona).permit(:name, :age, :category, :summary, :benefit_1, :benefit_2, :benefit_3, :benefit_4, :image, :retained_image, :image_uid, :file, :retained_file, :file_uid, :group_id, :group_name)

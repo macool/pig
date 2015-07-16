@@ -5,6 +5,7 @@ Feature: Personas
 Scenario Outline: Create a persona
   Given I am logged in as an <role>
   And there are 0 personas
+  And there is 1 persona group
   When I fill in the new persona form and submit
   Then the persona is created
   Examples:
@@ -67,7 +68,8 @@ Scenario Outline: Assign personas to a content package
     | admin     |
 
 Scenario Outline: View personas for a content package
-  Given there is 1 persona
+  Given I am logged in as an <role>
+  And there is 1 persona
   And there is 1 content package using this persona
   When I edit the content package
   Then I should see the persona
@@ -76,5 +78,4 @@ Scenario Outline: View personas for a content package
     | role      |
     | developer |
     | admin     |
-    | Editor    |
-    | Author    |
+    | editor    |
