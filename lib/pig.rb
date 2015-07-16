@@ -48,5 +48,3 @@ module Pig
   end
 
 end
-
-Dir[File.dirname(__FILE__) + '/pig/permalinks/*.rb'].each {|file| require file }
