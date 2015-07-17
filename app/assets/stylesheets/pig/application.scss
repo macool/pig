@@ -10,6 +10,9 @@
 
    ======================================================================= */
 
+
+
+
 @import 'bootstrap/variables';
 
 @import 'sass/scaffold/reset';
@@ -33,6 +36,7 @@
 @import 'sass/general/images';
 @import 'sass/general/pagination';
 @import 'sass/general/progress-bars';
+@import 'sass/header/header';
 
 @import 'sass/search/dropdown';
 
@@ -40,6 +44,7 @@
 
 @import 'sass/redactor/general';
 @import 'sass/redactor/plugins';
+
 
 @import 'sass/sidebar/general';
 @import 'sass/sidebar/feed';
