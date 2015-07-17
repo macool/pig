@@ -3,7 +3,7 @@ module Pig
 
     belongs_to :content_package
     belongs_to :content_attribute
-    file_accessor :file
+    dragonfly_accessor :file
     geocoded_by :value
     after_validation :geocode_if_geocodeable
 

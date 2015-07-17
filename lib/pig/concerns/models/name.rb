@@ -5,6 +5,10 @@ module Pig
 
         extend ActiveSupport::Concern
 
+        included do
+          validates :first_name, :last_name, presence: true
+        end
+
         def full_name
           "#{first_name} #{last_name}".strip
         end

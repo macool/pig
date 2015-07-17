@@ -33,7 +33,7 @@ module Pig
     acts_as_taggable_on :taxonomy
     delegate :tag_categories, to: :content_type
 
-    image_accessor :meta_image
+    dragonfly_accessor :meta_image
 
     scope :root, -> { where(:parent_id => nil, :deleted_at => nil).order(:position, :id) }
     scope :published, -> { where(:status => 'published').where('publish_at <= ? OR publish_at IS NULL', Date.today) }

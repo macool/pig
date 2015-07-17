@@ -1,8 +1,11 @@
 module Pig
   class User < ActiveRecord::Base
-    
+
     include Pig::Concerns::Models::Roles
     include Pig::Concerns::Models::Name
+
+    validates :email, email: true, presence: true, uniqueness: true
+    validates :password, presence: true, on: :create
 
     devise :database_authenticatable,
            :recoverable,
@@ -10,7 +13,7 @@ module Pig
            :trackable,
            :validatable
 
-    image_accessor :image
+    dragonfly_accessor :image
     send(:validates_property,
          :format,
          of: :image,
