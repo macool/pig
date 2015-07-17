@@ -1,9 +1,9 @@
 module Pig
   class Persona < ActiveRecord::Base
-    
+
     belongs_to :group, :class_name => "PersonaGroup"
-    image_accessor :image
-    file_accessor :file
+    dragonfly_accessor :image
+    dragonfly_accessor :file
     validate :group_name_is_valid
 
     def benefits

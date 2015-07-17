@@ -1,14 +1,14 @@
 module Pig
   class NavigationItem < ActiveRecord::Base
-    
+
     belongs_to :parent, :class_name => 'NavigationItem'
     belongs_to :resource, :polymorphic => true
     has_one :grandparent, :through => :parent, :source => :parent
     has_many :children, -> { order(:position) }, :class_name => 'NavigationItem', :foreign_key => :parent_id
 
     attr_writer :link
-    image_accessor :image
-    image_accessor :logo
+    dragonfly_accessor :image
+    dragonfly_accessor :logo
 
     validates :title, :presence => true
 
