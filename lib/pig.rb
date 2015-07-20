@@ -47,4 +47,7 @@ module Pig
     yield(configuration)
   end
 
+  class UnknownAttributeTypeError < NameError
+  end
+
 end

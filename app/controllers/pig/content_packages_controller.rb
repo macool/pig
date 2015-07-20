@@ -184,9 +184,20 @@ module Pig
       # Because of the way pig uses method missing to update each content chunk just using
       # touch: true on the association would result in an update on the content package for every chunk
       # Because of this the updated_at time is set here
+
+      new_params = content_package_params
+
+      json = {content_chunks: {}}
+      @content_package.content_attributes.each do |x|
+        json[:content_chunks][x.slug] = {
+          field_type: x.field_type,
+          value: new_params.delete(x.slug)
+        }
+      end
+      new_params["content"] = json
+
       previous_status = @content_package.status
-      content_package_params["updated_at"] = DateTime.now
-      if @content_package.update_attributes(content_package_params)
+      if @content_package.update_attributes(new_params)
         flash[:notice] = "Updated \"#{@content_package}\""
         if @content_package.status == 'published' && previous_status != 'published'
           @content_package.published_at = DateTime.now

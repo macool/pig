@@ -43,6 +43,26 @@ module Pig
       array.empty? ? scoped : where(["#{table_name}.id NOT IN (?)", array])
     end)
 
+    after_initialize :build_content_chunk_methods
+
+    def build_content_chunk_methods
+      return unless self.content["content_chunks"]
+      self.content_attributes.each do |attribute|
+        self.class.send(:define_method, attribute.slug) do
+          chunk = self.content['content_chunks'][__method__.to_s]
+
+          factory = type_factory(attribute.field_type)
+          factory.build(chunk ? chunk['value'] : '') if factory
+        end
+      end
+    end
+
+    def type_factory(field_type)
+      Pig.const_get("#{field_type.capitalize}Type")
+      rescue NameError
+        raise Pig::UnknownAttributeTypeError, "Unable to find attribute type class #{field_type}"
+      end
+
     class << self
 
       def member_routes
@@ -302,67 +322,68 @@ module Pig
 
     end
 
-    def method_missing(method_sym, *arguments, &block)
-      attribute_name = method_sym.to_s.chomp('=').chomp('?')
-      if !method_sym.to_s.end_with?('=') && instance_variable_defined?("@#{attribute_name}".to_sym)
-        instance_variable_get("@#{attribute_name}".to_sym)
-      elsif content_type
-        if (file_attribute_name = find_file_attribute_name(attribute_name)) && (content_attribute = content_attributes.select{ |x| %w{image file}.include?(x.field_type) && x.slug == file_attribute_name }.first)
-          content_chunk = content_chunk_for_content_attribute(content_attribute, true)
-          file_method_sym = method_sym.to_s.sub(file_attribute_name, 'file')
-          if arguments.present?
-            content_chunk.send(file_method_sym, arguments.first)
-          else
-            content_chunk.send(file_method_sym)
-          end
-        elsif (tags_attribute_name = find_tags_attribute_name(attribute_name)) && (content_attribute = content_attributes.select{ |x| x.field_type == 'tags' && x.slug == tags_attribute_name.pluralize }.first)
-          tags_context = tags_attribute_name.pluralize
-          tag_context = tags_attribute_name.singularize
-          case method_sym.to_s
-          when "#{tag_context}_list"
-            tag_list_on(tags_context)
-          when "#{tag_context}_list="
-            set_tag_list_on(tags_context, arguments.first)
-          when "#{tags_context}_taggings"
-            taggings.where("#{ActsAsTaggableOn::Tagging.table_name}.context = ?", tags_context)
-          when tags_context
-            ActsAsTaggableOn::Tag.joins(:taggings).where("#{ActsAsTaggableOn::Tagging.table_name}.taggable_id = ? AND #{ActsAsTaggableOn::Tagging.table_name}.taggable_type = 'Pig::ContentPackage' AND #{ActsAsTaggableOn::Tagging.table_name}.context = ?", id, tags_context)
-          else
-            super
-          end
-        elsif content_attribute = content_attributes.select{|x| x.slug == attribute_name}.first
-          if method_sym.to_s.end_with?('=')
-            set_value_for_content_attribute(content_attribute, arguments.first)
-          else
-            get_value_for_content_attribute(content_attribute)
-          end
-        elsif content_attribute = content_attributes.select{ |x| x.field_type == 'embeddable' && x.slug == attribute_name.chomp('_url') }.first
-          if method_sym.to_s.end_with?('=')
-            set_value_for_content_attribute(content_attribute, arguments.first, 'url')
-          else
-            get_value_for_content_attribute(content_attribute, 'url')
-          end
-        elsif content_attribute = content_attributes.select{ |x| x.field_type == 'image' && x.slug == attribute_name.chomp('_path')}.first
-          get_value_for_content_attribute(content_attribute, 'path')
-        elsif content_attribute = content_attributes.select{ |x| x.field_type == 'location' && x.slug == attribute_name.chomp('_lat_lng') }.first
-          if method_sym.to_s.end_with?('=')
-            set_value_for_content_attribute(content_attribute, arguments.first, 'lat_lng')
-          else
-            get_value_for_content_attribute(content_attribute, 'lat_lng')
-          end
-        elsif content_attribute = content_attributes.select{|x| x.slug == attribute_name.chomp('_id') }.first
-          if method_sym.to_s.end_with?('=')
-            set_value_for_content_attribute(content_attribute, arguments.first, 'id')
-          else
-            get_value_for_content_attribute(content_attribute, 'id')
-          end
-        else
-          super
-        end
-      else
-        super
-      end
-    end
+
+    # def method_missing(method_sym, *arguments, &block)
+    #   attribute_name = method_sym.to_s.chomp('=').chomp('?')
+    #   if !method_sym.to_s.end_with?('=') && instance_variable_defined?("@#{attribute_name}".to_sym)
+    #     instance_variable_get("@#{attribute_name}".to_sym)
+    #   elsif content_type
+    #     if (file_attribute_name = find_file_attribute_name(attribute_name)) && (content_attribute = content_attributes.select{ |x| %w{image file}.include?(x.field_type) && x.slug == file_attribute_name }.first)
+    #       content_chunk = content_chunk_for_content_attribute(content_attribute, true)
+    #       file_method_sym = method_sym.to_s.sub(file_attribute_name, 'file')
+    #       if arguments.present?
+    #         content_chunk.send(file_method_sym, arguments.first)
+    #       else
+    #         content_chunk.send(file_method_sym)
+    #       end
+    #     elsif (tags_attribute_name = find_tags_attribute_name(attribute_name)) && (content_attribute = content_attributes.select{ |x| x.field_type == 'tags' && x.slug == tags_attribute_name.pluralize }.first)
+    #       tags_context = tags_attribute_name.pluralize
+    #       tag_context = tags_attribute_name.singularize
+    #       case method_sym.to_s
+    #       when "#{tag_context}_list"
+    #         tag_list_on(tags_context)
+    #       when "#{tag_context}_list="
+    #         set_tag_list_on(tags_context, arguments.first)
+    #       when "#{tags_context}_taggings"
+    #         taggings.where("#{ActsAsTaggableOn::Tagging.table_name}.context = ?", tags_context)
+    #       when tags_context
+    #         ActsAsTaggableOn::Tag.joins(:taggings).where("#{ActsAsTaggableOn::Tagging.table_name}.taggable_id = ? AND #{ActsAsTaggableOn::Tagging.table_name}.taggable_type = 'Pig::ContentPackage' AND #{ActsAsTaggableOn::Tagging.table_name}.context = ?", id, tags_context)
+    #       else
+    #         super
+    #       end
+    #     elsif content_attribute = content_attributes.select{|x| x.slug == attribute_name}.first
+    #       if method_sym.to_s.end_with?('=')
+    #         set_value_for_content_attribute(content_attribute, arguments.first)
+    #       else
+    #         get_value_for_content_attribute(content_attribute)
+    #       end
+    #     elsif content_attribute = content_attributes.select{ |x| x.field_type == 'embeddable' && x.slug == attribute_name.chomp('_url') }.first
+    #       if method_sym.to_s.end_with?('=')
+    #         set_value_for_content_attribute(content_attribute, arguments.first, 'url')
+    #       else
+    #         get_value_for_content_attribute(content_attribute, 'url')
+    #       end
+    #     elsif content_attribute = content_attributes.select{ |x| x.field_type == 'image' && x.slug == attribute_name.chomp('_path')}.first
+    #       get_value_for_content_attribute(content_attribute, 'path')
+    #     elsif content_attribute = content_attributes.select{ |x| x.field_type == 'location' && x.slug == attribute_name.chomp('_lat_lng') }.first
+    #       if method_sym.to_s.end_with?('=')
+    #         set_value_for_content_attribute(content_attribute, arguments.first, 'lat_lng')
+    #       else
+    #         get_value_for_content_attribute(content_attribute, 'lat_lng')
+    #       end
+    #     elsif content_attribute = content_attributes.select{|x| x.slug == attribute_name.chomp('_id') }.first
+    #       if method_sym.to_s.end_with?('=')
+    #         set_value_for_content_attribute(content_attribute, arguments.first, 'id')
+    #       else
+    #         get_value_for_content_attribute(content_attribute, 'id')
+    #       end
+    #     else
+    #       super
+    #     end
+    #   else
+    #     super
+    #   end
+    # end
 
     def required_attributes
       return true if new_record? || content_type.nil?
