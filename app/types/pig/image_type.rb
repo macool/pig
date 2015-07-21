@@ -1,22 +1,16 @@
 module Pig
-  class ImageType
-
-    # dragonfly_accessor :file
-
-    def file_uid
-      # read_attribute(:value)
-      "2015/01/19/10/59/38/589/family.png"
+  class ImageType < Type
+    def get
+      Dragonfly.app.fetch(super)
     end
 
-    def file_uid=(uid)
-      self.value = uid
+    def decorate(content_package)
+      super
+      content_package.class.send(:extend, Dragonfly::Model)
+      content_package.class.send(:dragonfly_accessor, @slug.to_sym)
+      content_package.class.send(:define_method, "#{@slug}_uid") do
+        @content_value
+      end
     end
-
-    def self.build(value)
-      # TODO
-      puts "Building image"
-      Dragonfly.app.fetch('2015/01/19/10/59/38/589/puppy.jpg')
-    end
-
   end
 end

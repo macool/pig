@@ -1,10 +1,7 @@
 module Pig
-  class StringType
-
-    def self.build(value)
-      puts "Building string"
-      value.try(:html_safe)
+  class StringType < Type
+    def get
+      super.try(:html_safe)
     end
-
   end
 end

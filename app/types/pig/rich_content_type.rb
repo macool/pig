@@ -1,10 +1,7 @@
 module Pig
-  class RichContentType
-
-    def self.build(value)
-      # TODO
-      "NOT IMPLEMENTED"
+  class RichContentType < Type
+    def get
+      super.html_safe
     end
-
   end
 end

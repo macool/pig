@@ -1,9 +1,9 @@
 # Require devise before engine to override views in engine
 require 'devise'
 
-require "pig/permalinks/url_for_patch"
-require "pig/engine"
-require "pig/config"
+require 'pig/permalinks/url_for_patch'
+require 'pig/engine'
+require 'pig/config'
 require 'stringex'
 require 'formtastic-bootstrap'
 require 'rack/cache'
@@ -26,19 +26,20 @@ require 'cells-haml'
 require 'pig/link'
 require 'pig/permalinkable'
 require 'pig/core/plugins'
+require 'pig/core/image_downloader'
 
 # Concerns
-require "pig/concerns/models/core"
-require "pig/concerns/models/roles"
-require "pig/concerns/models/name"
+require 'pig/concerns/models/core'
+require 'pig/concerns/models/roles'
+require 'pig/concerns/models/name'
 
 module Pig
-
   class << self
     attr_writer :configuration
   end
 
   module_function
+
   def configuration
     @configuration ||= Config.new
   end
@@ -49,5 +50,4 @@ module Pig
 
   class UnknownAttributeTypeError < NameError
   end
-
 end

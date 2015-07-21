@@ -1,11 +1,7 @@
 module Pig
-  class LinkType
-
-    def self.build(value)
-      # TODO
-      puts "Building link"
-      "NOT IMPLEMENTED"
+  class LinkType < Type
+    def get
+      Pig::Link.new(super)
     end
-
   end
 end
