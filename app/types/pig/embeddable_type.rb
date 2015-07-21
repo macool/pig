@@ -1,10 +1,11 @@
 module Pig
-  class EmbeddableType
-
-    def self.build(value)
-      # TODO
-      "NOT IMPLEMENTED"
+  class EmbeddableType < Type
+    def decorate(content_package)
+      super
+      slug = @slug
+      content_package.class.send(:define_method, "#{@slug}_url=") do |value|
+        send("#{slug}=", value)
+      end
     end
-
   end
 end

@@ -1,10 +1,4 @@
 module Pig
-  class FileType
-
-    def self.build(value)
-      # TODO
-      "NOT IMPLEMENTEDabcs"
-    end
-
+  class FileType < Type
   end
 end

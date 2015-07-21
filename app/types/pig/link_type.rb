@@ -1,7 +1,7 @@
 module Pig
   class LinkType < Type
-    def get
-      Pig::Link.new(super)
+    def get(content_package)
+      Pig::Link.new(super(content_package))
     end
   end
 end

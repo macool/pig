@@ -187,9 +187,6 @@ module Pig
 
       previous_status = @content_package.status
       
-      # https://github.com/rails/rails/issues/6127
-      @content_package.content_will_change! if Rails.version.to_f < 4.2
-
       if @content_package.update_attributes(content_package_params)
         flash[:notice] = "Updated \"#{@content_package}\""
         if @content_package.status == 'published' && previous_status != 'published'

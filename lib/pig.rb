@@ -1,7 +1,7 @@
 # Require devise before engine to override views in engine
 require 'devise'
 
-require 'pig/permalinks/url_for_patch'
+# require 'pig/permalinks/url_for_patch'
 require 'pig/engine'
 require 'pig/config'
 require 'stringex'

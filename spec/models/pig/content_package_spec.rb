@@ -2,8 +2,9 @@ require 'rails_helper'
 
 module Pig
   RSpec.describe ContentPackage do
-
-    let (:content_package) { FactoryGirl.build(:content_package) }
+    let(:content_package) do
+      FactoryGirl.build(:content_package)
+    end
     it { should delegate_method(:viewless?).to(:content_type) }
     it { should delegate_method(:package_name).to(:content_type) }
     it { should delegate_method(:missing_view?).to(:content_type) }

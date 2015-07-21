@@ -85,7 +85,7 @@ FactoryGirl.define do
   end
 
   factory :persona_group, class: Pig::PersonaGroup, :aliases => [:group] do
-    sequence(:name){|n| "Persona group #{n}" }
+    sequence(:name) { |n| "Persona group #{n}" }
   end
 
   factory :persona, class: Pig::Persona do

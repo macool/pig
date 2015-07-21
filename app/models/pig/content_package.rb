@@ -45,25 +45,39 @@ module Pig
     after_initialize :build_content_chunk_methods
 
     def build_content_chunk_methods
-      return unless content['content_chunks']
+      return if content_type.nil?
+      content['content_chunks'] ||= {}
       content_attributes.each do |attribute|
-        type_factory(attribute.field_type).new(self, attribute.slug)
+        begin
+          type_factory(attribute.field_type).new(self, attribute.slug, attribute.field_type)
+        rescue ArgumentError
+          binding.pry
+        end
       end
+    end
+
+    def content=(value)
+      super(value)
+      # https://github.com/rails/rails/issues/6127
+      content_will_change! if Rails.version.to_f < 4.2
+    end
+
+    def content_type=(value)
+      super(value)
+      build_content_chunk_methods
     end
 
     def convert_chunks_to_content!
-      json = { content_chunks: {} }
       content_chunks.each do |content_chunk|
         slug = content_chunk.content_attribute.slug
         value = content_chunk.attributes['value']
-        field_type = content_chunk.content_attribute.field_type
-        json[:content_chunks][slug] = { field_type: field_type, value: value }
+        send("#{slug}=", value)
       end
-      update_attribute(:content, json)
+      save
     end
 
     def type_factory(field_type)
-      Pig.const_get("#{field_type.classify}Type")
+      Pig.const_get("#{field_type.camelize}Type")
       rescue NameError
         raise Pig::UnknownAttributeTypeError, "Unable to find attribute type class #{field_type}"
       end
