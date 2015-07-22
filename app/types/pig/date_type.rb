@@ -1,11 +1,4 @@
 module Pig
-  class DateType
-
-    def self.build(value)
-      # TODO
-      puts "Building date"
-      "NOT IMPLEMENTED"
-    end
-
+  class DateType < Type
   end
 end

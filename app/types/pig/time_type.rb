@@ -1,10 +1,4 @@
 module Pig
-  class TimeType
-
-    def self.build(value)
-      # TODO
-      "NOT IMPLEMENTED"
-    end
-
+  class TimeType < Type
   end
 end

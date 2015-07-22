@@ -183,6 +183,16 @@ module Pig
       end
     end
 
+    describe 'date attributes' do
+      it 'defaults to empty string'
+      it 'can be set'
+    end
+
+    describe 'time attributes' do
+      it 'defaults to empty string'
+      it 'can be set'
+    end
+
     describe 'boolean attributes' do
       it 'can be got' do
         expect(content_package.special).to eq(false)
