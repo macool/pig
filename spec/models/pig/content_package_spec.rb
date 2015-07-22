@@ -133,7 +133,7 @@ module Pig
 
     describe 'link attributes' do
       it 'can be set as a URL' do
-        url = "http://yoomee.com"
+        url = 'http://yoomee.com'
         content_package.link = url
         expect(content_package.link.value).to eq(url)
       end

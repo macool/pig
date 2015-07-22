@@ -1,18 +1,13 @@
 module Pig
   class TagsType < Type
     def decorate(content_package)
-      super
-      slug = @slug
-      content_package.class.send(:define_method, "#{@slug.singularize}_list=") do |value|
-        send("#{slug}=", value)
-      end
-      content_package.class.send(:define_method, "#{@slug.singularize}_list") do
-        send(slug)
-      end
+      super(content_package)
+      content_package.class.send(:alias_method, "#{@slug.singularize}_list=", "#{@slug}=")
+      content_package.class.send(:alias_method, "#{@slug.singularize}_list", @slug)
     end
 
-    def get
-      content_value.split(',')
+    def get(content_package)
+      content_value(content_package).split(',')
     end
   end
 end
