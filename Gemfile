@@ -7,7 +7,7 @@ gemspec
 
 
 group :test do
-  gem "sqlite3"
+  gem "pg"
   gem 'therubyracer'
   gem 'simplecov', :require => false
 end
