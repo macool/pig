@@ -115,6 +115,9 @@ module Pig
       it 'can be got' do
         expect{ content_package.video }.not_to raise_error
       end
+      it 'can be got via _url' do
+        expect{ content_package.video_url }.not_to raise_error
+      end
       it 'can be set' do
         expect{ content_package.video_url = "http://www.youtube.com/watch?v=qvmc9d0dlOg" }.not_to raise_error
       end
@@ -144,6 +147,42 @@ module Pig
       end
     end
 
+    describe 'text attributes' do
+      it 'defaults to empty string' do
+        expect(content_package.text).to eq('')
+      end
+      it 'can be set' do
+        content_package.text = 'Foo'
+        content_package.save
+        content_package.reload
+        expect(content_package.text).to eq('Foo')
+      end
+    end
+
+    describe 'string attributes' do
+      it 'defaults to empty string' do
+        expect(content_package.title).to eq('')
+      end
+      it 'can be set' do
+        content_package.title = 'Foo'
+        content_package.save
+        content_package.reload
+        expect(content_package.title).to eq('Foo')
+      end
+    end
+
+    describe 'rich content attributes' do
+      it 'defaults to empty string' do
+        expect(content_package.rich_content).to eq('')
+      end
+      it 'can be set' do
+        content_package.rich_content = '<p>Foo</p>'
+        content_package.save
+        content_package.reload
+        expect(content_package.rich_content).to eq('<p>Foo</p>')
+      end
+    end
+
     describe 'boolean attributes' do
       it 'can be got' do
         expect(content_package.special).to eq(false)
@@ -162,11 +201,11 @@ module Pig
         expect(content_package.skill_list).to eq([])
       end
       it 'can be set' do
-        skills = %w{shooting hunting fishing}
+        skills = %w(shooting hunting fishing)
         content_package.skill_list = skills.join(',')
         content_package.save
         expect(content_package.skill_list).to eq(skills)
-        expect(content_package.skills.map(&:to_s)).to eq(%w{shooting hunting fishing})
+        expect(content_package.skills.map(&:to_s)).to eq(%w(shooting hunting fishing))
       end
     end
 

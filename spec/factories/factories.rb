@@ -18,7 +18,8 @@ FactoryGirl.define do
           FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'special', :name => 'Is this special?', :field_type => 'boolean', :description => 'Yes or no'),
           FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'skills', :name => 'Skills', :field_type => 'tags', :description => 'list some skills'),
           FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'person', :name => 'Person', :field_type => 'user', :description => 'Choose someone'),
-          FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'geo', :name => 'Location', :field_type => 'location', :description => 'Pick a location')
+          FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'geo', :name => 'Location', :field_type => 'location', :description => 'Pick a location'),
+          FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'rich_content', :name => 'Rich Content', :field_type => 'rich_content', :description => 'Enter some rich content')
         ]
       end
     end

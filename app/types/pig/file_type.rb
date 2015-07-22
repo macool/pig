@@ -1,4 +1,4 @@
 module Pig
-  class FileType < Type
+  class FileType < ImageType
   end
 end

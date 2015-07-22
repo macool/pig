@@ -25,6 +25,7 @@ module Pig
     validates :name, :content_type, :requested_by, :review_frequency, :presence => true
     validate :required_attributes
     validate :embeddable_attributes
+    validate :lineage
 
     delegate :content_attributes, :package_name, :view_name, :missing_view?, :viewless?, :to => :content_type
 
@@ -257,6 +258,11 @@ module Pig
     end
 
     private
+
+    def lineage
+      return unless parent == self
+      errors.add(:parent, 'can\'t be self')
+    end
 
     def content_chunk_for_content_attribute(content_attribute, initialise_if_nil = false)
       content_chunk = self.content_chunks.select{|c| c.content_attribute_id == content_attribute.id }.first
