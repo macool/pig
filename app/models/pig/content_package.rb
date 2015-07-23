@@ -47,7 +47,6 @@ module Pig
     def build_content_chunk_methods
       return if content_type.nil?
       content_attributes.each do |attribute|
-        binding.pry
         type_factory(attribute.field_type).new(self, attribute.slug, attribute.field_type)
       end
     end
@@ -66,7 +65,6 @@ module Pig
         begin
         send("#{slug}=", value)
         rescue SystemStackError, NoMethodError
-          binding.pry
         end
       end
       self.editing_user = Pig::User.where(role: 'developer').first

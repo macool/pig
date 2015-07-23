@@ -24,7 +24,7 @@ class CreatePigContentPackages < ActiveRecord::Migration
       t.string :meta_keywords
       t.string :meta_image_uid
       t.string :meta_image_name
-      t.json :content, null: false, default: '{}'
+      t.json :json_content, null: false, default: '{}'
 
 
       t.timestamps

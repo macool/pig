@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 20150608151718) do
     t.string   "meta_keywords"
     t.string   "meta_image_uid"
     t.string   "meta_image_name"
-    t.json     "content",          default: {},      null: false
+    t.json     "json_content",     default: {},      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

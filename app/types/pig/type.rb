@@ -21,23 +21,23 @@ module Pig
     end
 
     def set(content_package, value)
-      content_package.content['content_chunks'] ||= {}
-      content_package.content['content_chunks'][@slug] = {
+      content_package.json_content['content_chunks'] ||= {}
+      content_package.json_content['content_chunks'][@slug] = {
         'value' => value,
         'field_type' => @field_type
       }
-      content_package.content_will_change! if Rails.version.to_f < 4.2
+      content_package.json_content_will_change! if Rails.version.to_f < 4.2
     end
 
     def content_value(content_package)
-      content_package.content['content_chunks'] ||= {}
-      content_package.content['content_chunks'][@slug] ||= {}
-      content_package.content['content_chunks'][@slug]['value'] || ''
+      content_package.json_content['content_chunks'] ||= {}
+      content_package.json_content['content_chunks'][@slug] ||= {}
+      content_package.json_content['content_chunks'][@slug]['value'] || ''
     end
 
     def content_chunk(content_package)
-      content_package.content['content_chunks'] ||= {}
-      content_package.content['content_chunks'][@slug] ||= {}
+      content_package.json_content['content_chunks'] ||= {}
+      content_package.json_content['content_chunks'][@slug] ||= {}
     end
   end
 end

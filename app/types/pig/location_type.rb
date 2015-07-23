@@ -11,8 +11,8 @@ module Pig
 
     def set(content_package, value)
       lat, lng = Geocoder.coordinates(value)
-      content_package.content['content_chunks'] ||= {}
-      content_package.content['content_chunks'][@slug] = {
+      content_package.json_content['content_chunks'] ||= {}
+      content_package.json_content['content_chunks'][@slug] = {
         'value' => value,
         'field_type' => @field_type,
         'lat' => lat,

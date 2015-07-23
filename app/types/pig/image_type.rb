@@ -16,7 +16,7 @@ module Pig
           'value' => value,
           'field_type' => field_type
         }
-        content_package.content_will_change! if Rails.version.to_f < 4.2
+        content_package.json_content_will_change! if Rails.version.to_f < 4.2
       end
     end
 
