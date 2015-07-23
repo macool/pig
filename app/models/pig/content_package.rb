@@ -62,13 +62,19 @@ module Pig
         next if content_chunk.content_attribute.nil?
         slug = content_chunk.content_attribute.slug
         value = content_chunk.attributes['value']
+        field_type = content_chunk.content_attribute.field_type
         begin
-        send("#{slug}=", value)
+          if field_type.in?(%w( image file ))
+            send("#{slug}_uid=", value)
+          else
+            send("#{slug}=", value)
+          end
         rescue SystemStackError, NoMethodError
+          return false
         end
       end
       self.editing_user = Pig::User.where(role: 'developer').first
-      # save
+      save
     end
 
       def self.convert_all_chunks_to_content!
@@ -82,7 +88,7 @@ module Pig
           'Success'
         else
           puts 'The following packages failed to convert:'
-          failed
+          failed.collect(&:id)
         end
       end
 
