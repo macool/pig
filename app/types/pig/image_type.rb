@@ -5,12 +5,12 @@ module Pig
       slug = @slug
       field_type = @field_type
       super(content_package)
-      content_package.class.send(:extend, Dragonfly::Model)
-      content_package.class.send(:dragonfly_accessor, @slug.to_sym)
-      content_package.class.send(:define_method, "#{@slug}_uid") do
+      # content_package.class.send(:extend, Dragonfly::Model)
+      # content_package.class.send(:dragonfly_accessor, @slug.to_sym)
+      content_package.define_singleton_method("#{@slug}_uid") do
         this.content_value(content_package)
       end
-      content_package.class.send(:define_method, "#{@slug}_uid=") do |value|
+      content_package.define_singleton_method("#{@slug}_uid=") do |value|
         content_package.content['content_chunks'] ||= {}
         content_package.content['content_chunks'][slug] = {
           'value' => value,

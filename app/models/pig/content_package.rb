@@ -1,7 +1,6 @@
 module Pig
   class ContentPackage < ActiveRecord::Base
 
-    # include YmCore::Model
     include Pig::Permalinkable
     include Pig::Concerns::Recordable
 
@@ -48,14 +47,9 @@ module Pig
     def build_content_chunk_methods
       return if content_type.nil?
       content_attributes.each do |attribute|
+        binding.pry
         type_factory(attribute.field_type).new(self, attribute.slug, attribute.field_type)
       end
-    end
-
-    def content=(value)
-      super(value)
-      # https://github.com/rails/rails/issues/6127
-      content_will_change! if Rails.version.to_f < 4.2
     end
 
     def content_type=(value)
@@ -64,13 +58,35 @@ module Pig
     end
 
     def convert_chunks_to_content!
+      return false if content_type.nil?
       content_chunks.each do |content_chunk|
+        next if content_chunk.content_attribute.nil?
         slug = content_chunk.content_attribute.slug
         value = content_chunk.attributes['value']
+        begin
         send("#{slug}=", value)
+        rescue SystemStackError, NoMethodError
+          binding.pry
+        end
       end
-      save
+      self.editing_user = Pig::User.where(role: 'developer').first
+      # save
     end
+
+      def self.convert_all_chunks_to_content!
+        failed = []
+        all.each do |content_package|
+          unless content_package.convert_chunks_to_content!
+            failed << content_package
+          end
+        end
+        if failed.empty?
+          'Success'
+        else
+          puts 'The following packages failed to convert:'
+          failed
+        end
+      end
 
     def type_factory(field_type)
       Pig.const_get("#{field_type.camelize}Type")

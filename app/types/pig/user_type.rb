@@ -3,9 +3,12 @@ module Pig
   class UserType < Type
     def decorate(content_package)
       this = self
+      slug = @slug
       super(content_package)
-      content_package.class.send(:alias_method, "#{@slug}_id=", "#{@slug}=")
-      content_package.class.send(:define_method, "#{@slug}_id") do
+      content_package.define_singleton_method("#{@slug}_id=") do |value|
+        send("#{slug}=", value)
+      end
+      content_package.define_singleton_method("#{@slug}_id") do
         this.content_value(self)
       end
     end

@@ -10,8 +10,8 @@ module Pig
 
     def decorate(content_package)
       this = self
-      content_package.class.send(:define_method, @slug) { this.get(self) }
-      content_package.class.send(:define_method, "#{@slug}=") do |value|
+      content_package.define_singleton_method(@slug) { this.get(self) }
+      content_package.define_singleton_method("#{@slug}=") do |value|
         this.set(self, value)
       end
     end

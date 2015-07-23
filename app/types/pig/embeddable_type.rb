@@ -3,8 +3,10 @@ module Pig
     def decorate(content_package)
       super
       slug = @slug
-      content_package.class.send(:alias_method, "#{@slug}_url", @slug)
-      content_package.class.send(:define_method, "#{@slug}_url=") do |value|
+      content_package.define_singleton_method("#{@slug}_url") do
+        send(slug)
+      end
+      content_package.define_singleton_method("#{@slug}_url=") do |value|
         send("#{slug}=", value)
       end
     end

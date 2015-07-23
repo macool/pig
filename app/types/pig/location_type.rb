@@ -3,7 +3,7 @@ module Pig
     def decorate(content_package)
       this = self
       super(content_package)
-      content_package.class.send(:define_method, "#{@slug}_lat_lng") do
+      content_package.define_singleton_method("#{@slug}_lat_lng") do
         chunk = this.content_chunk(content_package)
         [chunk['lat'] || '', chunk['lng'] || '']
       end
