@@ -95,6 +95,9 @@ module Pig
       it 'can be got' do
         expect{ content_package.photo }.not_to raise_error
       end
+      it 'can be got by photo_uid' do
+        expect{ content_package.photo_uid }.not_to raise_error
+      end
       it 'can be set' do
         expect{ content_package.photo = File.read(File.join(Rails.root, 'public/dragonfly/defaults/user.jpg')) }.not_to raise_error
       end
@@ -102,10 +105,17 @@ module Pig
         content_package.photo = File.read(File.join(Rails.root, 'public/dragonfly/defaults/user.jpg'))
         expect(content_package.photo.thumb('100x100#').url).to match(/^\/media\//)
       end
-      it 'can be removed' do
+      it 'can be removed by calling remove_photo' do
         content_package.photo = File.read(File.join(Rails.root, 'public/dragonfly/defaults/user.jpg'))
         content_package.save
-        content_package.remove_photo = true
+        content_package.remove_photo
+        content_package.save
+        expect(content_package.photo).to be_nil
+      end
+      it 'can be removed by setiing photo_uid to nil' do
+        content_package.photo = File.read(File.join(Rails.root, 'public/dragonfly/defaults/user.jpg'))
+        content_package.save
+        content_package.photo_uid = nil
         content_package.save
         expect(content_package.photo).to be_nil
       end
