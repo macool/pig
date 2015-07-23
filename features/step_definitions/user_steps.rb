@@ -113,3 +113,8 @@ When(/^I change the role of the user to (.*)$/) do |role|
   select(role, from: 'user_role')
   click_button('Save')
 end
+
+When(/^I log out$/) do
+  find('.cms-nav-user').click
+  click_link 'Sign out'
+end

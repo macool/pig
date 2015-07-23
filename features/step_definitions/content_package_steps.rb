@@ -386,3 +386,8 @@ end
 Then(/^the content package should move to the new parent$/) do
   @content_package.parent = @parent_content_package
 end
+
+When(/^I mark the content package as published$/) do
+  visit pig.edit_content_package_path(@content_package)
+  select('Published', from: "Status")
+end
