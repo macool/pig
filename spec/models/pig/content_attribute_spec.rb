@@ -15,6 +15,12 @@ module Pig
     end
 
     describe 'slug' do
+
+      it 'cannot be equal to json_content' do
+        content_attribute.slug = 'json_content'
+        expect(content_attribute).to_not be_valid
+      end
+
       it 'is set after validation' do
         content_attribute.slug = nil
         content_attribute.name = 'Apple'
