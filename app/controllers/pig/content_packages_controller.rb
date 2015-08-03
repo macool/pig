@@ -184,20 +184,16 @@ module Pig
       # Because of the way pig uses method missing to update each content chunk just using
       # touch: true on the association would result in an update on the content package for every chunk
       # Because of this the updated_at time is set here
+
       previous_status = @content_package.status
-      content_package_params["updated_at"] = DateTime.now
+      
       if @content_package.update_attributes(content_package_params)
         flash[:notice] = "Updated \"#{@content_package}\""
         if @content_package.status == 'published' && previous_status != 'published'
           @content_package.published_at = DateTime.now
           @content_package.save
         end
-        # remove_abandoned_sir_trevor_images
-        if @content_package.missing_view?
-          redirect_to content_packages_path(:open => @content_package)
-        else
-          redirect_to content_package_path(@content_package)
-        end
+        redirect_to pig.edit_content_package_path(@content_package)
       else
         #TODO change to flash[:error] when the style has been made
         flash[:notice] = "Sorry there was a problem saving this page: #{@content_package.errors.full_messages.to_sentence}"

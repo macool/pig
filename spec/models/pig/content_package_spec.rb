@@ -2,8 +2,9 @@ require 'rails_helper'
 
 module Pig
   RSpec.describe ContentPackage do
-
-    let (:content_package) { FactoryGirl.build(:content_package) }
+    let(:content_package) do
+      FactoryGirl.build(:content_package)
+    end
     it { should delegate_method(:viewless?).to(:content_type) }
     it { should delegate_method(:package_name).to(:content_type) }
     it { should delegate_method(:missing_view?).to(:content_type) }
@@ -94,6 +95,9 @@ module Pig
       it 'can be got' do
         expect{ content_package.photo }.not_to raise_error
       end
+      it 'can be got by photo_uid' do
+        expect{ content_package.photo_uid }.not_to raise_error
+      end
       it 'can be set' do
         expect{ content_package.photo = File.read(File.join(Rails.root, 'public/dragonfly/defaults/user.jpg')) }.not_to raise_error
       end
@@ -101,10 +105,17 @@ module Pig
         content_package.photo = File.read(File.join(Rails.root, 'public/dragonfly/defaults/user.jpg'))
         expect(content_package.photo.thumb('100x100#').url).to match(/^\/media\//)
       end
-      it 'can be removed' do
+      it 'can be removed by calling remove_photo' do
         content_package.photo = File.read(File.join(Rails.root, 'public/dragonfly/defaults/user.jpg'))
         content_package.save
-        content_package.remove_photo = true
+        content_package.remove_photo
+        content_package.save
+        expect(content_package.photo).to be_nil
+      end
+      it 'can be removed by setiing photo_uid to nil' do
+        content_package.photo = File.read(File.join(Rails.root, 'public/dragonfly/defaults/user.jpg'))
+        content_package.save
+        content_package.photo_uid = nil
         content_package.save
         expect(content_package.photo).to be_nil
       end
@@ -113,6 +124,9 @@ module Pig
     describe 'embeddable attributes' do
       it 'can be got' do
         expect{ content_package.video }.not_to raise_error
+      end
+      it 'can be got via _url' do
+        expect{ content_package.video_url }.not_to raise_error
       end
       it 'can be set' do
         expect{ content_package.video_url = "http://www.youtube.com/watch?v=qvmc9d0dlOg" }.not_to raise_error
@@ -132,7 +146,7 @@ module Pig
 
     describe 'link attributes' do
       it 'can be set as a URL' do
-        url = "http://yoomee.com"
+        url = 'http://yoomee.com'
         content_package.link = url
         expect(content_package.link.value).to eq(url)
       end
@@ -141,6 +155,52 @@ module Pig
         content_package.link = package_2.id
         expect(content_package.link.value).to eq(package_2)
       end
+    end
+
+    describe 'text attributes' do
+      it 'defaults to empty string' do
+        expect(content_package.text).to eq('')
+      end
+      it 'can be set' do
+        content_package.text = 'Foo'
+        content_package.save
+        content_package.reload
+        expect(content_package.text).to eq('Foo')
+      end
+    end
+
+    describe 'string attributes' do
+      it 'defaults to empty string' do
+        expect(content_package.title).to eq('')
+      end
+      it 'can be set' do
+        content_package.title = 'Foo'
+        content_package.save
+        content_package.reload
+        expect(content_package.title).to eq('Foo')
+      end
+    end
+
+    describe 'rich content attributes' do
+      it 'defaults to empty string' do
+        expect(content_package.rich_content).to eq('')
+      end
+      it 'can be set' do
+        content_package.rich_content = '<p>Foo</p>'
+        content_package.save
+        content_package.reload
+        expect(content_package.rich_content).to eq('<p>Foo</p>')
+      end
+    end
+
+    describe 'date attributes' do
+      it 'defaults to empty string'
+      it 'can be set'
+    end
+
+    describe 'time attributes' do
+      it 'defaults to empty string'
+      it 'can be set'
     end
 
     describe 'boolean attributes' do
@@ -161,11 +221,11 @@ module Pig
         expect(content_package.skill_list).to eq([])
       end
       it 'can be set' do
-        skills = %w{shooting hunting fishing}
+        skills = %w(shooting hunting fishing)
         content_package.skill_list = skills.join(',')
         content_package.save
         expect(content_package.skill_list).to eq(skills)
-        expect(content_package.skills.map(&:to_s)).to eq(%w{shooting hunting fishing})
+        expect(content_package.skills.map(&:to_s)).to eq(%w(shooting hunting fishing))
       end
     end
 

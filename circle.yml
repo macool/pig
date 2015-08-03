@@ -1,0 +1,6 @@
+machine:
+  pre:
+    - curl -k -L -o phantomjs.tar.bz2 https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
+    - tar -jxf phantomjs.tar.bz2
+    - sudo rm -rf /usr/local/bin/phantomjs
+    - sudo mv phantomjs /usr/local/bin/

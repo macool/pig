@@ -6,7 +6,12 @@ module Pig
     after_validation :set_meta_title, :if => :meta?
     after_validation :set_slug
     validates :slug, :name, :field_type, :presence => true
-    validates :slug, :name, :uniqueness => { :scope => :content_type_id }
+    validates :slug, :name,
+      uniqueness: { scope: :content_type_id },
+      exclusion: {
+        in: Pig::ContentPackage.methods + Pig::ContentPackage.column_names,
+        message: "%{value} is a reserved word."
+      }
     belongs_to :resource_content_type, :class_name => 'ContentType'
 
 

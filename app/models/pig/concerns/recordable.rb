@@ -27,6 +27,7 @@ module Pig
       end
 
       def record_activity!(user, text)
+        return unless user
         self.activity_items.create(user_id: user.id, text: text)
       end
     end

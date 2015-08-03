@@ -15,8 +15,10 @@ Scenario: Viewing a list of my content packages
   When I go to the sitemap
   Then I can edit the content packages
 
-Scenario: Set content package as ready published
+Scenario: Set content package as published
   Given I am logged in as an editor
   And there is 1 content package assigned to me
   When I mark the content package as published
-  Then it is visible on the site
+  And I log out
+  And I go to the content package
+  Then I should see all its content

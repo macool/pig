@@ -1,7 +1,6 @@
 module Pig
   class ContentPackage < ActiveRecord::Base
 
-    # include YmCore::Model
     include Pig::Permalinkable
     include Pig::Concerns::Recordable
 
@@ -19,13 +18,13 @@ module Pig
 
     before_create :set_next_review
     before_save :set_status
-    after_save :save_content_chunks
     after_save :invalidate_parent_cache
     after_destroy :destroy_parent_cache
 
     validates :name, :content_type, :requested_by, :review_frequency, :presence => true
     validate :required_attributes
     validate :embeddable_attributes
+    validate :lineage
 
     delegate :content_attributes, :package_name, :view_name, :missing_view?, :viewless?, :to => :content_type
 
@@ -33,7 +32,7 @@ module Pig
     acts_as_taggable_on :taxonomy
     delegate :tag_categories, to: :content_type
 
-    image_accessor :meta_image
+    dragonfly_accessor :meta_image
 
     scope :root, -> { where(:parent_id => nil, :deleted_at => nil).order(:position, :id) }
     scope :published, -> { where(:status => 'published').where('publish_at <= ? OR publish_at IS NULL', Date.today) }
@@ -42,6 +41,62 @@ module Pig
       array = [*ids_or_records].collect{|i| i.is_a?(Integer) ? i : i.try(:id)}.reject(&:nil?)
       array.empty? ? scoped : where(["#{table_name}.id NOT IN (?)", array])
     end)
+
+    after_initialize :build_content_chunk_methods
+
+    def build_content_chunk_methods
+      return if content_type.nil?
+      content_attributes.each do |attribute|
+        type_factory(attribute.field_type).new(self, attribute.slug, attribute.field_type)
+      end
+    end
+
+    def content_type=(value)
+      super(value)
+      build_content_chunk_methods
+    end
+
+    def convert_chunks_to_content!
+      return false if content_type.nil?
+      content_chunks.each do |content_chunk|
+        next if content_chunk.content_attribute.nil?
+        slug = content_chunk.content_attribute.slug
+        value = content_chunk.attributes['value']
+        field_type = content_chunk.content_attribute.field_type
+        begin
+          if field_type.in?(%w( image file ))
+            send("#{slug}_uid=", value)
+          else
+            send("#{slug}=", value)
+          end
+        rescue SystemStackError, NoMethodError
+          return false
+        end
+      end
+      self.editing_user = Pig::User.where(role: 'developer').first
+      save
+    end
+
+      def self.convert_all_chunks_to_content!
+        failed = []
+        all.each do |content_package|
+          unless content_package.convert_chunks_to_content!
+            failed << content_package
+          end
+        end
+        if failed.empty?
+          'Success'
+        else
+          puts 'The following packages failed to convert:'
+          failed.collect(&:id)
+        end
+      end
+
+    def type_factory(field_type)
+      Pig.const_get("#{field_type.camelize}Type")
+      rescue NameError
+        raise Pig::UnknownAttributeTypeError, "Unable to find attribute type class #{field_type}"
+      end
 
     class << self
 
@@ -224,6 +279,11 @@ module Pig
 
     private
 
+    def lineage
+      return unless parent == self
+      errors.add(:parent, 'can\'t be self')
+    end
+
     def content_chunk_for_content_attribute(content_attribute, initialise_if_nil = false)
       content_chunk = self.content_chunks.select{|c| c.content_attribute_id == content_attribute.id }.first
       if content_chunk.nil? && initialise_if_nil
@@ -300,68 +360,6 @@ module Pig
         instance_variable_set("@#{content_attribute.slug}".to_sym, content_chunk.try(:value).try(:html_safe))
       end
 
-    end
-
-    def method_missing(method_sym, *arguments, &block)
-      attribute_name = method_sym.to_s.chomp('=').chomp('?')
-      if !method_sym.to_s.end_with?('=') && instance_variable_defined?("@#{attribute_name}".to_sym)
-        instance_variable_get("@#{attribute_name}".to_sym)
-      elsif content_type
-        if (file_attribute_name = find_file_attribute_name(attribute_name)) && (content_attribute = content_attributes.select{ |x| %w{image file}.include?(x.field_type) && x.slug == file_attribute_name }.first)
-          content_chunk = content_chunk_for_content_attribute(content_attribute, true)
-          file_method_sym = method_sym.to_s.sub(file_attribute_name, 'file')
-          if arguments.present?
-            content_chunk.send(file_method_sym, arguments.first)
-          else
-            content_chunk.send(file_method_sym)
-          end
-        elsif (tags_attribute_name = find_tags_attribute_name(attribute_name)) && (content_attribute = content_attributes.select{ |x| x.field_type == 'tags' && x.slug == tags_attribute_name.pluralize }.first)
-          tags_context = tags_attribute_name.pluralize
-          tag_context = tags_attribute_name.singularize
-          case method_sym.to_s
-          when "#{tag_context}_list"
-            tag_list_on(tags_context)
-          when "#{tag_context}_list="
-            set_tag_list_on(tags_context, arguments.first)
-          when "#{tags_context}_taggings"
-            taggings.where("#{ActsAsTaggableOn::Tagging.table_name}.context = ?", tags_context)
-          when tags_context
-            ActsAsTaggableOn::Tag.joins(:taggings).where("#{ActsAsTaggableOn::Tagging.table_name}.taggable_id = ? AND #{ActsAsTaggableOn::Tagging.table_name}.taggable_type = 'Pig::ContentPackage' AND #{ActsAsTaggableOn::Tagging.table_name}.context = ?", id, tags_context)
-          else
-            super
-          end
-        elsif content_attribute = content_attributes.select{|x| x.slug == attribute_name}.first
-          if method_sym.to_s.end_with?('=')
-            set_value_for_content_attribute(content_attribute, arguments.first)
-          else
-            get_value_for_content_attribute(content_attribute)
-          end
-        elsif content_attribute = content_attributes.select{ |x| x.field_type == 'embeddable' && x.slug == attribute_name.chomp('_url') }.first
-          if method_sym.to_s.end_with?('=')
-            set_value_for_content_attribute(content_attribute, arguments.first, 'url')
-          else
-            get_value_for_content_attribute(content_attribute, 'url')
-          end
-        elsif content_attribute = content_attributes.select{ |x| x.field_type == 'image' && x.slug == attribute_name.chomp('_path')}.first
-          get_value_for_content_attribute(content_attribute, 'path')
-        elsif content_attribute = content_attributes.select{ |x| x.field_type == 'location' && x.slug == attribute_name.chomp('_lat_lng') }.first
-          if method_sym.to_s.end_with?('=')
-            set_value_for_content_attribute(content_attribute, arguments.first, 'lat_lng')
-          else
-            get_value_for_content_attribute(content_attribute, 'lat_lng')
-          end
-        elsif content_attribute = content_attributes.select{|x| x.slug == attribute_name.chomp('_id') }.first
-          if method_sym.to_s.end_with?('=')
-            set_value_for_content_attribute(content_attribute, arguments.first, 'id')
-          else
-            get_value_for_content_attribute(content_attribute, 'id')
-          end
-        else
-          super
-        end
-      else
-        super
-      end
     end
 
     def required_attributes

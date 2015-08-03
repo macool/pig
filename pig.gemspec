@@ -28,7 +28,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'formtastic-bootstrap'
   s.add_dependency 'cancancan'
   s.add_dependency 'rack-cache'
-  s.add_dependency 'dragonfly', '~>0.9.15'
+  s.add_dependency 'dragonfly', '~>1.0'
+  s.add_dependency 'dragonfly-s3_data_store'
   s.add_dependency 'devise'
   s.add_dependency 'haml-rails'
   s.add_dependency 'rails_config'
@@ -40,6 +41,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'cells'
   s.add_dependency 'cells-haml'
 
-  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "pg"
 
 end

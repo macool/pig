@@ -16,6 +16,7 @@ module Pig
     }
 
     def initialize(user)
+      can :home, Pig::ContentPackage
       can :show, Pig::ContentPackage do |content_package|
         content_package.visible_to_user?(nil)
       end
