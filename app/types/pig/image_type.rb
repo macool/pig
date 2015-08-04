@@ -38,7 +38,14 @@ module Pig
     end
 
     def set(content_package, value)
-      uid = Dragonfly.app.fetch_file(value.tempfile.path).store
+      if value.is_a?(String)
+        temp_file = Tempfile.new('image')
+        temp_file.write(value)
+        temp_file.close
+        uid = Dragonfly.app.fetch_file(temp_file.path).store
+      else
+        uid = Dragonfly.app.fetch_file(value.tempfile.path).store
+      end
       super(content_package, uid)
     end
   end

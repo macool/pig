@@ -279,8 +279,7 @@ module Pig
         content_package.permalink_path = "test"
         content_package.save
         cp = FactoryGirl.build(:content_package, :permalink_path => "test")
-        cp.save
-        expect(cp.valid?).to be_falsey
+        expect(cp).to_not be_valid
       end
 
       it "updates the permalinks of all descendants when it is saved" do
@@ -289,12 +288,8 @@ module Pig
         # level 1
         cp_v = FactoryGirl.create(:content_package, :parent => content_package, permalink_path: 'first')
         # level 2
-        cp_v_n = FactoryGirl.create(:viewless_content_package, :parent => cp_v)
         cp_v_v = FactoryGirl.create(:content_package, :parent => cp_v)
         # level 3
-        cp_v_n_n = FactoryGirl.create(:viewless_content_package, :parent => cp_v_n)
-        cp_v_n_v = FactoryGirl.create(:content_package, :parent => cp_v_n)
-        cp_v_v_n = FactoryGirl.create(:viewless_content_package, :parent => cp_v_v)
         cp_v_v_v = FactoryGirl.create(:content_package, :parent => cp_v_v)
         cps = [content_package, cp_v, cp_v_v, cp_v_v_v]
 
@@ -305,15 +300,15 @@ module Pig
         end
 
         cp_v.permalink_path = 'second'
-        cp_v.save
+        puts cp_v.save
 
         cps.each_with_index do |cp, index|
           cp.reload
           if original_paths[index]
-            original_path = original_paths[index].gsub /first/, "second"
-            expect(cp.permalink_full_path).to match(/#{original_path}/)
+            original_path = original_paths[index].gsub 'first', 'second'
+            expect(cp.permalink.full_path).to match(/#{original_path}/)
           else
-            expect(cp.permalink_full_path).to be_nil
+            expect(cp.permalink.full_path).to be_nil
           end
         end
       end

@@ -6,7 +6,7 @@ module Pig
     belongs_to :resource, :polymorphic => true
 
     validates :full_path, presence: true,
-      uniqueness: { case_sensitive: false },
+      uniqueness: { case_sensitive: false, scope: :active },
       format: {with: /\A\/[\/\w-]+\z/, message: 'should only use a-z, 0-9, -, _ and / characters'}
     validates :active, uniqueness:
       { scope: [:resource_id, :resource_type], if: proc { |p| p.active? } }

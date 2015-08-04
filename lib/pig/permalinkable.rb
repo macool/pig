@@ -4,11 +4,13 @@ module Pig::Permalinkable
 
   included do
     has_one :permalink, -> { where(active: true) },
-      as: :resource
+      as: :resource,
+      autosave: true
 
     has_many :permalinks,
       as: :resource,
-      dependent: :destroy
+      dependent: :destroy,
+      autosave: true
 
     validates :permalink, presence: true, unless: 'viewless?', on: :update
 
