@@ -22,7 +22,6 @@
 #   end
 #
 #   it 'links to the content package permalink' do
-#     binding.pry
 #     expect(rendered).to have_link('View', href: pig.content_package_path(content_package_1.permalink.full_path))
 #   end
 # end
