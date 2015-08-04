@@ -5,8 +5,6 @@ module Pig
       slug = @slug
       field_type = @field_type
       super(content_package)
-      # content_package.class.send(:extend, Dragonfly::Model)
-      # content_package.class.send(:dragonfly_accessor, @slug.to_sym)
 
       content_package.define_singleton_method("#{@slug}_uid") do
         this.content_value(content_package)
@@ -24,25 +22,23 @@ module Pig
       content_package.define_singleton_method("remove_#{@slug}") do
         send("#{slug}_uid=", nil)
       end
-      
+      content_package.define_singleton_method("remove_#{@slug}=") do |value|
+        send("#{slug}_uid=", nil) if value == '1'
+      end
     end
 
     def get(content_package)
       if super(content_package).blank?
         nil
       else
-        Dragonfly.app.fetch(super(content_package))
+        job = Dragonfly.app.fetch(super(content_package))
+        ImageDownloader.download_image_if_missing(job)
+        job
       end
     end
 
     def set(content_package, value)
-      # TODO fix this - at the moment it writes the file to disk as soon as you
-      # call the image= method, this should write a temp file and only store
-      # after save?
-      temp_file = Tempfile.new('image')
-      temp_file.write(value)
-      temp_file.close
-      uid = Dragonfly.app.fetch_file(temp_file.path).store
+      uid = Dragonfly.app.fetch_file(value.tempfile.path).store
       super(content_package, uid)
     end
   end

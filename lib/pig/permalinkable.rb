@@ -3,13 +3,22 @@ module Pig::Permalinkable
   extend ActiveSupport::Concern
 
   included do
-    attr_writer :permalink_path
-    has_one :permalink, -> { where(:active => true) }, :as => :resource, :autosave => true
-    has_many :permalinks, :as => :resource, :autosave => true, :dependent => :destroy
-    validates :permalink, :presence => true, unless: 'viewless?', on: :update
+    has_one :permalink, -> { where(active: true) },
+      as: :resource
+
+    has_many :permalinks,
+      as: :resource,
+      dependent: :destroy
+
+    validates :permalink, presence: true, unless: 'viewless?', on: :update
+
     before_validation :set_permalink, :set_permalink_full_path
     after_validation :set_permalink_errors
     after_save :sync_child_full_paths
+  end
+
+  def permalink_path=(value)
+    @permalink_path = value
   end
 
   def permalink_path
@@ -20,18 +29,22 @@ module Pig::Permalinkable
     permalink.try(:full_path)
   end
 
-  # def permalink_path=(val)
-  #   (self.permalink || self.build_permalink).path = val
-  #   set_permalink_path
-  #   set_permalink_full_path
-  # end
-
   def permalink_display_path
     if Pig.configuration.nested_permalinks
       "/#{permalink_full_path}/".squeeze '/'
     else
       "/#{permalink_path}/".squeeze '/'
     end
+  end
+
+  def short_permalink_path=(value)
+    return if value.blank?
+    @short_permalink_path = value
+    permalinks.build(path: value, full_path: ('/' + value), active: false)
+  end
+
+  def short_permalink_path
+    @short_permalink_path || ''
   end
 
   private

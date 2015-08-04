@@ -166,11 +166,7 @@ module Pig
 
     private
     def content_package_params
-      permitted_params = [*params[:content_package].try(:keys) + [:persona_ids => []]]
-      if @content_package && Pig::configuration.tags_feature
-        permitted_params << [:taxonomy_tags => @content_package.content_type.tag_categories.map{|x| { x.slug => [] }}.reduce(:merge)]
-      end
-      params.require(:content_package).permit(permitted_params)
+      params.require(:content_package).permit!
     end
 
     def get_view_data
@@ -186,7 +182,7 @@ module Pig
       # Because of this the updated_at time is set here
 
       previous_status = @content_package.status
-      
+
       if @content_package.update_attributes(content_package_params)
         flash[:notice] = "Updated \"#{@content_package}\""
         if @content_package.status == 'published' && previous_status != 'published'

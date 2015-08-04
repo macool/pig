@@ -14,18 +14,11 @@
     =link_to('Return to website', '/', class: 'cms-nav--return-link')
     .cms-nav-user
       .dropdown
-        =link_to('', '#', 'data-toggle' => 'dropdown', :icon => 'user', :icon_last => true)
+        =link_to('#', 'data-toggle' => 'dropdown') do
+          %i.fa.fa-user
         %ul.cms-nav-user-dropdown
           %li=link_to('Account settings', pig.edit_manage_user_path(current_user), icon: 'cog', icon_first: true)
           %li=link_to('Sign out', pig.destroy_user_session_path, method: :delete, icon: 'sign-out', icon_first: true)
-    -if current_user && @content_package
-      -if can? :index, Pig::ContentPackage.new
-        .cms-nav-controls
-          -if @content_package && (action_name == 'show' || @show_cms_nav_edit_link)
-            =link_to('Edit this page', pig.edit_content_package_path(@content_package), class: 'btn btn-success btn-sm') if can?(:update, @content_package)
-            .cms-nav-status
-              Status:
-              =@content_package.status
 
 -max_navigation_items = 4
 -navigation_items.each_with_index do |item, index|

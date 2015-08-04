@@ -5,7 +5,11 @@ module Pig
 
     belongs_to :resource, :polymorphic => true
 
-    validates :full_path, :presence => true, :uniqueness => {:case_sensitive => false, :scope => :active}
+    validates :full_path, presence: true,
+      uniqueness: { case_sensitive: false },
+      format: {with: /\A\/[\/\w-]+\z/, message: 'should only use a-z, 0-9, -, _ and / characters'}
+    validates :active, uniqueness:
+      { scope: [:resource_id, :resource_type], if: proc { |p| p.active? } }
     validate :path_does_not_match_existing_route
     validate :path_is_valid_url
 
@@ -13,6 +17,7 @@ module Pig
     after_update :delete_duplicate_permalinks
 
     scope :active, -> { where(active: true) }
+    scope :inactive, -> { where(active: false) }
 
     def generate_unique_path!(title)
       if path.blank? && title.present?
@@ -67,6 +72,7 @@ module Pig
     end
 
     def path_is_valid_url
+      return unless active?
       if path.present? && (path != path.to_url.parameterize)
         errors.add(:path, "is invalid")
       end

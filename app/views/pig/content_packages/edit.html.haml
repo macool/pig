@@ -78,6 +78,8 @@
               =form.input :meta_description, hint: 'Meta short description: Brief summary of the page, aim for 70 characters'
               =form.input :meta_keywords, hint: 'Meta keywords: comma separated'
               =form.input :meta_image, as: :image, hint: 'Meta images for facebook: Minimum size 600px x 315px, recommended size 1200px x 630px'
+              -unless @content_package.viewless?
+                =render 'permalinks', content_package: @content_package, form: form
         -if Pig::configuration.tags_feature
           #tags.tab-pane
             .cms-form-well
@@ -127,7 +129,6 @@
                 %hr
                 =form.inputs do
                   =parent_content_package_select(form)
-                  =form.input :permalink_path, :prepend => @content_package.parent && @content_package.parent.respond_to?(:permalink_display_path) && Pig.configuration.nested_permalinks ? @content_package.parent.permalink_display_path : '/' unless @content_package.viewless?
                   -if can? :manage_slug, @content_package
                     =form.input :slug
                   =form.input :logged_in_only, :as => :content_boolean, :label => "Only logged in users can view this"
