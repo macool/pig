@@ -7,7 +7,6 @@ gemspec
 
 
 group :test do
-  gem "pg"
   gem 'therubyracer'
   gem 'simplecov', :require => false
 end
