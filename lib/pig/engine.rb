@@ -25,6 +25,7 @@ module Pig
         helper Pig::ContentHelper
         helper Pig::TitleHelper
         helper Pig::ImageHelper
+        helper Pig::CacheHelper
       end
     end
   end
