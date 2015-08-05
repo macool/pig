@@ -1,7 +1,6 @@
 # Require devise before engine to override views in engine
 require 'devise'
 
-# require 'pig/permalinks/url_for_patch'
 require 'pig/engine'
 require 'pig/config'
 require 'stringex'
@@ -12,8 +11,8 @@ require 'geocoder'
 require 'acts-as-taggable-on'
 require 'cancancan'
 require 'haml-rails'
+require 'config'
 require 'cocoon'
-require 'rails_config'
 require 'jquery-rails'
 require 'jquery-ui-rails'
 require 'bootstrap-sass'
