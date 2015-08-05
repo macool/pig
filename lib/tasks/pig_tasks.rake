@@ -4,7 +4,7 @@ require 'benchmark'
 
 total_time_taken = 0
 pages_tested = 0
-failures = 0
+failures = []
 
 
 class Screenshot
@@ -25,23 +25,28 @@ namespace :pig do
     end
     Capybara.current_driver = :poltergeist
 
-    Pig::Permalink.active.each do |permalink|
+    links_to_test = Pig::Permalink.active
+    links_to_test.each do |permalink|
       pages_tested += 1
       screenshot = Screenshot.new
-      puts "Screenshotting #{permalink.full_path}"
+      success = false
       time_taken = Benchmark.realtime do
         success = screenshot.capture "http://0.0.0.0:3000#{permalink.full_path}", "#{permalink.full_path}.png"
-        unless success
-          puts "FAILED for #{permalink.full_path}"
-          failures +=1
+        if !success
+          failures << permalink
         end
       end
       total_time_taken += time_taken
-      puts "Finished in #{time_taken}"
+      puts "#{pages_tested}/#{links_to_test.count} - #{success ? 'SUCCESS' : 'FAILURE'} for #{permalink.full_path} in #{time_taken} seconds"
     end
 
-    puts "TOTAL TIME TAKEN #{total_time_taken}"
-    puts "PAGES TESTED: #{pages_tested}"
-    puts "FAILED PAGES: #{failures}"
+    puts '-------'
+    puts "RESULTS"
+    puts '-------'
+    puts "#{pages_tested} pages tested in #{total_time_taken}"
+    puts "#{failures.count} failed pages:"
+    failures.each do |permalink|
+      puts permalink.full_path
+    end
   end
 end
