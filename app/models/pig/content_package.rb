@@ -96,7 +96,7 @@ module Pig
       Pig.const_get("#{field_type.camelize}Type")
       rescue NameError
         raise Pig::UnknownAttributeTypeError, "Unable to find attribute type class #{field_type}"
-      end
+    end
 
     class << self
 
@@ -151,6 +151,10 @@ module Pig
 
       def parent_dropdown_cache_key
         "cp/parent-dropdown"
+      end
+
+      def with_content_type_name(name)
+        joins(:content_type).where(pig_content_types: { name: name })
       end
     end
 

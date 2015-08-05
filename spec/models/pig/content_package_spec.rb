@@ -348,4 +348,14 @@ module Pig
     end
 
   end
+
+  describe '.with_content_type_name' do
+    let(:ct_1) { FactoryGirl.create(:content_type, name: 'foo') }
+    let(:ct_2) { FactoryGirl.create(:content_type, name: 'bar') }
+    let!(:cp_1) { FactoryGirl.create(:content_package, content_type: ct_1) }
+    let!(:cp_2) { FactoryGirl.create(:content_package, content_type: ct_2) }
+    it 'returns only content packages using a type with this name' do
+      expect(ContentPackage.with_content_type_name('foo')).to eq([cp_1])
+    end
+  end
 end
