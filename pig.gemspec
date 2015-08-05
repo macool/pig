@@ -40,7 +40,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'will_paginate-bootstrap'
   s.add_dependency 'cells'
   s.add_dependency 'cells-haml'
-  s.add_dependency "poltergeist"
+  s.add_dependency 'poltergeist'
+  s.add_dependency 'httparty'
 
   s.add_development_dependency "pg"
 

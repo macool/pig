@@ -8,7 +8,8 @@ module Pig
                   :unpublished,
                   :additional_stylesheets,
                   :additional_javascripts,
-                  :homepage
+                  :homepage,
+                  :archive_domain
 
     def initialize(options = {})
       self.nested_permalinks = options[:nested_permalinks] || true
@@ -19,6 +20,7 @@ module Pig
       self.additional_stylesheets = options[:additional_stylesheets] || []
       self.additional_javascripts = options[:additional_javascripts] || []
       self.homepage = options[:homepage] || proc { Pig::ContentPackage.first }
+      self.archive_domain = options[:archive_domain] || ''
     end
 
   end

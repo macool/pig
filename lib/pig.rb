@@ -21,9 +21,11 @@ require 'will_paginate-bootstrap'
 require 'formtastic'
 require 'cells'
 require 'cells-haml'
+require 'httparty'
 
 require 'pig/link'
 require 'pig/permalinkable'
+require 'pig/archive'
 require 'pig/core/plugins'
 require 'pig/core/image_downloader'
 
