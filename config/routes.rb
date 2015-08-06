@@ -22,6 +22,8 @@ Pig::Engine.routes.draw do
     resources :users do
       member do
         post :set_active
+        post :deactivate
+        get :content
       end
     end
   end

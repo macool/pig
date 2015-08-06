@@ -3,6 +3,8 @@
 //= require autogrow
 //= require jquery-ui
 //= require jquery_ujs
+//= require react
+//= require react_ujs
 
 //= require jquery-ui/datepicker
 //= require jquery-ui-timepicker-addon
@@ -29,6 +31,7 @@
 //= require pig/autocomplete-field
 //= require select2
 //= require_tree ./redactor_plugins
+//= require_tree ./components
 
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {

@@ -22,6 +22,7 @@ require 'formtastic'
 require 'cells'
 require 'cells-haml'
 require 'httparty'
+require 'react-rails'
 
 require 'pig/link'
 require 'pig/permalinkable'

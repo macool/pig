@@ -6,6 +6,7 @@ module Pig
     def set_active
       @user.update(active: !@user.active)
       @show_inactive = session[:show_inactive] || false
+      redirect_to pig.manage_users_path(params)
     end
 
     def index
@@ -50,6 +51,18 @@ module Pig
     end
 
     def new
+    end
+
+    def content
+      render json: @user.assigned_content_packages.to_json
+    end
+
+    def deactivate
+      (params[:content_package] || []).each do |cp_id, u_id|
+        Pig::ContentPackage.find(cp_id).update_attribute(:author_id, u_id)
+      end
+      @user.update_attribute(:active, false)
+      redirect_to pig.manage_users_path, notice: 'User deactivated'
     end
 
     private

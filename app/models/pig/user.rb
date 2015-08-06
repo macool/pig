@@ -4,6 +4,11 @@ module Pig
     include Pig::Concerns::Models::Roles
     include Pig::Concerns::Models::Name
 
+    has_many :assigned_content_packages, 
+      class_name: '::Pig::ContentPackage', 
+      foreign_key: 'author_id'
+
+
     validates :email, email: true, presence: true, uniqueness: true
     validates :password, presence: true, on: :create
 

@@ -74,6 +74,8 @@ When(/^I set the user as inactive$/) do
   expect(btn).not_to be_nil
   btn.click
   sleep(2)
+  page.find('form').find('input').click
+  sleep(2)
 end
 
 Then(/^the user is inactive$/) do
