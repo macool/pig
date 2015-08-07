@@ -9,7 +9,8 @@ module Pig
                   :additional_stylesheets,
                   :additional_javascripts,
                   :homepage,
-                  :archive_domain
+                  :archive_domain,
+                  :ga_code
 
     def initialize(options = {})
       self.nested_permalinks = options[:nested_permalinks] || true
@@ -21,6 +22,7 @@ module Pig
       self.additional_javascripts = options[:additional_javascripts] || []
       self.homepage = options[:homepage] || proc { Pig::ContentPackage.first }
       self.archive_domain = options[:archive_domain] || ''
+      self.ga_code = options[:ga_code] || ''
     end
 
   end

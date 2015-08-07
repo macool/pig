@@ -84,5 +84,13 @@ module Pig
       meta_tags
     end
 
+    def ga_code?
+      ga_code.present?
+    end
+
+    def ga_code
+      Pig.configuration.ga_code
+    end
+
   end
 end
