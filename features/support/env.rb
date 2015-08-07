@@ -20,7 +20,7 @@ require 'cucumber/rspec/doubles'
 require_relative 'ajax_helpers'
 
 Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, timeout: 60)
+  Capybara::Poltergeist::Driver.new(app, timeout: 120)
 end
 
 Capybara.javascript_driver = :poltergeist
@@ -77,3 +77,27 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 
 World(AjaxHelpers)
 World(Capybara::Email::DSL)
+
+# Find slowest scenarios
+scenario_times = {}
+Around() do |scenario, block|
+  start = Time.now
+  block.call
+  if scenario.is_a? Cucumber::Ast::OutlineTable::ExampleRow
+    file = scenario.scenario_outline.feature.file
+    name = "#{scenario.scenario_outline.name} - #{scenario.name}"
+  else
+    file = scenario.feature.file
+    name = scenario.name
+  end
+  scenario_times["#{file}::#{name}"] = Time.now - start
+end
+at_exit do
+  max_scenarios = scenario_times.size > 5 ? 5 : scenario_times.size
+  puts "------------- Top #{max_scenarios} slowest scenarios -------------"
+  sorted_times = scenario_times.sort { |a, b| b[1] <=> a[1] }
+  sorted_times[0..max_scenarios - 1].each do |key, value|
+    puts "#{value.round(2)}  #{key}"
+  end
+end
+
