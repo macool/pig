@@ -1,3 +1,4 @@
+.unsaved-changes
 :javascript
   $(document).ready(function() {
     Pig.Redactor.init();
@@ -34,7 +35,7 @@
     $(".custom-combobox-input").attr('placeholder', 'Start typing to search');
   });
 
-=semantic_form_for [pig, @content_package] do |form|
+=semantic_form_for [pig, @content_package], html: { onsubmit: 'setFormSubmitting()' } do |form|
   .container.page-margin-bottom{data: {sir_trevor_upload_url: pig.upload_sir_trevor_attachment_content_package_path(@content_package)} }
     .row
       .col-xs-12

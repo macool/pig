@@ -30,6 +30,7 @@
 //= require_tree ./sir_trevor_custom_blocks
 //= require pig/autocomplete-field
 //= require select2
+//= require pig/unsaved-changes
 //= require_tree ./redactor_plugins
 //= require_tree ./components
 
