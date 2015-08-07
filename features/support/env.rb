@@ -20,7 +20,7 @@ require 'cucumber/rspec/doubles'
 require_relative 'ajax_helpers'
 
 Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, timeout: 120)
+  Capybara::Poltergeist::Driver.new(app, timeout: 500)
 end
 
 Capybara.javascript_driver = :poltergeist
