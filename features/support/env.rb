@@ -19,6 +19,10 @@ require 'cucumber/rspec/doubles'
 
 require_relative 'ajax_helpers'
 
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app, timeout: 60)
+end
+
 Capybara.javascript_driver = :poltergeist
 
 # Capybara defaults to CSS3 selectors rather than XPath.
