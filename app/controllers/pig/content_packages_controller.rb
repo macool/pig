@@ -31,6 +31,12 @@ module Pig
     def children
     end
 
+    def analytics
+      user = service_account_user
+      profile = user.accounts.first.profiles.first
+      Visits.page_path('/', profile)
+    end
+
     def edit
       get_view_data
     end
@@ -238,6 +244,24 @@ module Pig
     def params_for_redirect
       significant_params = params.except(:action, :controller, :id, :path)
       significant_params.present? ? '?' + significant_params.to_query : ''
+    end
+
+    def service_account_user(scope="https://www.googleapis.com/auth/analytics.readonly")
+      client = Google::APIClient.new(
+        :application_name => "pig-ga-test",
+        :application_version => "322472778078"
+      )
+      gem_dir = Gem::Specification.find_by_name("pig").gem_dir
+      key_path = File.join(gem_dir, 'pig-ga-test-a1a6f2af9654.p12')
+      key = Google::APIClient::PKCS12.load_key(key_path, "notasecret")
+      service_account = Google::APIClient::JWTAsserter.new("322472778078-69bpb8h1e1e0s13bmfer4j3stq2kmrpe@developer.gserviceaccount.com", scope, key)
+      client.authorization = service_account.authorize
+      oauth_client = OAuth2::Client.new("", "", {
+        :authorize_url => 'https://accounts.google.com/o/oauth2/auth',
+        :token_url => 'https://accounts.google.com/o/oauth2/token'
+      })
+      token = OAuth2::AccessToken.new(oauth_client, client.authorization.access_token, expires_in: 1.hour)
+      Legato::User.new(token)
     end
   end
 end

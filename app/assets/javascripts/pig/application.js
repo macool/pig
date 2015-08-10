@@ -32,6 +32,7 @@
 //= require pig/autocomplete-field
 //= require select2
 //= require pig/unsaved-changes
+//= require pig/google-analytics
 //= require_tree ./redactor_plugins
 //= require_tree ./components
 
