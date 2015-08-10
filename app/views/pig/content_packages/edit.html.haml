@@ -211,3 +211,20 @@
             /   =render("discussion")
             / #content-scorecard.tab-pane.cms-well
             /   Not defined yet
+          - if ga_code?
+            .cms-well
+              %h3 Analytics
+              = link_to 'View google analytics for this page', '#', class: 'btn btn-primary', id: 'ga-modal-launcher'
+              #analytics-modal.modal.fade
+                .modal-dialog
+                  .modal-content
+                    .modal-header
+                      %button.close-btn{"type" => "button", "data-dismiss" => "modal"}
+                        %i.fa.fa-times
+                      %h4.modal-title Analytics
+                    .modal-body
+                      #embed-api-auth-container
+                      #chart-container
+                      #view-selector-container
+                    .modal-footer
+                      %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
