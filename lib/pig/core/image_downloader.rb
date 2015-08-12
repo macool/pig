@@ -17,6 +17,7 @@ module Pig
       end
 
       def download_image_if_missing(image)
+        return unless Rails.env.development?
         begin
           image.path
         rescue Dragonfly::Job::Fetch::NotFound => e
