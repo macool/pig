@@ -77,6 +77,9 @@ input[type="radio"], {
   height: auto;
   margin-right: 5px;
 }
+.checkbox-label {
+  display: inline;
+}
 .image-inputs {
   display: block;
   @include media-query(sm) {
