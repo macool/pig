@@ -3,6 +3,9 @@ require 'dragonfly/s3_data_store'
 
 # Configure
 Dragonfly.app.configure do
+  # ignore SHA as redactor doesn't seem to be inserting them correctly
+  verify_urls false
+
   plugin :imagemagick
 
   secret '5c0fdd809b3682e9fbfc93b9d7fb4da7c839f9f4ad445ac022cc035fda0526ed'
