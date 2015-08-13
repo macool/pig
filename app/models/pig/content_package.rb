@@ -244,23 +244,6 @@ module Pig
       end
     end
 
-    def respond_to_with_content_attributes?(method_id, include_all = false)
-      if method_id == :empty?
-        return false
-      end
-      slug = method_id.to_s.sub(/^retained_/,'').sub(/^remove_/,'').sub(/_uid$/,'').chomp('=')
-      if respond_to_without_content_attributes?(method_id, include_all)
-        true
-      elsif content_type
-        return false if slug =~ /^_run__.*__callbacks$/
-        slug_variants = [ slug, slug.chomp('_list').pluralize, slug.chomp('_url'), slug.chomp('_id'), slug.chomp('_lat_lng'), slug.chomp('_path') ]
-        slug_variants.any?{|sl| content_attributes.exists?(:slug => sl)}
-      else
-        false
-      end
-    end
-    alias_method_chain :respond_to?, :content_attributes
-
     def restore
       return true unless deleted?
       deletion_occurred_at = deleted_at.dup
