@@ -3,7 +3,7 @@ module Pig
 
     dragonfly_accessor :file
     validates_property :format, of: :file, in: ['jpeg', 'png', 'gif']
-    validates :file, :presence => true
+    validates :file, presence: true
 
     def image
       file_type == 'image' ? file : nil
