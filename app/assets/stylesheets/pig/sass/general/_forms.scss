@@ -45,6 +45,10 @@ input, textarea {
     outline: 0;
   }
 }
+.short-input input,
+input.short-input {
+  height: 43px;
+}
 select {
   display: block;
   width: 100%;
@@ -310,5 +314,20 @@ select {
     height: auto;
     padding: 10px;
     font-style: italic;
+  }
+}
+.image-alt-container-field {
+  position: relative;
+  &:before {
+    font-family: fontawesome;
+    content: "\f105";
+    position: absolute;
+    top: 12px;
+    left: -2px;
+    color: #555;
+    display: none;
+    @include media-query(sm) {
+      display: block;
+    }
   }
 }
