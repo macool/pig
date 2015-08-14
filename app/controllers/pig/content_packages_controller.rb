@@ -34,10 +34,10 @@ module Pig
     def analytics
       user = service_account_user
       profile = user.accounts.first.profiles.first
-      hash = {
-        pageViewsCount: Visits.page_path(@content_package.permalink.full_path, profile).results(start_date: 7.days.ago).collect{|x| x.pageviews.to_i }.sum
-      }
-      render json: hash
+
+      analytics = Pig::Analytics.new(Visits.page_path("/", profile).results(start_date: 7.days.ago))
+
+      render json: analytics.as_json
     end
 
     def edit
