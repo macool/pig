@@ -189,7 +189,11 @@ module Pig
           @content_package.published_at = DateTime.now
           @content_package.save
         end
-        redirect_to pig.edit_content_package_path(@content_package)
+        if params[:view]
+          redirect_to pig.content_package_path(@content_package)
+        else
+          redirect_to pig.edit_content_package_path(@content_package)
+        end
       else
         #TODO change to flash[:error] when the style has been made
         flash[:notice] = "Sorry there was a problem saving this page: #{@content_package.errors.full_messages.to_sentence}"
