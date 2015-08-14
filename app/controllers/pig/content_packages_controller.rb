@@ -34,7 +34,10 @@ module Pig
     def analytics
       user = service_account_user
       profile = user.accounts.first.profiles.first
-      Visits.page_path('/', profile)
+      hash = {
+        pageViewsCount: Visits.page_path(@content_package.permalink.full_path, profile).results(start_date: 7.days.ago).collect{|x| x.pageviews.to_i }.sum
+      }
+      render json: hash
     end
 
     def edit
@@ -247,20 +250,40 @@ module Pig
     end
 
     def service_account_user(scope="https://www.googleapis.com/auth/analytics.readonly")
-      client = Google::APIClient.new(
-        :application_name => "pig-ga-test",
-        :application_version => "322472778078"
-      )
-      gem_dir = Gem::Specification.find_by_name("pig").gem_dir
-      key_path = File.join(gem_dir, 'pig-ga-test-a1a6f2af9654.p12')
-      key = Google::APIClient::PKCS12.load_key(key_path, "notasecret")
-      service_account = Google::APIClient::JWTAsserter.new("322472778078-69bpb8h1e1e0s13bmfer4j3stq2kmrpe@developer.gserviceaccount.com", scope, key)
-      client.authorization = service_account.authorize
+      api_version = 'v3'
+      cached_api_file = "analytics-#{api_version}.cache"
+
+      ## Read app credentials from a file
+      opts = YAML.load_file("ga_config.yml")
+
+      ## Update these to match your own apps credentials in the ga_config.yml file
+      service_account_email = opts['service_account_email']  # Email of service account
+      key_file = opts['key_file']                            # File containing your private key
+      key_secret = opts['key_secret']                        # Password to unlock private key
+      @profileID = opts['profileID'].to_s                    # Analytics profile ID.
+
+      @client = Google::APIClient.new(
+      :application_name => opts['application_name'],
+      :application_version => opts['application_version'])
+
+      ## Load our credentials for the service account
+      key = Google::APIClient::KeyUtils.load_from_pkcs12(key_file, key_secret)
+
+      @client.authorization = Signet::OAuth2::Client.new(
+      :token_credential_uri => 'https://accounts.google.com/o/oauth2/token',
+      :audience => 'https://accounts.google.com/o/oauth2/token',
+      :scope => 'https://www.googleapis.com/auth/analytics.readonly',
+      :issuer => service_account_email,
+      :signing_key => key)
+
+      ## Request a token for our service account
+      token = @client.authorization.fetch_access_token!
+
       oauth_client = OAuth2::Client.new("", "", {
         :authorize_url => 'https://accounts.google.com/o/oauth2/auth',
         :token_url => 'https://accounts.google.com/o/oauth2/token'
       })
-      token = OAuth2::AccessToken.new(oauth_client, client.authorization.access_token, expires_in: 1.hour)
+      token = OAuth2::AccessToken.new(oauth_client, token['access_token'], expires_in: 1.hour)
       Legato::User.new(token)
     end
   end
