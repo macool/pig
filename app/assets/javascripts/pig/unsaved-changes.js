@@ -7,10 +7,9 @@ function setFormSubmitting() {
 $(document).ready(function(){
   if ($('.unsaved-changes').length > 0) {
     var isDirty = false;
-    $(':input').on("change keyup", function () {
+    $(':input').on("change.unsaved keyup.unsaved", function () {
       isDirty = true;
-      document.title = document.title + "*";
-      $(this).off('change keyup');
+      $(this).off('.unsaved');
     });
     window.onload = function() {
       window.addEventListener("beforeunload", function (e) {
