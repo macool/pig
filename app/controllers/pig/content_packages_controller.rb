@@ -35,9 +35,9 @@ module Pig
       begin
         user = service_account_user
         profile = user.accounts.first.profiles.first
-        analytics = Pig::Analytics.new(Visits.page_path("/", profile).results(start_date: 7.days.ago))
+        analytics = Pig::Analytics.new(Visits.page_path(@content_package.permalink.full_path, profile).results(start_date: 7.days.ago))
         render json: analytics.as_json
-      rescue Errno::ENOENT
+      rescue
         render json: { error: "Ooops, you haven't setup the Google analytics configuration properly. See the readme!" }, status: 500
       end
     end
