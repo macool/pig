@@ -179,7 +179,7 @@ window.Pig = {
       });
 
       $('.rich_redactor textarea').redactor({
-        buttons: ['html', 'formatting', 'bold', 'italic', 'unorderedlist', 'orderedlist', 'image', 'link', 'horizontalrule'],
+        buttons: ['html', 'formatting', 'bold', 'italic', 'unorderedlist', 'orderedlist', 'image', 'link'],
         plugins: $('.rich_redactor textarea').data('redactor-plugins'),
         path: 'vendor/assets/javascripts/redactor',
         imageUpload: PigConfig.namespace + 'redactor_image_uploads?file_type=image',
