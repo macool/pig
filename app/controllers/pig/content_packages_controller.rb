@@ -32,12 +32,14 @@ module Pig
     end
 
     def analytics
-      user = service_account_user
-      profile = user.accounts.first.profiles.first
-
-      analytics = Pig::Analytics.new(Visits.page_path("/", profile).results(start_date: 7.days.ago))
-
-      render json: analytics.as_json
+      begin
+        user = service_account_user
+        profile = user.accounts.first.profiles.first
+        analytics = Pig::Analytics.new(Visits.page_path("/", profile).results(start_date: 7.days.ago))
+        render json: analytics.as_json
+      rescue Errno::ENOENT
+        render json: { error: "Ooops, you haven't setup the Google analytics configuration properly. See the readme!" }, status: 500
+      end
     end
 
     def edit

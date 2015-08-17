@@ -14,6 +14,11 @@ var ContentPackageAnalytics = React.createClass({
           referrers: result.referrers
         });
       }
+    }.bind(this)).fail(function(result) {
+      this.setState({
+        isLoading: false,
+        error: result.responseJSON.error
+      });
     }.bind(this));
   },
   render: function() {
@@ -22,6 +27,13 @@ var ContentPackageAnalytics = React.createClass({
         <div className={this.state.isLoading ? '' : 'hide'}>
           <i className="fa fa-circle-o-notch fa-spin fa-2x"></i>
         </div>
+      );
+    }
+    else if (this.state.error) {
+      content = (
+        <h3>
+        {this.state.error}
+        </h3>
       );
     }
     else {
@@ -41,7 +53,6 @@ var ContentPackageAnalytics = React.createClass({
     );
   }
 });
-
 
 var AnalyticReferrers = React.createClass({
   render: function() {
