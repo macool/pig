@@ -11,6 +11,10 @@ module Pig
       end
     end
 
+    rescue_from ActiveRecord::RecordNotFound do |exception|
+      instance_eval(&Pig.configuration.not_found)
+    end
+
     def not_authorized
     end
 

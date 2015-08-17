@@ -73,6 +73,10 @@ Pig::Engine.routes.draw do
 end
 
 Rails.application.routes.draw do
+  get '404' => 'pig/errors#not_found', 
+    via: [:get, :post, :patch, :delete], 
+    as: 'not_found'
+
   get '/content_package/:id' => 'pig/content_packages#show'
   get '/content_packages/:id' => 'pig/content_packages#show'
   Pig::ContentPackage.member_routes.each do |route|

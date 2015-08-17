@@ -222,7 +222,7 @@ module Pig
           end
         else
           # If there isn't a matching permalink handle it with rails (Default is 404)
-          raise ::ActionController::RoutingError.new('Not Found')
+          raise ::ActiveRecord::RecordNotFound.new
         end
       else
         if (@content_package && @content_package.permalink.nil?) || ContentPackage.member_routes.reject { |x| x[:action] == "show" }.any?{|x| x[:action] == params[:action]}
