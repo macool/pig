@@ -1,8 +1,5 @@
 # Pig
 
-This project rocks and uses MIT-LICENSE.
-
-
 ### Google Analytics
 
 To configure Pig to display google analytics info when editing a page the following steps are required.
