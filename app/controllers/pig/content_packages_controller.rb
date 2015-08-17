@@ -11,7 +11,8 @@ module Pig
 
     layout 'layouts/application', only: [:show, :home]
     load_and_authorize_resource
-    skip_load_resource :home
+    skip_load_resource [:home, :new]
+    skip_authorize_resource only: [:new]
     # Define an around filter for all controller actions that could potentially be routed to from a permalink
     around_action :redirect_to_permalink, :only => ContentPackage.member_routes.collect{ |x| x[:action] }
     before_action :set_editing_user, only: [:create, :delete, :update, :destroy, :ready_to_review, :restore]
@@ -88,12 +89,14 @@ module Pig
     end
 
     def new
+      @content_package = Pig::ContentPackage.new
       @content_package.content_type = Pig::ContentType.find_by_id(params[:content_type_id])
       @content_package.parent_id = params[:parent]
       @content_package.requested_by = current_user
       @content_package.review_frequency = 1
       @content_package.due_date = Date.today
       @content_types = ContentType.all.order('name')
+      authorize!(:new, @content_package)
     end
 
     def reorder
