@@ -11,11 +11,11 @@ module Pig
 
     layout 'layouts/application', only: [:show, :home]
     load_and_authorize_resource
-    skip_load_resource only: [:home, :new, :restore]
+    skip_load_resource only: [:home, :new, :restore, :destroy]
     skip_authorize_resource only: [:new]
     # Define an around filter for all controller actions that could potentially be routed to from a permalink
     around_action :redirect_to_permalink, :only => ContentPackage.member_routes.collect{ |x| x[:action] }
-    before_action :set_editing_user, only: [:create, :delete, :update, :destroy, :ready_to_review]
+    before_action :set_editing_user, only: [:create, :delete, :update, :ready_to_review]
 
     def activity
       if request.xhr?
@@ -69,6 +69,8 @@ module Pig
     end
 
     def destroy
+      @content_package = Pig::ContentPackage.unscoped.find(params[:id])
+      set_editing_user
       if @content_package.destroy
         flash[:notice] = "Destroyed \"#{@content_package}\""
       else
