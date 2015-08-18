@@ -11,11 +11,11 @@ module Pig
 
     layout 'layouts/application', only: [:show, :home]
     load_and_authorize_resource
-    skip_load_resource [:home, :new]
+    skip_load_resource only: [:home, :new, :restore]
     skip_authorize_resource only: [:new]
     # Define an around filter for all controller actions that could potentially be routed to from a permalink
     around_action :redirect_to_permalink, :only => ContentPackage.member_routes.collect{ |x| x[:action] }
-    before_action :set_editing_user, only: [:create, :delete, :update, :destroy, :ready_to_review, :restore]
+    before_action :set_editing_user, only: [:create, :delete, :update, :destroy, :ready_to_review]
 
     def activity
       if request.xhr?
@@ -65,7 +65,7 @@ module Pig
     end
 
     def deleted
-      @deleted_content_packages = ContentPackage.where("deleted_at IS NOT NULL").order("deleted_at DESC").paginate(:page => params[:page], :per_page => 50)
+      @deleted_content_packages = ContentPackage.deleted.paginate(:page => params[:page], :per_page => 50)
     end
 
     def destroy
@@ -121,6 +121,8 @@ module Pig
     end
 
     def restore
+      @content_package = Pig::ContentPackage.unscoped.find(params[:id])
+      set_editing_user
       @content_package.restore
       flash[:notice] = "Restored \"#{@content_package}\""
       redirect_to content_packages_path(:open => @content_package)
