@@ -118,7 +118,7 @@
                 %h4.col-primary Page settings
                 %hr
                 =form.inputs do
-                  =parent_content_package_select(form)
+                  =form.input :parent_id, as: :select, collection: nested_set_options(Pig::ContentPackage, @content_package) {|i| "#{'-' * i.level} #{i.name}" }
                   -if can? :manage_slug, @content_package
                     =form.input :slug
                   =form.input :logged_in_only, :as => :content_boolean, :label => "Only logged in users can view this"
