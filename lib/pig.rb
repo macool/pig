@@ -26,6 +26,7 @@ require 'react-rails'
 require 'oauth2'
 require 'legato'
 require 'google/api_client'
+require 'awesome_nested_set'
 
 require 'pig/link'
 require 'pig/permalinkable'
