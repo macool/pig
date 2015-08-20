@@ -304,45 +304,6 @@ module Pig
       attribute_name.scan(regexes).flatten.compact.first || attribute_name # Default to attribute_name in order to fetch e.g. 'skills'
     end
 
-    def get_value_for_content_attribute(content_attribute, method = nil)
-      content_chunk = content_chunk_for_content_attribute(content_attribute)
-      case content_attribute.field_type
-      when 'boolean'
-        instance_variable_set("@#{content_attribute.slug}".to_sym, content_chunk.try(:value) || false)
-      when 'file', 'image'
-        if method == 'path'
-          content_chunk.try(:file).try(:url)
-        else
-          content_chunk.try(:file)
-        end
-      when 'link'
-        instance_variable_set("@#{content_attribute.slug}".to_sym, content_chunk.try(:value))
-      when 'embeddable'
-        if method == 'url'
-          instance_variable_set("@#{content_attribute.slug}_url".to_sym, content_chunk.try(:value))
-        else
-          instance_variable_set("@#{content_attribute.slug}".to_sym, content_chunk.try(:html).to_s.gsub('http://', 'https://').html_safe)
-        end
-      when 'user'
-        if method == 'id'
-          instance_variable_set("@#{content_attribute.slug}_id".to_sym, content_chunk.try(:raw_value))
-        else
-          instance_variable_set("@#{content_attribute.slug}".to_sym, content_chunk.try(:value))
-        end
-      when 'location'
-        if method == 'lat_lng'
-          instance_variable_set("@#{content_attribute.slug}_lat_lng".to_sym, content_chunk.try(:html).split(',').map { |e| e.to_f  })
-        else
-          instance_variable_set("@#{content_attribute.slug}".to_sym, content_chunk.try(:value))
-        end
-      when 'rich'
-        instance_variable_set("@#{content_attribute.slug}".to_sym, content_chunk.try(:value))
-      else
-        instance_variable_set("@#{content_attribute.slug}".to_sym, content_chunk.try(:value).try(:html_safe))
-      end
-
-    end
-
     def required_attributes
       return true if new_record? || content_type.nil?
       content_attributes.each do |content_attribute|
@@ -376,54 +337,6 @@ module Pig
           ContentPackageMailer.assigned(self, self.requested_by).deliver
         end
       end
-    end
-
-    def set_value_for_content_attribute(content_attribute, value, method = nil)
-      content_chunk = content_chunk_for_content_attribute(content_attribute, true)
-      case content_attribute.field_type
-      when 'boolean'
-        content_chunk.value = [0, "0", false, "false", "", nil].include?(value) ? '0' : '1'
-      when 'file', 'image'
-        content_chunk.file = value
-      when 'link'
-        content_chunk.value = value.to_s
-      when 'embeddable'
-        if method == 'url'
-          content_chunk.value = value
-        else
-          content_chunk.html = html
-        end
-      when 'location'
-        if method == 'lat_lng'
-          content_chunk.html = html
-        else
-          content_chunk.value = value
-        end
-      when 'user'
-        if method == 'id'
-          content_chunk.value = value
-        else
-          content_chunk.value = value.try(:id)
-        end
-      when 'rich'
-        #strip out leading and trailing <p><br></p>
-        data = JSON.parse(value)["data"]
-        data.each do |block|
-          if block["type"] == 'text'
-            st = block["data"]["text"].gsub('<p><br></p>', '')
-            block["data"]["text"] = st
-          end
-          # Sir Trevor wraps lists in <ul> tags when editing, remove them here else nested list hell occurs
-          if block["type"] == 'list'
-            st = block["data"]["text"].gsub('<ul>', '').gsub('</ul>', '')
-            block["data"]["text"] = st
-          end
-        end
-        content_chunk.value = JSON.generate({"data" => data})
-      else
-        content_chunk.value = value
-      end
-      instance_variable_set("@#{content_attribute.slug}".to_sym, content_chunk.value) unless %w{file image user}.include?(content_attribute.field_type)
     end
 
   end
