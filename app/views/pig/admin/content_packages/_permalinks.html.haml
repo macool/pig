@@ -6,5 +6,9 @@
     %label= t('.inactive_permalinks', default: 'Aliases')
     %ul
     - content_package.permalinks.inactive.each do |permalink|
-      %li= link_to permalink.full_path, '' + permalink.full_path, class: "col-primary"
+      %li
+        = link_to permalink.full_path, '' + permalink.full_path, class: "col-primary"
+        - if can?(:destroy, permalink)
+          = link_to pig.admin_permalink_path(permalink), method: 'DELETE', data: { confirm: t('actions.confirm_destroy', class: Pig::Permalink.model_name.human) }, class: 'pull-right' do
+            %i.fa.fa-trash-o
   = form.input :short_permalink_path, prepend: '/', label: 'Add an alias'

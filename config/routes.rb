@@ -38,6 +38,8 @@ Pig::Engine.routes.draw do
     get '/content' => 'content_types#dashboard'
     post '/attachments' => 'attachments#create'
 
+    resources :permalinks, only: [:destroy]
+
     resources :content_packages, except: :show do
       collection do
         get 'filter/:filter' => 'content_packages#index', :as => 'filter'

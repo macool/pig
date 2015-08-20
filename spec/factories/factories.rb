@@ -69,6 +69,12 @@ FactoryGirl.define do
     user
   end
 
+  factory :permalink, class: Pig::Permalink do
+    sequence(:path) { |n| "foo-#{n}" }
+    sequence(:full_path) { |n| "/foo-#{n}" }
+    active false
+  end
+
   factory :content_package, class: Pig::ContentPackage do
     sequence(:name) {|n| "Content package #{n}"}
     content_type

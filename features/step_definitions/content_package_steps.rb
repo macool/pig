@@ -382,3 +382,8 @@ When(/^I mark the content package as published$/) do
   visit pig.edit_admin_content_package_path(@content_package)
   select('Published', from: "Status")
 end
+
+When(/^I visit the content package edit page$/) do
+  visit pig.edit_admin_content_package_path(@content_package)
+end
+
