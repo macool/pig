@@ -22,5 +22,5 @@
                     =link_to('Restore', pig.restore_admin_content_package_path(content_package), :method => :put, :data => {:confirm => content_package.restore_warning})
                   -if can? :destroy, content_package
                     %td
-                      =link_to('Destroy', admin_content_package_path(content_package), :method => :delete, :data => {:confirm => "Are you sure you want to destroy this content package?\n\rTHERE IS NO UNDO!"})
+                      =link_to('Destroy', pig.admin_content_package_path(content_package), :method => :delete, :data => {:confirm => "Are you sure you want to destroy this content package?\n\rTHERE IS NO UNDO!"})
           =will_paginate(@deleted_content_packages)

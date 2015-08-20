@@ -1,7 +1,7 @@
 module Pig
   module Admin
     class NavigationItemsController < Pig::Admin::ApplicationController
-      load_and_authorize_resource
+      load_and_authorize_resource class: 'Pig::NavigationItem'
 
       def create
         @navigation_item.save
@@ -25,14 +25,14 @@ module Pig
       end
 
       def reorder
-        @navigation_items = @navigation_item.try(:children) || NavigationItem.root
+        @navigation_items = @navigation_item.try(:children) || Pig::NavigationItem.root
       end
 
       def save_order
         params[:children_ids].each_with_index do |child_id, position|
-          NavigationItem.find(child_id).update_attribute(:position, position)
+          Pig::NavigationItem.find(child_id).update_attribute(:position, position)
         end
-        redirect_to navigation_items_path
+        redirect_to pig.admin_navigation_items_path
       end
 
       def search

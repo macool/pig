@@ -38,7 +38,7 @@ module Pig
         data', icon: 'code'
       }
       nav_items << {
-        visible: proc { can? :manage, User },
+        visible: proc { can? :manage, Pig::User },
         is_active: proc { @users || @user },
         url: pig.admin_manage_users_path,
         title: 'User Management',
