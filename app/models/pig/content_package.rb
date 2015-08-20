@@ -230,9 +230,9 @@ module Pig
 
     def visible_to_user?(user)
       if logged_in_only?
-        user && published? && !deleted? && !missing_view?
+        user && published? && !deleted?
       else
-        published? && !deleted? && !missing_view?
+        published? && !deleted?
       end
     end
 
