@@ -96,7 +96,7 @@ module Pig
 
     def resource_collection
       # ContentPackage collection for atrributes of type resource
-      resource_content_type.nil? ? ContentPackage.published : ContentPackage.where(content_type: resource_content_type).published
+      resource_content_type.nil? ? Pig::ContentPackage.published : Pig::ContentPackage.where(content_type: resource_content_type).published
     end
 
     def limitable?
