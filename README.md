@@ -1,5 +1,31 @@
 # Pig
 
+## Installation
+
+Add Pig to your Gemfile:
+
+```ruby
+gem "pig"
+```
+
+Run the bundle command to install it.
+
+To install it simply run:
+
+```bash
+rails g pig:install
+rake db:migrate
+# Optional (but recommended - Pig can seed some defaults to get you up and trotting quickly.
+rake pig:db:seed
+```
+
+If you take a look in your `config/routes.rb` file you should now see the Pig mounted, the default route for all pig admin functionality is `/admin`, this may be modified by editing:
+
+```ruby
+# config/initializers/pig.rb
+config.mount_path = 'admin'
+```
+
 ### Google Analytics
 
 To configure Pig to display google analytics info when editing a page the following steps are required.

@@ -50,4 +50,10 @@ namespace :pig do
       puts permalink.full_path
     end
   end
+
+  namespace :db do
+    task seed: :environment do
+      Pig::Engine.load_seed
+    end
+  end
 end
