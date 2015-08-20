@@ -3,14 +3,14 @@ Pig::Engine.routes.draw do
 
   root 'front/content_packages#home'
 
-  scope '/admin' do
+  scope "/#{Pig.configuration.mount_path}" do
     devise_for :users, class_name: 'Pig::User', module: :devise, controllers: {
       sessions: 'pig/admin/sessions',
       passwords: 'pig/admin/passwords'
     }
   end
 
-  namespace 'admin' do
+  scope "/#{Pig.configuration.mount_path}", as: "admin", module: "admin" do
     root 'content_types#dashboard'
 
     get 'not-authorized' => 'application#not_authorized'

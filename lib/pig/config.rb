@@ -11,9 +11,11 @@ module Pig
                   :additional_javascripts,
                   :homepage,
                   :archive_domain,
-                  :ga_code
+                  :ga_code,
+                  :mount_path
 
     def initialize(options = {})
+      self.mount_path =  options[:nested_permalinks] || 'admin'
       self.nested_permalinks = options[:nested_permalinks] || true
       self.tags_feature = options[:tags_feature] || true
       self.basic_redactor_plugins = options[:basic_redactor_plugins] || []
