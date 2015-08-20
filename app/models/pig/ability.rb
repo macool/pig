@@ -12,6 +12,9 @@ module Pig
       ],
       'Pig::ContentPackage' => [
         :manage_slug
+      ],
+      'Pig::Permalink' => [
+        :destroy
       ]
     }
 
@@ -37,16 +40,25 @@ module Pig
             cannot action, klass.constantize
           end
         end
+        can :destroy, Pig::Permalink do |permalink|
+          permalink.created_at > 1.hour.ago
+        end
       elsif user.role_is?(:editor)
         can [:edit, :update], Pig::ContentPackage, :author_id => user.id
         can [:manage], Pig::ContentPackage
         cannot :destroy,  Pig::ContentPackage
         can [:index, :dashboard, :children], Pig::ContentType
+        can :destroy, Pig::Permalink do |permalink|
+          permalink.created_at > 1.hour.ago
+        end
       elsif user.role_is?(:author)
         can [:edit, :update], Pig::ContentPackage, :author_id => user.id
         can [:index, :show, :activity, :ready_to_review, :search], Pig::ContentPackage
         can [:index, :dashboard, :children], Pig::ContentType
         can :contributor_blog_posts, Pig::ContentPackage
+        can :destroy, Pig::Permalink do |permalink|
+          permalink.created_at > 1.hour.ago
+        end
       end
     end
   end
