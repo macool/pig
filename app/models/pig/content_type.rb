@@ -26,9 +26,14 @@ module Pig
       if viewless?
         false
       else
+        view_found = false
         ActionController::Base.view_paths.all? do |path|
-          !File.exists?("#{path}/pig/templates/#{view_name}.html.haml")
+          ActionView::Template.template_handler_extensions.each do |extension|
+            view_found = File.exists?("#{path}/pig/templates/#{view_name}.html.#{extension}")
+            break if view_found
+          end
         end
+        !view_found
       end
     end
 
