@@ -19,7 +19,7 @@ module Pig
     has_many :sir_trevor_images
     has_many :deleted_children, -> { where("deleted_at IS NOT NULL").order(:position, :id) }, :class_name => "ContentPackage", :foreign_key => 'parent_id'
 
-    attr_accessor :skip_status_transition
+    attr_accessor :skip_status_transition, :chunk_methods_set
 
     before_create :set_next_review
     before_save :set_status
@@ -45,8 +45,6 @@ module Pig
       array = [*ids_or_records].collect{|i| i.is_a?(Integer) ? i : i.try(:id)}.reject(&:nil?)
       array.empty? ? scoped : where(["#{table_name}.id NOT IN (?)", array])
     end)
-
-    after_initialize :build_content_chunk_methods
 
     def build_content_chunk_methods
       return if content_type.nil?
@@ -336,6 +334,18 @@ module Pig
           self.author_id = nil
           ContentPackageMailer.assigned(self, self.requested_by).deliver
         end
+      end
+    end
+
+    def method_missing(method_sym, *arguments, &block)
+      unless chunk_methods_set
+        self.build_content_chunk_methods
+        chunk_methods_set = true
+      end
+      if self.respond_to?(method_sym)
+        send(method_sym, *arguments)
+      else
+        super(method_sym, *arguments, &block)
       end
     end
 
