@@ -261,6 +261,14 @@ module Pig
       permalink.full_path_without_leading_slash
     end
 
+    def quick_build_permalink
+      return unless permalink.nil?
+      permalink = build_permalink
+      set_permalink
+      set_permalink_full_path
+      permalink.save
+    end
+
     private
 
     def lineage
