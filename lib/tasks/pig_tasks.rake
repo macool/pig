@@ -10,7 +10,7 @@ failures = []
 
 
 namespace :pig do
-  task quick_smoke: :environment do
+  task smoke: :environment do
     hydra = Typhoeus::Hydra.new(max_concurrency: 10)
     links_to_test = Pig::Permalink.active
     requests = links_to_test.map do |permalink|
