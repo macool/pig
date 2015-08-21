@@ -34,6 +34,7 @@ module Pig
             #If the permalink is active then just set the content package and yield to the original action.
             if permalink.active
               @content_package = permalink.resource
+              authorize! params[:action].to_sym, @content_package
               yield
             else
               # Otherwise redirect to the proper permalink so that we come back to this method and fall through the correct path.
