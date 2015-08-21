@@ -55,7 +55,7 @@
       -if current_user && @content_package
         -if can? :index, Pig::ContentPackage.new
           .cms-nav-controls
-            -if @content_package && (action_name.show? || @show_cms_nav_edit_link)
+            -if @content_package && (action_name == 'show' || @show_cms_nav_edit_link)
               =link_to('Edit this page', pig.edit_admin_content_package_path(@content_package), :class => 'btn btn-success btn-sm') if can?(:update, @content_package)
               .cms-nav-status
                 Status:
