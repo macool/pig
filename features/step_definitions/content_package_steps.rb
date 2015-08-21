@@ -109,7 +109,7 @@ Then(/^the image should be removed$/) do
 end
 
 When(/^I go to the content package$/) do
-  visit pig.content_package_path(@content_package.permalink)
+  visit pig.content_package_path(@content_package)
 end
 
 Then(/^I should see all its content$/) do

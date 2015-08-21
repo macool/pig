@@ -37,7 +37,7 @@ module Pig
               yield
             else
               # Otherwise redirect to the proper permalink so that we come back to this method and fall through the correct path.
-              redirect_to pig.content_package_path(permalink.resource.permalink) + params_for_redirect, status: 301
+              redirect_to pig.content_package_path(permalink.resource) + params_for_redirect, status: 301
             end
           else
             # If there isn't a matching permalink handle it with rails (Default is 404)
