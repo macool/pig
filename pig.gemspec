@@ -47,6 +47,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'legato'
   s.add_dependency 'google-api-client'
   s.add_dependency 'awesome_nested_set'
+  s.add_dependency "typhoeus"
 
   s.add_development_dependency "pg"
 end

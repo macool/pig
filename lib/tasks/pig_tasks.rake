@@ -1,45 +1,36 @@
- require "capybara/dsl"
+require "capybara/dsl"
 require "capybara/poltergeist"
 require 'benchmark'
+require 'typhoeus'
+
 
 total_time_taken = 0
 pages_tested = 0
 failures = []
 
 
-class Screenshot
-  include Capybara::DSL
-
-  # Captures a screenshot of +url+ saving it to +path+.
-  def capture(url, path)
-    visit url
-    return page.driver.status_code == 200 && !page.body.include?('Pig::')
-  end
-end
-
 namespace :pig do
-  task smoke: :environment do
-    Capybara.run_server = false
-    Capybara.register_driver :poltergeist do |app|
-      Capybara::Poltergeist::Driver.new(app, js_errors: false)
-    end
-    Capybara.current_driver = :poltergeist
-
+  task quick_smoke: :environment do
+    hydra = Typhoeus::Hydra.new(max_concurrency: 10)
     links_to_test = Pig::Permalink.active
-    links_to_test.each do |permalink|
+    requests = links_to_test.map do |permalink|
       next if permalink.resource.nil? || permalink.resource.viewless?
-      pages_tested += 1
-      screenshot = Screenshot.new
-      success = false
-      time_taken = Benchmark.realtime do
-        success = screenshot.capture "http://0.0.0.0:3000#{permalink.full_path}", "#{permalink.full_path}.png"
-        if !success
-          failures << permalink
-        end
+      request = Typhoeus::Request.new("http://0.0.0.0:8080#{permalink.full_path}", followlocation: true)
+
+      request.on_complete do |response|
+        pages_tested += 1
+        success = response.return_code == :ok && !response.body.include?('Pig::') && !(response.body =~ /href="\/\d+"/)
+
+        failures << permalink unless success
+        total_time_taken += response.total_time
+        puts "#{pages_tested}/#{links_to_test.count} - #{success ? 'SUCCESS' : 'FAILURE'} for #{permalink.full_path} in #{response.total_time} seconds"
       end
-      total_time_taken += time_taken
-      puts "#{pages_tested}/#{links_to_test.count} - #{success ? 'SUCCESS' : 'FAILURE'} for #{permalink.full_path} in #{time_taken} seconds"
+
+      hydra.queue(request)
+      request
     end
+    hydra.run
+
 
     puts '-------'
     puts "RESULTS"
