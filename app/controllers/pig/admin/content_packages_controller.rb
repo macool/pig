@@ -6,13 +6,24 @@ module Pig
         redirect_to pig.new_user_session_path
       end
 
-      # layout 'layouts/application', only: [:show, :home]
-      load_and_authorize_resource class: 'Pig::ContentPackage'
-      skip_load_resource only: [:new, :restore, :destroy]
-      skip_authorize_resource only: [:new]
-      # Define an around filter for all controller actions that could potentially be routed to from a permalink
+      before_action :find_content_package, except: [
+        :activity,
+        :create,
+        :deleted,
+        :destroy,
+        :index,
+        :new,
+        :restore,
+        :search
+      ]
+      before_action :set_editing_user, only: [
+        :delete,
+        :update,
+        :ready_to_review
+      ]
 
-      before_action :set_editing_user, only: [:create, :delete, :update, :ready_to_review]
+      authorize_resource class: 'Pig::ContentPackage'
+      skip_authorize_resource only: [:new, :destroy, :search, :restore]
 
       def activity
         if request.xhr?
@@ -45,6 +56,9 @@ module Pig
       end
 
       def create
+        @content_package = Pig::ContentPackage.new(content_package_params)
+        set_editing_user
+        authorize! :create, @content_package
         if @content_package.save
           redirect_to edit_admin_content_package_path(@content_package)
         else
@@ -66,8 +80,9 @@ module Pig
       end
 
       def destroy
-        @content_package = Pig::ContentPackage.unscoped.find(params[:id])
+        @content_package = find_content_package(Pig::ContentPackage.unscoped)
         set_editing_user
+        authorize! :destroy, @content_package
         if @content_package.destroy
           flash[:notice] = "Destroyed \"#{@content_package}\""
         else
@@ -77,7 +92,7 @@ module Pig
       end
 
       def index
-        @content_packages = @content_packages.roots.includes(:children, :content_type, :author)
+        @content_packages = Pig::ContentPackage.roots.includes(:children, :content_type, :author)
         if params[:open] && open_content_package = Pig::ContentPackage.find_by_id(params[:open])
           @open = [open_content_package] + open_content_package.parents
         end
@@ -120,8 +135,9 @@ module Pig
       end
 
       def restore
-        @content_package = Pig::ContentPackage.unscoped.find(params[:id])
+        @content_package = find_content_package(Pig::ContentPackage.unscoped)
         set_editing_user
+        authorize! :restore, @content_package
         @content_package.restore
         flash[:notice] = "Restored \"#{@content_package}\""
         redirect_to pig.admin_content_packages_path(:open => @content_package)
@@ -175,6 +191,12 @@ module Pig
         params.require(:content_package).permit!
       end
 
+      def find_content_package(scope = Pig::ContentPackage)
+        @content_package = Pig::Permalink.find_by(full_path: "/#{params[:id]}".squeeze('/')).try(:resource)
+        @content_package = scope.find(params[:id]) if @content_package.nil?
+        @content_package
+      end
+
       def get_view_data
         @persona_groups = Pig::PersonaGroup.all.includes(:personas)
         @activity_items = @content_package.activity_items.includes(:user, :resource).paginate(:page => 1, :per_page => 5)
@@ -210,8 +232,6 @@ module Pig
       def set_editing_user
         @content_package.editing_user = current_user
       end
-
-      private
 
       def service_account_user(scope="https://www.googleapis.com/auth/analytics.readonly")
         api_version = 'v3'

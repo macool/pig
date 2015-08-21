@@ -256,6 +256,11 @@ module Pig
       name
     end
 
+    def to_param
+      return id unless permalink
+      permalink.full_path_without_leading_slash
+    end
+
     private
 
     def lineage

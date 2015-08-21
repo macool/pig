@@ -104,7 +104,7 @@ Scenario Outline: Create a new content package choosing the template from a list
     | developer |
     | admin     |
 
-@sane
+@wip
 Scenario Outline: Adding the content attributes of one content type to another
   Given I am logged in as an <role>
   And there are 2 content types

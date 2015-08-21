@@ -100,4 +100,3 @@ at_exit do
     puts "#{value.round(2)}  #{key}"
   end
 end
-
