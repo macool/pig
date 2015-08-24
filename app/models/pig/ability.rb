@@ -51,6 +51,7 @@ module Pig
         can :destroy, Pig::Permalink do |permalink|
           permalink.created_at > 1.hour.ago
         end
+        can [:create], Pig::Comment
       elsif user.role_is?(:author)
         can [:edit, :update], Pig::ContentPackage, :author_id => user.id
         can [:index, :show, :activity, :ready_to_review, :search], Pig::ContentPackage
@@ -59,6 +60,7 @@ module Pig
         can :destroy, Pig::Permalink do |permalink|
           permalink.created_at > 1.hour.ago
         end
+        can [:create], Pig::Comment
       end
     end
   end

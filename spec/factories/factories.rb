@@ -75,6 +75,12 @@ FactoryGirl.define do
     active false
   end
 
+  factory :comment, class: Pig::Comment do
+    sequence(:title) {|n| "Comment title #{n}"}
+    sequence(:comment) {|n| "Comment message #{n}"}
+    user
+  end
+
   factory :content_package, class: Pig::ContentPackage do
     sequence(:name) {|n| "Content package #{n}"}
     content_type
@@ -91,6 +97,17 @@ FactoryGirl.define do
     factory :viewless_content_package do
       association :content_type, :viewless
     end
+
+    factory :content_package_with_comments do
+      transient do
+        comments_count 3
+      end
+
+      after(:create) do |cp, evaluator|
+        create_list(:comment, evaluator.comments_count, commentable: cp)
+      end
+    end
+
   end
 
   factory :persona_group, class: Pig::PersonaGroup, :aliases => [:group] do

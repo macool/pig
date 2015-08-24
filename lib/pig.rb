@@ -27,6 +27,7 @@ require 'oauth2'
 require 'legato'
 require 'google/api_client'
 require 'awesome_nested_set'
+require 'acts_as_commentable'
 
 require 'pig/link'
 require 'pig/permalinkable'
