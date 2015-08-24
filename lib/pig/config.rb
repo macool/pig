@@ -27,6 +27,7 @@ module Pig
       self.homepage = options[:homepage] || proc { Pig::ContentPackage.first }
       self.archive_domain = options[:archive_domain] || ''
       self.ga_code = options[:ga_code] || ''
+      self.cms_roles = options[:cms_roles] || [:developer, :admin, :editor, :author]
     end
 
   end
