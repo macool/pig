@@ -7,7 +7,7 @@ function setFormSubmitting() {
 $(document).ready(function(){
   if ($('.unsaved-changes').length > 0) {
     var isDirty = false;
-    $(':input').on("change.unsaved keyup.unsaved", function () {
+    $(':input').not('.js-skip-dirty').on("change.unsaved keyup.unsaved", function () {
       isDirty = true;
       $(this).off('.unsaved');
     });

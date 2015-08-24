@@ -12,7 +12,7 @@ var CommentForm = React.createClass({
   render: function() {
     return (
       <div>
-        <textarea id="comment_text" type="text" placeholder="Say something..." ref="comment" />
+        <textarea id="comment_text" className="js-skip-dirty" type="text" placeholder="Say something..." ref="comment" />
         <button id="comment_button" className="btn btn-primary pull-right" onClick={this.handleSubmit} >Comment</button>
         <div className="clearfix"></div>
       </div>
