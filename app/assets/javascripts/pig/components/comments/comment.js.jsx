@@ -1,9 +1,4 @@
 var Comment = React.createClass({
-  getInitialState: function() {
-   return {
-     comment: this.props.comment
-   };
- },
   render: function() {
     return (
       <div>
