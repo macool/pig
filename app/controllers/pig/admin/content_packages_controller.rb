@@ -218,7 +218,7 @@ module Pig
             @content_package.save
           end
           if params[:view]
-            redirect_to pig.content_package_path(@content_package.permalink)
+            redirect_to pig.content_package_path(@content_package)
           else
             redirect_to pig.edit_admin_content_package_path(@content_package)
           end
