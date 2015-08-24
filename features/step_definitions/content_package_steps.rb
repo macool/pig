@@ -23,6 +23,10 @@ Given(/^there (?:is|are) (\d+)( unpublished)?( deleted)? content packages?( not\
   @content_package = @content_packages.first
 end
 
+Given(/^there is (\d+) content package with comments$/) do |arg1|
+  @content_package = FactoryGirl.create(:content_package_with_comments)
+end
+
 Given(/^there is a content package with a parent$/) do
   @parent_content_package = FactoryGirl.create(:content_package)
   @content_package = FactoryGirl.create(:content_package, :parent_id => @parent_content_package.id)
@@ -116,17 +120,6 @@ Then(/^I should see all its content$/) do
   @content_package.content_chunks.each do |content_chunk|
     expect(page).to have_content(content_chunk.value)
   end
-end
-
-When(/^I discuss the content package$/) do
-  visit pig.edit_admin_content_package_path(@content_package)
-  click_link('Discussion')
-  fill_in('post_text', :with => "Some sample text")
-  click_button("Post")
-end
-
-Then(/^the discussion count should increase$/) do
-  expect(page).to have_content("Some sample text")
 end
 
 When(/^I mark the content package as ready to review$/) do
@@ -386,4 +379,3 @@ end
 When(/^I visit the content package edit page$/) do
   visit pig.edit_admin_content_package_path(@content_package)
 end
-
