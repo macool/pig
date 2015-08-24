@@ -13,7 +13,6 @@ Pig.setup   do |config|
     config.tags_feature = true
     config.basic_redactor_plugins = ['linksSameTabOnly']
     config.redactor_plugins = ['video', 'table', 'callOuts', 'highlightBlocks', 'expandContent', 'blockQuote', 'dateBlock', 'storify', 'linksSameTabOnly']
-    config.cms_roles = [:developer, :admin, :editor, :author]
 
     # config.on_unpublished do
     #   redirect_to sign_in_path
