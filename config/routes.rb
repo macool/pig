@@ -86,5 +86,6 @@ Pig::Engine.routes.draw do
       via: [:get, :post, :patch, :delete],
       as: 'not_found'
 
+  get '//*id/edit', to: 'admin/content_packages#edit'
   get '//*path', to: 'front/content_packages#show', as: 'content_package'
 end
