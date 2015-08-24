@@ -3,13 +3,13 @@ module Pig
     class CommentsController < Pig::Admin::ApplicationController
 
       authorize_resource class: 'Pig::Comment'
+      before_filter :find_content_package
 
       def create
-        cp = find_content_package
-        @comment = cp.comments.build(comment_params)
-        @comment.user = current_user
-        @comment.save
-        render json: cp.comments
+        comment = @content_package.comments.build(comment_params)
+        comment.user = current_user
+        comment.save
+        render json: @content_package.comments
       end
 
       private
