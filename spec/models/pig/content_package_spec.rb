@@ -207,14 +207,13 @@ module Pig
 
     describe 'tags attributes' do
       it 'can be got' do
-        expect(content_package.skill_list).to eq([])
+        expect(content_package.skill_list).to eq('')
       end
       it 'can be set' do
         skills = %w(shooting hunting fishing)
         content_package.skill_list = skills.join(',')
         content_package.save
-        expect(content_package.skill_list).to eq(skills)
-        expect(content_package.skills.map(&:to_s)).to eq(%w(shooting hunting fishing))
+        expect(content_package.skill_list).to eq('shooting, hunting, fishing')
       end
     end
 

@@ -116,24 +116,6 @@ module Pig
       def reorder
       end
 
-      def remove_abandoned_sir_trevor_images
-        # Not used for now, keep in case we want to turn this into a rake task later
-        rich_content_chunks = @content_package.content_chunks.joins(:content_attribute).where(:content_attributes => {field_type: 'rich'}).pluck(:value)
-        urls = []
-        rich_content_chunks.each do |chunk|
-          value = JSON.parse(chunk)['data']
-          value.select! { |i| i['type'] == 'image' }
-          value.each do |v|
-            urls.append(v['data']['file']['url'])
-          end
-        end
-        @content_package.sir_trevor_images.each do |stimg|
-          unless urls.include? stimg.image.url
-            stimg.destroy!
-          end
-        end
-      end
-
       def restore
         @content_package = find_content_package(Pig::ContentPackage.unscoped)
         set_editing_user
@@ -174,16 +156,6 @@ module Pig
         get_view_data
         @content_package.skip_status_transition = true
         update_content_package
-      end
-
-      def upload_sir_trevor_attachment
-        begin
-          stimg = @content_package.sir_trevor_images.create(image: params[:attachment][:file], sir_trevor_uid: params[:attachment][:uid], filename: params[:attachment][:original_filename])
-          render json: { file: { url: stimg.image.url, dragonfly_uid: stimg.image_uid } }, status: 200
-        rescue => exception
-          puts exception
-          render json: { error: 'Upload failed' }, status: 500
-        end
       end
 
       private

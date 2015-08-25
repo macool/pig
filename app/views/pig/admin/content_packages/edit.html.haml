@@ -3,17 +3,6 @@
   $(document).ready(function() {
     Pig.Redactor.init();
     $( ".autocomplete-select" ).combobox();
-    SirTrevor.setDefaults({
-      uploadUrl: $('#cms-style-container').data('sirTrevorUploadUrl')
-    });
-    $('.st-content').each(function() {
-        new SirTrevor.Editor({
-          el: $(this),
-          blockTypes: $(this).data('blocktypes'),
-          blockTypeLimits: $(this).data('blocktypelimits'),
-          required: $(this).data('required')
-        });
-    });
 
     $('html, body').animate({ scrollTop: $('h1').position().top }, 0, "linear");
 
@@ -36,7 +25,7 @@
   });
 
 =semantic_form_for [pig, :admin, @content_package], html: { onsubmit: 'setFormSubmitting()' } do |form|
-  .container.page-margin-bottom{data: {sir_trevor_upload_url: pig.upload_sir_trevor_attachment_admin_content_package_path(@content_package)} }
+  .container.page-margin-bottom
     .row
       .col-xs-12
         .cms-page-header

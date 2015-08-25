@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150821112507) do
+ActiveRecord::Schema.define(version: 20150825102857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,7 +58,6 @@ ActiveRecord::Schema.define(version: 20150821112507) do
     t.boolean "meta",                     default: false
     t.string  "meta_tag_name"
     t.integer "default_attribute_id"
-    t.text    "sir_trevor_settings"
     t.integer "resource_content_type_id"
   end
 
@@ -205,13 +204,6 @@ ActiveRecord::Schema.define(version: 20150821112507) do
   add_index "pig_resource_tag_categories", ["taggable_resource_id", "taggable_resource_type"], name: "index_resource_id_and_type", using: :btree
   add_index "pig_resource_tag_categories", ["taggable_resource_id"], name: "index_pig_resource_tag_categories_on_taggable_resource_id", using: :btree
 
-  create_table "pig_sir_trevor_images", force: :cascade do |t|
-    t.text    "image_uid"
-    t.text    "sir_trevor_uid"
-    t.text    "filename"
-    t.integer "content_package_id"
-  end
-
   create_table "pig_tag_categories", force: :cascade do |t|
     t.string "name"
     t.string "slug"
@@ -236,8 +228,13 @@ ActiveRecord::Schema.define(version: 20150821112507) do
     t.string   "image_uid"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
   end
 
+  add_index "pig_users", ["confirmation_token"], name: "index_pig_users_on_confirmation_token", unique: true, using: :btree
   add_index "pig_users", ["email"], name: "index_pig_users_on_email", unique: true, using: :btree
   add_index "pig_users", ["reset_password_token"], name: "index_pig_users_on_reset_password_token", unique: true, using: :btree
 

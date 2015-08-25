@@ -67,6 +67,10 @@ module Pig
           redirect_to pig.admin_manage_users_path, notice: 'User deactivated'
         end
 
+        def confirm
+          @confirmed = @user.confirm
+        end
+
         private
 
           def user_params

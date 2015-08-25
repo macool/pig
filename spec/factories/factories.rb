@@ -47,7 +47,11 @@ FactoryGirl.define do
     password "password"
     role "admin"
     bio "I am an original bio"
+    confirmed_at DateTime.now
 
+    trait :unconfirmed do
+      after(:create) { |user| user.update_attribute(:confirmed_at, nil) }
+    end
     trait :author do
       before(:create) { |user| user.role = "author" }
     end

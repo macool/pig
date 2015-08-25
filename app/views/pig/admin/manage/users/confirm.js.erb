@@ -1,0 +1,5 @@
+var $userRow = $("tr[data_user-id='<%= @user.id %>']");
+<%- if @confirmed %>
+  $("td.user-actions .js-user-confirm", $userRow).replaceWith("<span>Confirmed!</span>");
+  $("td.user-actions .js-user-confirm", $userRow).html("<span>Confirmed!</span>");
+<% end %>

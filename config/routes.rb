@@ -3,11 +3,16 @@ Pig::Engine.routes.draw do
 
   root 'front/content_packages#home'
 
+
   scope "/#{Pig.configuration.mount_path}" do
     devise_for :users, class_name: 'Pig::User', module: :devise, controllers: {
       sessions: 'pig/admin/sessions',
-      passwords: 'pig/admin/passwords'
+      passwords: 'pig/admin/passwords',
+      confirmations: 'pig/admin/confirmations'
     }
+    devise_scope :user do
+      patch 'users/confirmation' => 'admin/confirmations#update', :as => :update_user_confirmation
+    end
   end
 
   scope "/#{Pig.configuration.mount_path}", as: "admin", module: "admin" do
@@ -30,6 +35,7 @@ Pig::Engine.routes.draw do
         member do
           post :set_active
           post :deactivate
+          post :confirm
           get :content
         end
       end
@@ -55,7 +61,6 @@ Pig::Engine.routes.draw do
         put 'save_order'
         put 'restore'
         get 'activity'
-        post 'upload_sir_trevor_attachment'
         patch 'ready_to_review'
         get 'analytics'
       end
