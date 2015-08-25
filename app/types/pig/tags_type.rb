@@ -7,7 +7,7 @@ module Pig
         send("#{slug}=", value)
       end
       content_package.define_singleton_method("#{@slug.singularize}_list") do
-        send(slug)
+        send(slug).join(', ')
       end
     end
 
