@@ -33,7 +33,6 @@ module Pig
           :boolean => 'Check box',
           :user => "User",
           :location => "Location",
-          :rich => "Rich content (Sir Trevor)",
           :resource => "Link to content",
           :rich_content => "Rich Content",
           :date => "Date",
@@ -47,7 +46,6 @@ module Pig
 
     end
 
-    DEFAULT_SIR_TREVOR_BLOCK_TYPES = ['Text', 'Image', 'Video', 'Heading', 'Quote', 'List', 'Alert']
     META_TAG_TYPES = ["title", "description", "image", "keywords"]
 
     def field_type
@@ -105,35 +103,6 @@ module Pig
 
     def removable?
       new_record? || content_type.missing_view?
-    end
-
-    def sir_trevor_settings_json
-      if sir_trevor_settings
-        j = JSON.parse(sir_trevor_settings)
-        DEFAULT_SIR_TREVOR_BLOCK_TYPES.each do |block_type|
-          unless j.has_key? block_type
-            j[block_type] = {:required => false, :limit => 0 }
-          end
-        end
-      else
-        j = {}
-        DEFAULT_SIR_TREVOR_BLOCK_TYPES.each do |block_type|
-          j[block_type] = {:required => false, :limit => 0 }
-        end
-      end
-      HashWithIndifferentAccess.new(j)
-    end
-
-    def sir_trevor_limit_data
-      # Hash to give to Sir Trevor JS initialize options
-      settings = sir_trevor_settings_json
-      block_type_limits = {}
-      settings.map {|k,v| block_type_limits[k] = v["limit"]}
-      {
-        :blockTypeLimits => block_type_limits,
-        :blockTypes => settings.reject{|k,v| v["limit"] == "0" }.keys,
-        :required => settings.reject{|k,v| v["required"] == false }.keys
-      }
     end
 
     def to_s

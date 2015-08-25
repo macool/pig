@@ -55,7 +55,6 @@ Pig::Engine.routes.draw do
         put 'save_order'
         put 'restore'
         get 'activity'
-        post 'upload_sir_trevor_attachment'
         patch 'ready_to_review'
         get 'analytics'
       end

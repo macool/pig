@@ -10,7 +10,6 @@ module Pig
 
       def create
         params = content_type_params
-        params = convert_sir_trevor_settings(params)
         @content_type = Pig::ContentType.new
         @content_type.assign_attributes(params)
         if @content_type.save
@@ -70,32 +69,8 @@ module Pig
         redirect_to pig.admin_content_packages_path(:anchor => 'content-types')
       end
 
-      def convert_sir_trevor_settings(params)
-        # Replace sir trevor params with JSON
-        params["content_attributes_attributes"].each do |content_attributes_params|
-          ca_id = content_attributes_params[0]
-          content_attributes = content_attributes_params[1].with_indifferent_access
-          if content_attributes.has_key? "sir_trevor_settings"
-            content_attributes["sir_trevor_settings"] = sir_trevor_settings_to_json(content_attributes["sir_trevor_settings"])
-            params["content_attributes_attributes"][ca_id] = content_attributes
-          end
-        end
-        params
-      end
-
-      def sir_trevor_settings_to_json(settings)
-        # Convert Sir Trevor form fields to JSON so content_type.update_attributes works
-        j = {}
-        Pig::ContentAttribute::DEFAULT_SIR_TREVOR_BLOCK_TYPES.each do |block_type|
-          j[block_type] = {:required => (settings.has_key? "#{block_type}_required"), :limit => settings["#{block_type}_limit"] }
-        end
-        json = JSON.generate(j)
-        json
-      end
-
       def update
         params = content_type_params
-        params = convert_sir_trevor_settings(params)
         if @content_type.update_attributes(params)
           redirect_to pig.admin_content_types_path
         else
@@ -129,8 +104,7 @@ module Pig
             :limit_quantity,
             :limit_unit,
             :position,
-            :resource_content_type_id,
-            :sir_trevor_settings => Pig::ContentAttribute::DEFAULT_SIR_TREVOR_BLOCK_TYPES.map {|e| ["#{e}_required", "#{e}_limit"] }.flatten
+            :resource_content_type_id
           ]
         )
       end

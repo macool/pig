@@ -25,10 +25,8 @@
 //= require pig/tabs
 //= require pig/search_manager
 //= require underscore
-//= require sir-trevor
 //= require redactor
 //= require pig/user_filter
-//= require_tree ./sir_trevor_custom_blocks
 //= require pig/autocomplete-field
 //= require select2
 //= require pig/unsaved-changes
