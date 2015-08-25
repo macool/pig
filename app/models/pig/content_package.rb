@@ -17,7 +17,6 @@ module Pig
     has_and_belongs_to_many :personas, class_name: 'Pig::Persona'
     belongs_to :author, :class_name => 'Pig::User'
     belongs_to :requested_by, :class_name => 'Pig::User'
-    has_many :sir_trevor_images
     has_many :deleted_children, -> { where("deleted_at IS NOT NULL").order(:position, :id) }, :class_name => "ContentPackage", :foreign_key => 'parent_id'
 
     attr_accessor :skip_status_transition, :chunk_methods_set

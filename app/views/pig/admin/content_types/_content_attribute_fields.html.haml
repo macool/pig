@@ -7,18 +7,6 @@
     .character-limit-inputs{:class => f.object.limitable? ? '' : 'hide'}
       =f.input :limit_quantity
       =f.input :limit_unit, :as => :select, :collection => [['Characters', 'character'], ['Words', 'word']], :include_blank => false
-    .sir-trevor-settings{:class => f.object.field_type == 'rich' ? '' : 'hide'}
-      %p
-        Select the number of content blocks that can be used, selecting 0 will make that block unavailable and leaving a field blank will mean there is no limit on that block type
-      -Pig::ContentAttribute::DEFAULT_SIR_TREVOR_BLOCK_TYPES.each do |block_type|
-        -value = f.object.sir_trevor_settings_json[block_type]
-        .block-type-setting
-          %h4=block_type
-          =check_box_tag "#{f.object_name}[sir_trevor_settings][#{block_type}_required]", 1 ,value["required"]
-          %span=label_tag "#{block_type}_required", "Required?"
-          %br
-            =label_tag "#{block_type}_required", "Number of blocks allowed (leave blank for no limit)"
-            =number_field_tag "#{f.object_name}[sir_trevor_settings][#{block_type}_limit]", value["limit"]
     .resource-content-type{:class => f.object.field_type == 'resource' ? '' : 'hide'}
       %p
         Limit the template that can be linked to from this template

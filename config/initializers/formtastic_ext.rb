@@ -20,9 +20,6 @@ module Formtastic
               :limit_unit => content_attribute.limit_unit
             }
           end
-          if content_attribute.field_type == 'rich'
-            (hash[:data] ||= {}).reverse_merge!(content_attribute.sir_trevor_limit_data)
-          end
           if content_attribute.field_type == 'text'
             (hash[:data] ||= {}).reverse_merge!({"redactor-plugins" => Pig::configuration.try(:basic_redactor_plugins) || []})
           end
