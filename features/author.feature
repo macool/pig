@@ -1,4 +1,3 @@
-@author
 Feature: CMS author
   In order to create great content
   As an author

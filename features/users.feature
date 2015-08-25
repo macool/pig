@@ -1,4 +1,3 @@
-@admin
 Feature: CMS user management
   In order to manage users
   I want a user management interface
