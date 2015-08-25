@@ -35,6 +35,7 @@ Pig::Engine.routes.draw do
         member do
           post :set_active
           post :deactivate
+          post :confirm
           get :content
         end
       end

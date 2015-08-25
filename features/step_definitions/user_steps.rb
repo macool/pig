@@ -16,13 +16,17 @@ When(/^I go to the dashboard$/) do
   visit pig.admin_content_path
 end
 
-Given(/^there (?:are|is) (\d+) user(?:s)?$/) do |n|
+Given(/^there (?:are|is) (\d+)( unconfirmed)? user(?:s)?$/) do |n, unconfirmed|
   if n.to_i.zero?
     Pig::User.where('id != ?', @current_user.id).destroy_all
   end
   @users = [].tap do |arr|
     n.to_i.times do
-      arr << FactoryGirl.create(:user, role: 'author')
+      if unconfirmed
+        arr << FactoryGirl.create(:user, :unconfirmed, role: 'author')
+      else
+        arr << FactoryGirl.create(:user, role: 'author')
+      end
     end
   end
   @user = @users.first
@@ -148,4 +152,10 @@ end
 Then(/^(?:the|my) account should be confirmed$/) do
   @user.reload
   expect(@user.confirmed?).to be_truthy
+end
+
+When(/^I confirm the user$/) do
+  visit pig.admin_manage_users_path
+  click_link 'Confirm'
+  wait_for_ajax
 end
