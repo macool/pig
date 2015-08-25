@@ -8,11 +8,23 @@ Scenario Outline: Creating a user
   Given I am logged in as an <role>
   And there are 0 users
   When I fill in the new cms user form and submit
-  Then the user is created
+  Then the user is created but not confirmed
     Examples:
       | role      |
       | developer |
       | admin     |
+
+Scenario: Receiving an email to confirm my account
+  Given I am logged in as an developer
+  And there are 0 users
+  When I fill in the new cms user form and submit
+  Then the user should received an email to confirm their account
+
+Scenario: Confirming my account from the link in the email
+  Given I have received an email to confirm my account
+  When I visit the confirmation url
+  And I choose a password
+  Then my account should be confirmed
 
 @javascript
 Scenario Outline: Editing another user

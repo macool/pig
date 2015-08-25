@@ -34,20 +34,22 @@ When(/^I fill in the new cms user form and submit$/) do
   fill_in "user_first_name", :with => @user.first_name
   fill_in "user_last_name", :with => @user.last_name
   fill_in "user_email", :with => @user.email
-  fill_in "user_password", :with => @user.password
-  fill_in "user_password_confirmation", :with => @user.password
   select(@user.role.capitalize, :from => 'user_role')
   click_button('Save')
   @user = Pig::User.last
 end
 
-Then(/^the user is (created|updated)$/) do |action|
+Then(/^the user is (created|updated)( but not confirmed)?$/) do |action, confirmed|
   visit pig.admin_manage_user_path(@user)
   expect(page).to have_content(@user.first_name)
   expect(page).to have_content(@user.last_name)
   if action == 'updated'
     expect(page).to have_content("Edited")
   end
+  if confirmed
+    expect(@user.confirmed?).to be_falsey
+  end
+
   expect(page).to have_content(@user.role.try(:capitalize))
 end
 
@@ -120,4 +122,30 @@ end
 When(/^I log out$/) do
   find('.cms-nav-user').click
   click_link 'Sign out'
+end
+
+Then(/^the user should received an email to confirm their account$/) do
+  open_email(@user.email)
+  expect(current_email).to have_link('Confirm my account')
+end
+
+Given(/^I have received an email to confirm my account$/) do
+  @user = FactoryGirl.create(:user)
+  @user.send_confirmation_instructions
+end
+
+When(/^I visit the confirmation url$/) do
+  open_email(@user.email)
+  current_email.click_link 'Confirm my account'
+end
+
+When(/^I choose a password$/) do
+  fill_in "user_password", with: 'password'
+  fill_in "user_password_confirmation", with: 'password'
+  click_button 'Confirm Account'
+end
+
+Then(/^(?:the|my) account should be confirmed$/) do
+  @user.reload
+  expect(@user.confirmed?).to be_truthy
 end
