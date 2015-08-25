@@ -24,7 +24,7 @@ Scenario Outline: Confirming an unconfirmed user
   Given I am logged in as an <role>
   And there is 1 unconfirmed user
   When I confirm the user
-  Then the account is confirmed
+  Then the account should be confirmed
   Examples:
     | role      |
     | developer |
