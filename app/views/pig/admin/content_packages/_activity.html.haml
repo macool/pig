@@ -11,7 +11,7 @@
 
 %li
   -if activity.resource
-    =link_to [pig, :admin, activity.resource] do
+    =link_to [pig, activity.resource] do
       =activity_html
   -else
     =activity_html
