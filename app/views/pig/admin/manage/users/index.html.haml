@@ -37,6 +37,8 @@
               =user.role.to_s.humanize
 
             %td.user-actions
+              -unless user.confirmed?
+                =link_to('Confirm', pig.confirm_admin_manage_user_path(user), class: 'btn btn-xs btn-warning edit-user-btn js-user-confirm', method: :post, remote: true)
               =link_to('Edit', pig.edit_admin_manage_user_path(user), class: 'btn btn-xs btn-success edit-user-btn')
               - if user.active
                 = react_component('DeactivateUserButton', deactivateUrl: pig.deactivate_admin_manage_user_path(user), contentUrl: pig.content_admin_manage_user_path(user, format: :json), userId: user.id, users: Pig::User.all.reject{ |u| u == user }.to_json(methods: [:full_name]))

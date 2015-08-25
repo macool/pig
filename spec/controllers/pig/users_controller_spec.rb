@@ -34,6 +34,14 @@ module Pig
         end
       end
 
+      describe "PATCH #confirm" do
+        let(:user) { FactoryGirl.create(:user) }
+        it "confirms the user" do
+          xhr :patch, :confirm, id: user.id
+          expect(user.confirmed?).to be_truthy
+        end
+      end
+
       describe "GET #show" do
         let(:user) { FactoryGirl.create(:user) }
         it "shows the user" do

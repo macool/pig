@@ -9,13 +9,13 @@ module Pig
       foreign_key: 'author_id'
 
     validates :email, :'pig/email' => true, presence: true, uniqueness: true
-    validates :password, presence: true, on: :create
 
     devise :database_authenticatable,
            :recoverable,
            :rememberable,
            :trackable,
-           :validatable
+           :validatable,
+           :confirmable
 
     dragonfly_accessor :image
     send(:validates_property,
@@ -43,6 +43,15 @@ module Pig
 
     def profile_picture_url
       image.try(:url) || ActionController::Base.helpers.asset_path("pig/default_user.jpg", digest: false)
+    end
+
+    def password_required?
+      # Password is required if it is being set, but not for new records
+      if !persisted?
+        false
+      else
+        !password.nil? || !password_confirmation.nil?
+      end
     end
 
     class << self
