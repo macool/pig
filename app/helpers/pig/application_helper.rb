@@ -6,7 +6,7 @@ module Pig
 
       meta_title = Settings.default_meta_title
 
-      if @content_package.present?
+      if @content_package
 
         if @content_package.meta_title.present?
           meta_title = "#{@content_package.meta_title} | #{Settings.default_meta_title}"
@@ -23,7 +23,7 @@ module Pig
     # Gets meta tags - uses pig values or default except for meta image
     # Uses the hero image if no meta image is set. If neither, or not a pig page, uses default
     def get_meta_tags
-      if @content_package.present?
+      if @content_package
 
         if @content_package.meta_image_uid
           image = "http://#{Settings.site_url}#{@content_package.meta_image.thumb('1024x1024#').url}"
