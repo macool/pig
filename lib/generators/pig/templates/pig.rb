@@ -14,7 +14,7 @@ Pig.setup do |config|
   config.unpublished = proc { redirect_to Pig::Engine.routes.url_helpers.content_package_path(Pig::ContentPackage.find_by(slug: 'coming-soon') ) }
   config.nested_permalinks = true
   config.tags_feature = true
-  # config.redactor_plugins = %w(bufferbuttons, video, blockQuote)
+  # config.redactor_plugins = %w(bufferbuttons video blockQuote)
   # config.basic_redactor_plugins = ['bufferbuttons']
   config.cms_roles = [:developer, :admin, :editor, :author]
   config.homepage = proc { Pig::ContentPackage.find_by slug: 'home' }
