@@ -10,7 +10,7 @@
   .clearfix
 
 %li
-  -if activity.resource
+  -if activity.resource && !activity.resource.viewless?
     =link_to [pig, activity.resource] do
       =activity_html
   -else
