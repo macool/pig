@@ -351,7 +351,11 @@ module Pig
     end
 
     def respond_to_missing?(method_name, include_private = false)
-      (json_content['content_chunks'] && json_content['content_chunks'].has_key?(method_name.to_s)) || super
+      unless super && chunk_methods_set
+        self.build_content_chunk_methods
+        chunk_methods_set = true
+        super
+      end
     end
 
     def method_missing(method_sym, *arguments, &block)
