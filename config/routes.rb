@@ -87,7 +87,7 @@ Pig::Engine.routes.draw do
     end
   end
 
-  get '404' => 'errors#not_found',
+  get '404' => 'front/errors#not_found',
       via: [:get, :post, :patch, :delete],
       as: 'not_found'
 
