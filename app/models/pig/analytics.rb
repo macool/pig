@@ -5,16 +5,14 @@ module Pig
 
     def initialize(results)
       @referrers = results.group_by(&:source).map { |x| Referrer.new(x) }
-    end
-
-    def total
-      @referrers.collect(&:total).sum
+      @totals = results.totals_for_all_results
     end
 
     def as_json(options={})
       {
-        total: total,
-        referrers: @referrers
+        total: @totals['pageviews'],
+        referrers: @referrers,
+        avg_time_on_page: @totals['avgTimeOnPage'].to_i
       }
     end
 

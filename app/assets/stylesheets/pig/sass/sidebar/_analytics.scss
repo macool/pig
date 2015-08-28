@@ -1,0 +1,20 @@
+.analytics-panel {
+  select {
+    margin-bottom: 20px;
+  }
+  .analytics-value {
+    font-size: 33px;
+    font-weight: 200;
+    margin-bottom: 24px;
+  }
+  .referrer-panel {
+    display: block;
+    background-color: #f5f5f5;
+    padding: 13px;
+    font-size: 13px;
+    border-top: 2px solid $brand-primary;
+  }
+  .analytics-referer {
+    margin-bottom: 10px;
+  }
+}
