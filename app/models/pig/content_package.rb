@@ -216,6 +216,12 @@ module Pig
     end
 
     def destroy_related_caches
+      if parent_id_changed?
+        previous_parent = Pig::ContentPackage.find(parent_id_was)
+        previous_parent.self_and_ancestors.each do |content_package|
+          Rails.cache.delete(content_package_cache_key(content_package))
+        end
+      end
       ancestors.each do |content_package|
         Rails.cache.delete(content_package_cache_key(content_package))
       end
