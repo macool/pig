@@ -75,7 +75,7 @@ When(/^I fill in the new content package form and submit$/) do
   select(@content_type)
   fill_in('Name', :with => @content_package.name)
   select(@content_package.author.full_name, :from => 'Author')
-  click_button("Finish")
+  click_button("Save and add content")
 end
 
 Then(/^I am taken to edit the content package$/) do
@@ -348,7 +348,7 @@ When(/^I fill in the new child content package form and submit$/) do
   fill_in('Name', :with => content_package.name)
   click_button "Assign author"
   select(content_package.author.full_name, :from => 'Author')
-  click_button("Finish")
+  click_button("Save and add content")
   @child_content_package = Pig::ContentPackage.last
 end
 
