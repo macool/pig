@@ -4,14 +4,13 @@ module Pig
     include Pig::Permalinkable
     include Pig::Concerns::Recordable
     include Pig::Concerns::Commentable
-    include Pig::CacheHelper
 
     # Because of this issue on awesome_nested_set it is very important that
     # acts_as_taggable_on comes before acts_as_nested_set
     # https://github.com/collectiveidea/awesome_nested_set/issues/213
     acts_as_taggable_on :acts_as_taggable_on_tags
     acts_as_taggable_on :taxonomy
-    acts_as_nested_set
+    acts_as_nested_set touch: true
 
     belongs_to :content_type
     has_many :content_chunks, -> { includes :content_attribute }
@@ -24,8 +23,6 @@ module Pig
 
     before_create :set_next_review
     before_save :set_status
-    after_save :destroy_related_caches
-    after_destroy :destroy_related_caches
 
     validates :name, :content_type, :requested_by, :review_frequency, :presence => true
     validate :required_attributes
@@ -213,18 +210,6 @@ module Pig
         c = c.parent
       end
       result
-    end
-
-    def destroy_related_caches
-      if parent_id_changed?
-        previous_parent = Pig::ContentPackage.find(parent_id_was)
-        previous_parent.self_and_ancestors.each do |content_package|
-          Rails.cache.delete(content_package_cache_key(content_package))
-        end
-      end
-      ancestors.each do |content_package|
-        Rails.cache.delete(content_package_cache_key(content_package))
-      end
     end
 
     def published?
