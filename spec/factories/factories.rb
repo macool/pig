@@ -47,7 +47,11 @@ FactoryGirl.define do
     password "password"
     role "admin"
     bio "I am an original bio"
+    confirmed_at DateTime.now
 
+    trait :unconfirmed do
+      after(:create) { |user| user.update_attribute(:confirmed_at, nil) }
+    end
     trait :author do
       before(:create) { |user| user.role = "author" }
     end
@@ -69,6 +73,18 @@ FactoryGirl.define do
     user
   end
 
+  factory :permalink, class: Pig::Permalink do
+    sequence(:path) { |n| "foo-#{n}" }
+    sequence(:full_path) { |n| "/foo-#{n}" }
+    active false
+  end
+
+  factory :comment, class: Pig::Comment do
+    sequence(:title) {|n| "Comment title #{n}"}
+    sequence(:comment) {|n| "Comment message #{n}"}
+    user
+  end
+
   factory :content_package, class: Pig::ContentPackage do
     sequence(:name) {|n| "Content package #{n}"}
     content_type
@@ -85,6 +101,17 @@ FactoryGirl.define do
     factory :viewless_content_package do
       association :content_type, :viewless
     end
+
+    factory :content_package_with_comments do
+      transient do
+        comments_count 3
+      end
+
+      after(:create) do |cp, evaluator|
+        create_list(:comment, evaluator.comments_count, commentable: cp)
+      end
+    end
+
   end
 
   factory :persona_group, class: Pig::PersonaGroup, :aliases => [:group] do

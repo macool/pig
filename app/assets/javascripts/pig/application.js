@@ -25,13 +25,12 @@
 //= require pig/tabs
 //= require pig/search_manager
 //= require underscore
-//= require sir-trevor
 //= require redactor
 //= require pig/user_filter
-//= require_tree ./sir_trevor_custom_blocks
 //= require pig/autocomplete-field
 //= require select2
 //= require pig/unsaved-changes
+//= require pig/google-analytics
 //= require_tree ./redactor_plugins
 //= require_tree ./components
 
@@ -178,11 +177,11 @@ window.Pig = {
       });
 
       $('.rich_redactor textarea').redactor({
-        buttons: ['html', 'formatting', 'bold', 'italic', 'unorderedlist', 'orderedlist', 'image', 'link', 'horizontalrule'],
+        buttons: ['html', 'formatting', 'bold', 'italic', 'unorderedlist', 'orderedlist', 'image', 'link'],
         plugins: $('.rich_redactor textarea').data('redactor-plugins'),
         path: 'vendor/assets/javascripts/redactor',
-        imageUpload: PigConfig.namespace + 'redactor_image_uploads?file_type=image',
-        imageGetJson: PigConfig.namespace + 'redactor_image_uploads',
+        imageUpload: PigConfig.namespace + '/redactor_image_uploads?file_type=image',
+        imageGetJson: PigConfig.namespace + '/redactor_image_uploads',
         formatting: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
         imageResizable: false,
         imagePosition: false,

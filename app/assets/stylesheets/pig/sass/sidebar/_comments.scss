@@ -1,0 +1,33 @@
+//
+// Comments
+// --------------------------------------------------
+
+#cms-comments {
+  .comment-list {
+    max-height: 400px;
+    overflow: scroll;
+  }
+  .comment-header {
+    display: inline-block;
+    padding-left: 15px;
+  }
+  .comment-time {
+    font-size: 16px;
+  }
+  .comment-profile {
+    width: 50px;
+    height: 50px;
+    border-radius: 150px;
+    float: left;
+  }
+  .comment-author {
+    display: inline-block;
+  }
+  .comment-body {
+    white-space: pre;
+    margin: 30px 0px;
+  }
+  textarea{
+    margin-top: 30px;
+  }
+}

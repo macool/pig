@@ -21,7 +21,7 @@ module Pig
     # builds meta data needed for generating meta tags
     def build_meta_values
       page_slug = request.path.match(/^\/(.+)$/) { $1 }
-      if @content_package.present?
+      if @content_package
         # cache content_package_meta_tags_cache_key(@content_package) do
 
         meta_title = @content_package.meta_title.presence || Settings.default_meta_title

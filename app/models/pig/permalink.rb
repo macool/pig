@@ -3,7 +3,7 @@ module Pig
 
     include Pig::Concerns::Models::Core
 
-    belongs_to :resource, :polymorphic => true
+    belongs_to :resource, -> { unscope(where: :deleted_at) }, :polymorphic => true
 
     validates :full_path, presence: true,
       uniqueness: { case_sensitive: false, scope: :active },
@@ -46,6 +46,10 @@ module Pig
       else
         Permalink.send("find_by_#{find_by_attr}", permalink_path)
       end
+    end
+
+    def full_path_without_leading_slash
+      full_path.gsub!(/^(\/)?/, '')
     end
 
     private

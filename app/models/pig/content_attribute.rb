@@ -33,7 +33,6 @@ module Pig
           :boolean => 'Check box',
           :user => "User",
           :location => "Location",
-          :rich => "Rich content (Sir Trevor)",
           :resource => "Link to content",
           :rich_content => "Rich Content",
           :date => "Date",
@@ -47,7 +46,6 @@ module Pig
 
     end
 
-    DEFAULT_SIR_TREVOR_BLOCK_TYPES = ['Text', 'Image', 'Video', 'Heading', 'Quote', 'List', 'Alert']
     META_TAG_TYPES = ["title", "description", "image", "keywords"]
 
     def field_type
@@ -96,7 +94,7 @@ module Pig
 
     def resource_collection
       # ContentPackage collection for atrributes of type resource
-      resource_content_type.nil? ? ContentPackage.published : ContentPackage.where(content_type: resource_content_type).published
+      resource_content_type.nil? ? Pig::ContentPackage.published : Pig::ContentPackage.where(content_type: resource_content_type).published
     end
 
     def limitable?
@@ -105,35 +103,6 @@ module Pig
 
     def removable?
       new_record? || content_type.missing_view?
-    end
-
-    def sir_trevor_settings_json
-      if sir_trevor_settings
-        j = JSON.parse(sir_trevor_settings)
-        DEFAULT_SIR_TREVOR_BLOCK_TYPES.each do |block_type|
-          unless j.has_key? block_type
-            j[block_type] = {:required => false, :limit => 0 }
-          end
-        end
-      else
-        j = {}
-        DEFAULT_SIR_TREVOR_BLOCK_TYPES.each do |block_type|
-          j[block_type] = {:required => false, :limit => 0 }
-        end
-      end
-      HashWithIndifferentAccess.new(j)
-    end
-
-    def sir_trevor_limit_data
-      # Hash to give to Sir Trevor JS initialize options
-      settings = sir_trevor_settings_json
-      block_type_limits = {}
-      settings.map {|k,v| block_type_limits[k] = v["limit"]}
-      {
-        :blockTypeLimits => block_type_limits,
-        :blockTypes => settings.reject{|k,v| v["limit"] == "0" }.keys,
-        :required => settings.reject{|k,v| v["required"] == false }.keys
-      }
     end
 
     def to_s
@@ -150,14 +119,13 @@ module Pig
     end
 
     def set_slug
-      if slug.blank? && name.present? && errors['name'].blank?
-        slug_name = name.gsub('-',' ').parameterize("_").sub(/^\d+/,'n')
-        if Pig::ContentPackage.new().respond_to_without_content_attributes?(slug_name,true)
-          slug_name = 'content_package_' + slug_name
-        end
-        self.slug = slug_name
-        valid?
+      return unless slug.blank? && name.present? && errors['name'].blank?
+      slug_name = name.gsub('-', ' ').parameterize('_').sub(/^\d+/, 'n')
+      if Pig::ContentPackage.new.respond_to?(slug_name)
+        slug_name = 'content_package_' + slug_name
       end
+      self.slug = slug_name
+      valid?
     end
 
   end

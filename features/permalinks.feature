@@ -21,11 +21,6 @@ Scenario: I can view a page by its original permalink even after it has changed
   And I visit "/new-permalink"
   Then I should see all its content
 
-Scenario: I can visit a content package by its /content_package/:id and get redirected to its permalink
-  Given there is 1 content package
-  When I visit its restful url
-  Then I should get redirected to its permalink
-
 @allow-rescue
 Scenario: I visit a permalink that doesn't exist I get a 404
   Given there is 1 content package
@@ -41,4 +36,43 @@ Scenario: I can visit a content package without a permalink
 Scenario: I can not visit an unpublished content package by its permalinks
   Given there is 1 unpublished content package
   When I visit its permalink
-  Then I should get redirected to the login page
+  Then I should get a 404
+
+@javascript
+Scenario Outline: I can delete permalinks
+  Given I am logged in as an <role>
+  And there is 1 content package
+  And the content package has an old permalink alias
+  When I visit the content package edit page
+  And I delete the permalink alias
+  Then the permalink alias should be removed
+  Examples:
+    | role      |
+    | developer |
+
+@javascript
+Scenario Outline: I can delete permalinks as an admin when they are new
+  Given I am logged in as an <role>
+  And there is 1 content package
+  And the content package has a new permalink alias
+  When I visit the content package edit page
+  And I delete the permalink alias
+  Then the permalink alias should be removed
+  Examples:
+    | role   |
+    | admin  |
+    | editor |
+    | author |
+
+@javascript
+Scenario Outline: I cannot delete permalinks as an admin when they are an hour old
+  Given I am logged in as an <role>
+  And there is 1 content package
+  And the content package has an old permalink alias
+  When I visit the content package edit page
+  Then I should not be able to delete the permalink alias
+  Examples:
+    | role   |
+    | admin  |
+    | editor |
+    | author |

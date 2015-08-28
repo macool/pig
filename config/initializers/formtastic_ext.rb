@@ -20,9 +20,6 @@ module Formtastic
               :limit_unit => content_attribute.limit_unit
             }
           end
-          if content_attribute.field_type == 'rich'
-            (hash[:data] ||= {}).reverse_merge!(content_attribute.sir_trevor_limit_data)
-          end
           if content_attribute.field_type == 'text'
             (hash[:data] ||= {}).reverse_merge!({"redactor-plugins" => Pig::configuration.try(:basic_redactor_plugins) || []})
           end
@@ -39,8 +36,12 @@ module Formtastic
   end
 end
 
-FormtasticBootstrap::Inputs::DateSelectInput::FRAGMENT_CLASSES = {
-  :year   => "col-xs-4",
-  :month  => "col-xs-4",
-  :day    => "col-xs-4"
-}
+FormtasticBootstrap::Inputs::DateSelectInput.send(:remove_const,
+                                                  'FRAGMENT_CLASSES')
+FormtasticBootstrap::Inputs::DateSelectInput.send(:const_set,
+                                                  'FRAGMENT_CLASSES',
+                                                  {
+                                                    :year   => "col-xs-4",
+                                                    :month  => "col-xs-4",
+                                                    :day    => "col-xs-4"
+                                                  })
