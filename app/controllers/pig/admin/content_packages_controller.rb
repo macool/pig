@@ -60,7 +60,11 @@ module Pig
         set_editing_user
         authorize! :create, @content_package
         if @content_package.save
-          redirect_to edit_admin_content_package_path(@content_package)
+          if params[:close]
+            redirect_to admin_content_packages_path(open: @content_package.id)
+          else
+            redirect_to edit_admin_content_package_path(@content_package)
+          end
         else
           render :action => 'new'
         end
