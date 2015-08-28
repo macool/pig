@@ -72,6 +72,7 @@ module Pig
 
       def delete
         if @content_package.delete
+          @content_package.destroy_related_caches
           flash[:notice] = "Deleted \"#{@content_package}\" - #{view_context.link_to('Undo', restore_admin_content_package_path(@content_package), :method => :put)}"
         else
           flash[:error] = "\"#{@content_package}\" couldn't be deleted"
