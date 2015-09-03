@@ -39,7 +39,7 @@
                 %td=status(content_package.status)
                 %td=content_package.due_date.try(:strftime, '%b %d, %Y')
                 %td.text-right
-                  -if !content_package.missing_view?
+                  -if !content_package.missing_view? && !content_package.permalink.nil?
                     =link_to "View", content_package, :class => "btn btn-xs"
                   =link_to "Edit", pig.edit_admin_content_package_path(content_package), :class => "btn btn-xs btn-success"
       .cms-well.clearfix.fadeInSlow3
