@@ -2,3 +2,7 @@ en:
   actions:
     confirm_destroy: "Are you sure you want to destroy this %{class}? This action cannot be undone."
     destroyed: "%{class} destroyed."
+
+  date:
+    formats:
+      default: "%A %d %B %Y"

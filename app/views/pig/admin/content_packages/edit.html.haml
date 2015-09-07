@@ -184,6 +184,9 @@
               %label.col-primary Content requested by
               %p
                 =@content_package.requested_by.try(:full_name)
+              %label.col-primary= Pig::ContentPackage.human_attribute_name(:due_date)
+              %p
+                =l @content_package.due_date
           %ul.cms-tabs
             - if ga_code?
               %li=link_to("Analytics", '#analytics', 'data-toggle' => 'pill')
