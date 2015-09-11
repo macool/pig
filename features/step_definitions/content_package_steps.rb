@@ -379,3 +379,17 @@ end
 When(/^I visit the content package edit page$/) do
   visit pig.edit_admin_content_package_path(@content_package)
 end
+
+When(/^I click "(.*?)"$/) do |text|
+  click_button text
+end
+
+Then(/^I should be on the content package edit page$/) do
+  expect(page.current_path).
+    to eq(pig.edit_admin_content_package_path(@content_package))
+end
+
+Then(/^I should be on the content package show page$/) do
+  expect(page.current_path).
+    to eq(pig.content_package_path(@content_package))
+end
