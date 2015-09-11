@@ -62,6 +62,35 @@ Scenario Outline: Edit a content package
     | admin     |
     | editor    |
 
+@javascript
+Scenario Outline: Save and continue editing a content package
+  Given I am logged in as an <role>
+  And there is 1 content package assigned to me
+  When I visit the content package edit page
+  And I click "Save and continue editing"
+  Then I should be on the content package edit page
+  Examples:
+    | role      |
+    | developer |
+    | admin     |
+    | editor    |
+    | author    |
+
+@javascript
+Scenario Outline: Save and view a content package
+  Given I am logged in as an <role>
+  And there is 1 content package assigned to me
+  When I visit the content package edit page
+  And I click "Save and view"
+  Then I should be on the content package show page
+  Examples:
+    | role      |
+    | developer |
+    | admin     |
+    | editor    |
+    | author    |
+
+
 Scenario Outline: Publish a content package
   Given I am logged in as an <role>
   And there is 1 unpublished content package
