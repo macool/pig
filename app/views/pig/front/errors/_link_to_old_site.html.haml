@@ -1,8 +1,8 @@
-
 - if Pig::Archive.active?
   - archive = Pig::Archive.new(request.fullpath)
   - if archive.exists?
-    %p.error-page__text
-      The page you are looking for is still on the old site
+    %h1.error-title.text-center
+      The page you are looking for is still on the
       =succeed '.' do
-        = link_to('here', archive.uri)
+        = link_to('old site here', archive.uri)
+    %br
