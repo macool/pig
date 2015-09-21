@@ -2,6 +2,7 @@ require "capybara/dsl"
 require "capybara/poltergeist"
 require 'benchmark'
 require 'typhoeus'
+require 'typhoeus/adapters/faraday'
 
 
 total_time_taken = 0
