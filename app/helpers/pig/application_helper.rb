@@ -26,9 +26,9 @@ module Pig
       if @content_package
 
         if @content_package.meta_image_uid
-          image = "http://#{Settings.site_url}#{@content_package.meta_image.thumb('1024x1024#').url}"
+          image = "#{Settings.site_url}#{@content_package.meta_image.thumb('1024x1024#').url}"
         elsif @content_package.respond_to?(:hero_image) && @content_package.hero_image.present?
-          image = "http://#{Settings.site_url}#{@content_package.hero_image.thumb('1024x1024#').url}"
+          image = "#{Settings.site_url}#{@content_package.hero_image.thumb('1024x1024#').url}"
         end
 
         meta_title = @content_package.meta_title.presence || Settings.default_meta_title
@@ -46,7 +46,7 @@ module Pig
 
       end
 
-      meta_image = image || "http://#{Settings.site_url}#{asset_path(Settings.default_fb_meta_image)}"
+      meta_image = image || "#{Settings.site_url}#{asset_path(Settings.default_fb_meta_image)}"
 
       meta_values = [meta_title, meta_description, meta_image, meta_keywords, meta_hide_from_robots]
 
