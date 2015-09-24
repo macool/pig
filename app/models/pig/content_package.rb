@@ -19,7 +19,7 @@ module Pig
     belongs_to :requested_by, :class_name => 'Pig::User'
     has_many :deleted_children, -> { where("deleted_at IS NOT NULL").order(:position, :id) }, :class_name => "ContentPackage", :foreign_key => 'parent_id'
 
-    attr_accessor :skip_status_transition, :chunk_methods_set
+    attr_accessor :skip_status_transition
 
     before_create :set_next_review
     before_save :set_status
@@ -45,10 +45,12 @@ module Pig
     end)
 
     def build_content_chunk_methods
-      return if content_type.nil?
-      content_attributes.each do |attribute|
-        type_factory(attribute.field_type).new(self, attribute.slug, attribute.field_type)
+      if content_type
+        content_attributes.each do |attribute|
+          type_factory(attribute.field_type).new(self, attribute.slug, attribute.field_type)
+        end
       end
+      @chunk_methods_set = true
     end
 
     def content_type=(value)
@@ -339,19 +341,18 @@ module Pig
     end
 
     def respond_to_missing?(method_name, include_private = false)
-      unless super && chunk_methods_set
-        self.build_content_chunk_methods
-        chunk_methods_set = true
-        super
+      return true if super
+      if @chunk_methods_set
+        false
+      else
+        build_content_chunk_methods
+        respond_to? method_name
       end
     end
 
     def method_missing(method_sym, *arguments, &block)
-      unless chunk_methods_set
-        self.build_content_chunk_methods
-        chunk_methods_set = true
-      end
-      if self.respond_to?(method_sym)
+      build_content_chunk_methods unless @chunk_methods_set
+      if respond_to?(method_sym)
         send(method_sym, *arguments)
       else
         super(method_sym, *arguments, &block)
