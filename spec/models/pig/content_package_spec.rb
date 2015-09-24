@@ -183,8 +183,21 @@ module Pig
     end
 
     describe 'date attributes' do
-      it 'defaults to empty string'
-      it 'can be set'
+      it 'defaults to nil' do
+        expect(content_package.date).to be_nil
+      end
+      it 'can be set' do
+        content_package.date = '2015-09-23'
+        content_package.save
+        content_package.reload
+        expect(content_package.date).to_not be_nil
+      end
+      it 'returns a date object' do
+        content_package.date = '2015-09-23'
+        content_package.save
+        content_package.reload
+        expect(content_package.date).to be_a(Date)
+      end
     end
 
     describe 'time attributes' do
