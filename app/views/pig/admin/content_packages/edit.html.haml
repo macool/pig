@@ -182,6 +182,9 @@
               %label.col-primary Template
               %p
                 =link_to(@content_package.content_type, pig.edit_admin_content_type_path(@content_package.content_type))
+              -if current_user.role_is?(:developer) && !@content_package.viewless?
+                %label.col-primary Template file
+                %p.t-template-name=@content_package.content_type.view_name
               %label.col-primary Content requested by
               %p
                 =@content_package.requested_by.try(:full_name)
