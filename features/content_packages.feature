@@ -210,3 +210,15 @@ Scenario Outline: I can assign a content package to an author
     | developer |
     | admin     |
     | editor    |
+
+@javascript
+Scenario Outline: I can reorder children of a content package
+  Given I am logged in as an <role>
+  And there is a content package with 3 children
+  When I reorder the children
+  Then the children are reordered
+  Examples:
+    | role      |
+    | developer |
+    | admin     |
+    | editor    |
