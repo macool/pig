@@ -32,6 +32,13 @@ Given(/^there is a content package with a parent$/) do
   @content_package = FactoryGirl.create(:content_package, :parent_id => @parent_content_package.id)
 end
 
+Given(/^there is a content package with (\d+) children$/) do |children_count|
+  @content_package = FactoryGirl.create(:content_package)
+  children_count.to_i.times do
+    FactoryGirl.create(:content_package, parent_id: @content_package.id)
+  end
+end
+
 Given(/^(?:there is|I create) a content package with the permalink path "(.*?)"$/) do |permalink|
   FactoryGirl.create(:content_package, :permalink_path => permalink)
 end
@@ -392,4 +399,16 @@ end
 Then(/^I should be on the content package show page$/) do
   expect(page.current_path).
     to eq(pig.content_package_path(@content_package))
+end
+
+When(/^I reorder the children$/) do
+  visit pig.reorder_admin_content_package_path(@content_package)
+  first = find('#children_ids_2')
+  second = find('#children_ids_3')
+  first.drag_to(second)
+  click_link('Save order')
+end
+
+Then(/^the children are reordered$/) do
+  expect(@content_package.children.pluck(:id)).to eq([3,2,4])
 end
