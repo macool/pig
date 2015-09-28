@@ -9,6 +9,17 @@ module Pig
         before_save :execute_transition
       end
 
+      class_methods do
+        def statuses(user)
+          statuses = {}
+          statuses[:draft] = 'Draft' if user.try(:role_is?, [:developer, :admin, :editor])
+          statuses[:pending] = 'Ready to review'
+          statuses[:published] = 'Published' if user.try(:role_is?, [:developer, :admin, :editor])
+          statuses[:expiring] = 'Getting old' if user.try(:role_is?, [:developer, :admin, :editor])
+          statuses
+        end
+      end
+
       def execute_transition
         return unless status_changed?
         transitions = {

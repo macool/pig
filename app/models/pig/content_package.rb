@@ -125,16 +125,6 @@ module Pig
         routes | resourceful_routes
       end
 
-      def statuses(user)
-        #TODO Permissions
-        Hash.new.tap do |s|
-          s[:draft] = 'Draft' if user.try(:role_is?, :developer) || user.try(:role_is?, :admin) || user.try(:role_is?, :editor)
-          s[:pending] = 'Ready to review'
-          s[:published] = 'Published' if user.try(:role_is?, :developer) || user.try(:role_is?, :admin) || user.try(:role_is?, :editor)
-          s[:expiring] = 'Getting old' if user.try(:role_is?, :developer) || user.try(:role_is?, :admin) || user.try(:role_is?, :editor)
-        end
-      end
-
       def review_frequencies
         {
           :'1' => 'Monthly',
