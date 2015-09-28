@@ -25,7 +25,7 @@ Scenario: Viewing a list of my content packages
 @javascript
 Scenario: Set content package as ready to review
   Given I am logged in as an author
-  And there is 1 content package assigned to me
+  And there is 1 draft content package assigned to me
   When I mark the content package as ready to review
   Then it is assigned back to the requester
 

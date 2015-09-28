@@ -1,4 +1,4 @@
-Given(/^there (?:is|are) (\d+)( unpublished)?( deleted)? content packages?( not\s)?(?: assigned to me)?(?: assigned to no one)?( of this type)?$/) do |n, unpublished, deleted, assigned, using_type|
+Given(/^there (?:is|are) (\d+)\s?(draft|published)?( unpublished)?( deleted)? content packages?( not\s)?(?: assigned to me)?(?: assigned to no one)?( of this type)?$/) do |n, status, unpublished, deleted, assigned, using_type|
   if n.to_i.zero?
     Pig::ContentPackage.destroy_all
   end
@@ -12,6 +12,7 @@ Given(/^there (?:is|are) (\d+)( unpublished)?( deleted)? content packages?( not\
         attrs = { title: "Content package #{i}", author: @current_user }
       end
 
+      attrs[:status] = status if status.present?
       attrs[:content_type] = @content_type if using_type
       attrs[:deleted_at] = DateTime.now if deleted
       attrs[:editing_user] = @current_user || FactoryGirl.create(:user)
@@ -155,6 +156,8 @@ end
 
 Then(/^the author should be emailed$/) do
   email = ActionMailer::Base.deliveries.last
+  expect(email.to).to include(@author.email)
+  expect(email.subject).to have_content(@content_package.name)
 end
 
 When(/^I go to edit the content package$/) do
