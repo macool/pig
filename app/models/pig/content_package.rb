@@ -4,6 +4,7 @@ module Pig
     include Pig::Permalinkable
     include Pig::Concerns::Recordable
     include Pig::Concerns::Commentable
+    include Pig::Concerns::Workflow
 
     # Because of this issue on awesome_nested_set it is very important that
     # acts_as_taggable_on comes before acts_as_nested_set
@@ -19,10 +20,7 @@ module Pig
     belongs_to :requested_by, :class_name => 'Pig::User'
     has_many :deleted_children, -> { where("deleted_at IS NOT NULL").order(:position, :id) }, :class_name => "ContentPackage", :foreign_key => 'parent_id'
 
-    attr_accessor :skip_status_transition
-
     before_create :set_next_review
-    before_save :set_status
 
     validates :name, :content_type, :requested_by, :review_frequency, :presence => true
     validate :required_attributes
@@ -125,16 +123,6 @@ module Pig
 
         # Return a joint array of resourceful routes as well as defined member routes
         routes | resourceful_routes
-      end
-
-      def statuses(user)
-        #TODO Permissions
-        Hash.new.tap do |s|
-          s[:draft] = 'Draft' if user.try(:role_is?, :developer) || user.try(:role_is?, :admin) || user.try(:role_is?, :editor)
-          s[:pending] = 'Ready to review'
-          s[:published] = 'Published' if user.try(:role_is?, :developer) || user.try(:role_is?, :admin) || user.try(:role_is?, :editor)
-          s[:expiring] = 'Getting old' if user.try(:role_is?, :developer) || user.try(:role_is?, :admin) || user.try(:role_is?, :editor)
-        end
       end
 
       def review_frequencies
@@ -326,19 +314,6 @@ module Pig
       content_type.try(:viewless?) ? true : set_permalink_without_viewless
     end
     alias_method_chain(:set_permalink, :viewless)
-
-    def set_status
-      return if self.skip_status_transition
-      if self.status_changed? && self.author_id then
-        case self.status
-        when 'draft'
-          ContentPackageMailer.assigned(self, self.author).deliver
-        when 'pending'
-          self.author_id = nil
-          ContentPackageMailer.assigned(self, self.requested_by).deliver
-        end
-      end
-    end
 
     def respond_to_missing?(method_name, include_private = false)
       return true if super

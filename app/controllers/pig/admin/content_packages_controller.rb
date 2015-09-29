@@ -152,13 +152,12 @@ module Pig
 
       def ready_to_review
         get_view_data
-        @content_package.status = "pending"
+        @content_package.status = 'pending'
         update_content_package
       end
 
       def update
         get_view_data
-        @content_package.skip_status_transition = true
         update_content_package
       end
 
