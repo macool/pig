@@ -67,7 +67,7 @@ var ContentPackageAnalytics = React.createClass({
           <label className="col-primary">Total page views</label>
           <p className="analytics-value">{this.state.pageViewsCount}</p>
           <label className="col-primary">Average time spent on page</label>
-          <p className="analytics-value">{this.state.avg_time_on_page}
+          <p className="analytics-value">{this.state.avg_time_on_page + " "}
             seconds</p>
           <label className="col-primary">Referrers</label>
           <AnalyticReferrers  data={this.state.referrers}/>
