@@ -15,9 +15,9 @@ module Pig
       end
 
       def record_update
-        if self.deleted_at_changed?
-          if self.deleted_at_was.nil?
-            record_activity!(self.editing_user,  "#{self.name} was deleted")
+        if self.archived_at_changed?
+          if archived_at_was.nil?
+            record_activity!(self.editing_user,  "#{self.name} was #{I18n.t('actions.archived').downcase}")
           else
             record_activity!(self.editing_user,  "#{self.name} was restored")
           end

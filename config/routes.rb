@@ -50,13 +50,13 @@ Pig::Engine.routes.draw do
       resources :comments, only: :create
       collection do
         get 'filter/:filter' => 'content_packages#index', :as => 'filter'
-        get 'deleted'
+        get 'archived'
         get 'activity'
         get 'search'
       end
       member do
         get 'children'
-        put 'delete'
+        put 'archive'
         get 'reorder'
         put 'save_order'
         put 'restore'

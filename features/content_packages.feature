@@ -110,9 +110,9 @@ Scenario: Viewing a content package
 Scenario Outline: Deleting a content package
   Given I am logged in as an <role>
   And there is 1 content package
-  When I delete the content package
+  When I archive the content package
   Then It should no longer be visible in the sitemap
-  And it should appear in the list of deleted content packages
+  And it should appear in the list of archived content packages
   Examples:
     | role      |
     | developer |
@@ -121,10 +121,10 @@ Scenario Outline: Deleting a content package
 
 Scenario Outline: Restoring a content package
   Given I am logged in as an <role>
-  And there is 1 deleted content package
+  And there is 1 archived content package
   When I restore the content package
   Then it should appear in the sitemap
-  And It shouldn't appear in the list of deleted content packages
+  And It shouldn't appear in the list of archived content packages
   Examples:
     | role      |
     | developer |
@@ -134,9 +134,9 @@ Scenario Outline: Restoring a content package
 @allow-rescue
 Scenario Outline: Destroying a content package
   Given I am logged in as an <role>
-  And there is 1 deleted content package
+  And there is 1 archived content package
   When I destroy the content package
-  Then It shouldn't appear in the list of deleted content packages
+  Then It shouldn't appear in the list of archived content packages
   Examples:
     | role      |
     | developer |

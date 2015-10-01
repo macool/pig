@@ -139,7 +139,7 @@ module Pig
         it 'redirects to the content_packages list' do
           content_package = FactoryGirl.create(:content_package)
           delete :destroy, { id: content_package.to_param }, valid_session
-          expect(response).to redirect_to(deleted_admin_content_packages_path)
+          expect(response).to redirect_to(archived_admin_content_packages_path)
         end
       end
     end

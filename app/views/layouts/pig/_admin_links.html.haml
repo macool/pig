@@ -9,7 +9,7 @@
               =link_to('/content') do
                 %i.fa.fa-home
                 %span My content
-            %li{:class => @content_packages && !@deleted_content_packages  ? 'active' : nil}
+            %li{:class => @content_packages && !@archived_content_packages  ? 'active' : nil}
               =link_to(pig.admin_content_packages_path) do
                 %i.fa.fa-list
                 %span Page list
@@ -18,10 +18,10 @@
                 =link_to(pig.admin_content_types_path) do
                   %i.fa.fa-file-text-o
                   %span Templates
-            %li{:class => @deleted_content_packages ? 'active' : nil}
-              =link_to(pig.deleted_admin_content_packages_path) do
+            %li{:class => @archived_content_packages ? 'active' : nil}
+              =link_to(pig.archive_admin_content_packages_path) do
                 %i.fa.fa-trash-o
-                %span Deleted content
+                %span=t('actions.archived_content')
             / TODO - Allow trough to insert itself
             -if can? :manage, Pig::MetaDatum
               %li{:class => @meta_data ? 'active' : nil}

@@ -15,12 +15,12 @@ Scenario: When a content package is updated an activity should be recorded
   And I go to edit the content package
   Then I should see the "updated" activity
 
-Scenario: When a content package is deleted an activity should be recorded
+Scenario: When a content package is archived an activity should be recorded
   Given I am logged in as any user
   And there is 1 content packages
-  When the content package is deleted
+  When the content package is archived
   And I visit the dashboard
-  Then I should see the "deleted" activity
+  Then I should see the "archived" activity
 
 Scenario: When a content package is destroyed an activity should be recorded
   Given I am logged in as any user
@@ -31,7 +31,7 @@ Scenario: When a content package is destroyed an activity should be recorded
 
 Scenario: When a content package is destroyed an activity should be recorded
   Given I am logged in as any user
-  And there is 1 deleted content packages
+  And there is 1 archived content packages
   When the content package is restored
   And I visit the dashboard
   Then I should see the "restored" activity

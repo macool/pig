@@ -1,4 +1,4 @@
-Given(/^there (?:is|are) (\d+)\s?(draft|published)?( unpublished)?( deleted)? content packages?( not\s)?(?: assigned to me)?(?: assigned to no one)?( of this type)?$/) do |n, status, unpublished, deleted, assigned, using_type|
+Given(/^there (?:is|are) (\d+)\s?(draft|published)?( unpublished)?( archived)? content packages?( not\s)?(?: assigned to me)?(?: assigned to no one)?( of this type)?$/) do |n, status, unpublished, archived, assigned, using_type|
   if n.to_i.zero?
     Pig::ContentPackage.destroy_all
   end
@@ -14,7 +14,7 @@ Given(/^there (?:is|are) (\d+)\s?(draft|published)?( unpublished)?( deleted)? co
 
       attrs[:status] = status if status.present?
       attrs[:content_type] = @content_type if using_type
-      attrs[:deleted_at] = DateTime.now if deleted
+      attrs[:archived_at] = DateTime.now if archived
       attrs[:editing_user] = @current_user || FactoryGirl.create(:user)
       arr << FactoryGirl.create(:content_package, attrs)
     end
@@ -248,9 +248,9 @@ Then(/^I should see the content package named "(.*?)" highlighted$/) do |name|
   row[:class].include?('.highlight')
 end
 
-When(/^the content package is deleted$/) do
+When(/^the content package is archived$/) do
   @content_package.slug = ''
-  @content_package.delete
+  @content_package.archive
 end
 
 When(/^the content package is destroyed$/) do
@@ -294,40 +294,40 @@ Then(/^the content package should be published$/) do
   expect(@content_package.status).to eq("published")
 end
 
-When(/^I delete the content package$/) do
+When(/^I archive the content package$/) do
   @content_package.slug = ''
   @content_package.save
   visit pig.admin_content_packages_path
   within "tr#content-package-#{@content_package.id}" do
     click_link 'More'
-    click_link 'Delete'
+    click_link 'Archive'
   end
 end
 
 When(/^I destroy the content package$/) do
-  @deleted_content_package_id = @content_package.id
-  visit pig.deleted_admin_content_packages_path
-  within "tr#deleted-content-package-#{@content_package.id}" do
+  @archived_content_package_id = @content_package.id
+  visit pig.archived_admin_content_packages_path
+  within "tr#archived-content-package-#{@content_package.id}" do
     click_link 'Destroy'
   end
 end
 
-When(/^I try go to the deleted content package$/) do
-  visit pig.content_package_path(@deleted_content_package_id)
+When(/^I try go to the archived content package$/) do
+  visit pig.content_package_path(@archived_content_package_id)
 end
 
 Then(/^It should no longer be visible in the sitemap$/) do
   expect(page).to have_no_selector("tr#content-package-#{@content_package.id}")
 end
 
-Then(/^it should appear in the list of deleted content packages$/) do
-  visit pig.deleted_admin_content_packages_path
+Then(/^it should appear in the list of archived content packages$/) do
+  visit pig.archived_admin_content_packages_path
   expect(page).to have_content(@content_package.name)
 end
 
 When(/^I restore the content package$/) do
-  visit pig.deleted_admin_content_packages_path
-  within "tr#deleted-content-package-#{@content_package.id}" do
+  visit pig.archived_admin_content_packages_path
+  within "tr#archived-content-package-#{@content_package.id}" do
     click_link 'Restore'
   end
 end
@@ -337,9 +337,9 @@ Then(/^it should appear in the sitemap$/) do
   expect(page).to have_selector("tr#content-package-#{@content_package.id}")
 end
 
-Then(/^It shouldn't appear in the list of deleted content packages$/) do
-  visit pig.deleted_admin_content_packages_path
-  expect(page).to have_no_selector("tr#deleted-content-package-#{@content_package.id}")
+Then(/^It shouldn't appear in the list of archived content packages$/) do
+  visit pig.archived_admin_content_packages_path
+  expect(page).to have_no_selector("tr#archived-content-package-#{@content_package.id}")
 end
 
 When(/^I add a child to the content package$/) do
