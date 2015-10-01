@@ -9,7 +9,7 @@ module Pig
       before_action :find_content_package, except: [
         :activity,
         :create,
-        :deleted,
+        :archived,
         :destroy,
         :index,
         :new,
@@ -17,7 +17,7 @@ module Pig
         :search
       ]
       before_action :set_editing_user, only: [
-        :delete,
+        :archive,
         :update,
         :ready_to_review
       ]
@@ -70,17 +70,17 @@ module Pig
         end
       end
 
-      def delete
-        if @content_package.delete
-          flash[:notice] = "Deleted \"#{@content_package}\" - #{view_context.link_to('Undo', restore_admin_content_package_path(@content_package), :method => :put)}"
+      def archive
+        if @content_package.archive
+          flash[:notice] = "#{t('actions.archived')} \"#{@content_package}\" - #{view_context.link_to('Undo', restore_admin_content_package_path(@content_package), :method => :put)}"
         else
-          flash[:error] = "\"#{@content_package}\" couldn't be deleted"
+          flash[:error] = "\"#{@content_package}\" couldn't be #{t('actions.archived').downcase}"
         end
         redirect_to pig.admin_content_packages_path(:open => @content_package.parent)
       end
 
-      def deleted
-        @deleted_content_packages = Pig::ContentPackage.deleted.paginate(:page => params[:page], :per_page => 50)
+      def archived
+        @archived_content_packages = Pig::ContentPackage.archived.paginate(:page => params[:page], :per_page => 50)
       end
 
       def destroy
@@ -92,7 +92,7 @@ module Pig
         else
           flash[:error] = "\"#{@content_package}\" couldn't be destroyed"
         end
-        redirect_to pig.deleted_admin_content_packages_path
+        redirect_to pig.archived_admin_content_packages_path
       end
 
       def index

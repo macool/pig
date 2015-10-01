@@ -11,7 +11,7 @@ module Pig
       }
       nav_items << {
         visible: proc { can? :manage, Pig::ContentPackage },
-        is_active: proc { @content_packages && !@deleted_content_packages },
+        is_active: proc { @content_packages && !@archived_content_packages },
         url: pig.admin_content_packages_path,
         title: 'Page list',
         icon: 'list'
@@ -53,9 +53,9 @@ module Pig
       }
       nav_items << {
         visible: proc { can? :manage, Pig::ContentPackage },
-        is_active: proc { @deleted_content_packages },
-        url: pig.deleted_admin_content_packages_path,
-        title: 'Deleted Content',
+        is_active: proc { @archived_content_packages },
+        url: pig.archived_admin_content_packages_path,
+        title: t('actions.archived_content'),
         icon: 'trash-o'
       }
 

@@ -18,7 +18,7 @@ module Pig
     has_and_belongs_to_many :personas, class_name: 'Pig::Persona'
     belongs_to :author, :class_name => 'Pig::User'
     belongs_to :requested_by, :class_name => 'Pig::User'
-    has_many :deleted_children, -> { where("deleted_at IS NOT NULL").order(:position, :id) }, :class_name => "ContentPackage", :foreign_key => 'parent_id'
+    has_many :archived_children, -> { where("archived_at IS NOT NULL").order(:position, :id) }, :class_name => "ContentPackage", :foreign_key => 'parent_id'
 
     before_create :set_next_review
 
@@ -33,8 +33,8 @@ module Pig
 
     dragonfly_accessor :meta_image
 
-    default_scope -> { where(deleted_at: nil).order(:position, :id) }
-    scope :deleted, -> { unscoped.where("deleted_at IS NOT NULL").order("deleted_at DESC") }
+    default_scope -> { where(archived_at: nil).order(:position, :id) }
+    scope :archived, -> { unscoped.where("archived_at IS NOT NULL").order("archived_at DESC") }
     scope :published, -> { where(:status => 'published').where('publish_at <= ? OR publish_at IS NULL', Date.today) }
     scope :expiring, -> { where('next_review < ?', Date.today) }
     scope :without, (lambda do |ids_or_records|
@@ -136,7 +136,7 @@ module Pig
 
       def search(term)
         escaped_term = "%#{term}%"
-        joins(:permalink).where(deleted_at: nil).where("name LIKE ? OR pig_permalinks.path LIKE ?", escaped_term, escaped_term)
+        joins(:permalink).where(archived_at: nil).where("name LIKE ? OR pig_permalinks.path LIKE ?", escaped_term, escaped_term)
       end
 
       def parent_dropdown_cache_key
@@ -155,24 +155,24 @@ module Pig
     end
 
     def deletable?
-      !deleted? && slug.blank? && (children.empty? || children.all?(&:deletable?))
+      !archived? && slug.blank? && (children.empty? || children.all?(&:deletable?))
     end
 
-    def delete
-      return true if deleted?
+    def archive
+      return true if archived?
       if deletable?
-        update_attribute(:deleted_at, Time.now)
+        update_attribute(:archived_at, Time.now)
         children.all.each do |child|
           child.editing_user = editing_user
-          child.delete
+          child.archive
         end
       else
         false
       end
     end
 
-    def deleted?
-      deleted_at.present?
+    def archived?
+      archived_at.present?
     end
 
     def content_chunk_value_by_attribute_slug(slug)
@@ -208,25 +208,25 @@ module Pig
 
     def visible_to_user?(user)
       if logged_in_only?
-        user && published? && !deleted?
+        user && published? && !archived?
       else
-        published? && !deleted?
+        published? && !archived?
       end
     end
 
     def restore
-      return true unless deleted?
-      deletion_occurred_at = deleted_at.dup
-      self.update_attribute(:deleted_at, nil)
-      deleted_children.where("deleted_at > ? AND deleted_at < ?",deletion_occurred_at - 1.minute, deletion_occurred_at + 1.minute).each(&:restore)
+      return true unless archived?
+      deletion_occurred_at = archived_at.dup
+      self.update_attribute(:archived_at, nil)
+      archived_children.where("archived_at > ? AND archived_at < ?",deletion_occurred_at - 1.minute, deletion_occurred_at + 1.minute).each(&:restore)
     end
 
     def restore_warning
-      deleted_parents = parents.select(&:deleted?)
-      if deleted_parents.empty?
+      archived_parents = parents.select(&:archived?)
+      if archived_parents.empty?
         nil
       else
-        "WARNING: One or more of this package's parents are deleted. This package will not show in the sitemap unless you also restore #{deleted_parents.map{|cp| "\"#{cp.name}\""}.to_sentence}."
+        "WARNING: One or more of this package's parents are #{t('actions.archived').downcase}. This package will not show in the sitemap unless you also restore #{archived_parents.map{|cp| "\"#{cp.name}\""}.to_sentence}."
       end
     end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150825102857) do
+ActiveRecord::Schema.define(version: 20151001121540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,9 +91,9 @@ ActiveRecord::Schema.define(version: 20150825102857) do
     t.date     "due_date"
     t.integer  "review_frequency"
     t.date     "next_review"
-    t.date     "publish_at"
-    t.date     "published_at"
-    t.datetime "deleted_at"
+    t.datetime "publish_at"
+    t.datetime "published_at"
+    t.datetime "archived_at"
     t.string   "meta_title"
     t.text     "meta_description"
     t.string   "meta_keywords"

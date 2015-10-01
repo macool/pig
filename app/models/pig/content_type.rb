@@ -2,7 +2,7 @@ module Pig
   class ContentType < ActiveRecord::Base
 
     has_many :content_attributes, -> { order(:position, :id) }
-    has_many :content_packages, -> { where(:deleted_at => nil)}
+    has_many :content_packages, -> { where(archived_at: nil) }
     has_many :dependent_content_packages, class_name: 'Pig::ContentPackage',
       foreign_key: 'content_type_id'
     has_many :resource_tag_categories, as: :taggable_resource

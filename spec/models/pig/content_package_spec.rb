@@ -21,10 +21,10 @@ module Pig
     it { should belong_to(:content_type) }
     it { should belong_to(:parent).class_name('ContentPackage') }
     it { should have_many(:content_chunks) }
-    it { should have_many(:deleted_children)
+    it { should have_many(:archived_children)
       .class_name('ContentPackage')
       .with_foreign_key('parent_id')
-      .conditions('deleted_at IS NOT NULL')
+      .conditions('archived_at IS NOT NULL')
       .order([:position, :id])
     }
     it { should have_and_belong_to_many(:personas).class_name('Pig::Persona') }
@@ -285,7 +285,7 @@ module Pig
 
       it "updates the permalinks of all descendants when it is saved" do
         content_package.save
-        
+
         # level 1
         cp_v = FactoryGirl.create(:content_package, :parent => content_package, permalink_path: 'first')
         # level 2
@@ -318,32 +318,32 @@ module Pig
 
     describe 'Deleting' do
 
-      it 'can be deleted' do
+      it 'can be archived' do
         content_package.slug = nil
-        content_package.delete
-        expect(content_package.deleted?).to be_truthy
+        content_package.archive
+        expect(content_package.archived?).to be_truthy
       end
 
-      it 'has its children deleted too' do
+      it 'has its children archived too' do
         content_package.slug = nil
         content_package.save
         content_package.children << FactoryGirl.create(:content_package, :parent => content_package, :slug => nil)
-        content_package.delete
+        content_package.archive
         content_package.reload
-        expect(content_package.children.all?(&:deleted?)).to be_truthy
+        expect(content_package.children.all?(&:archived?)).to be_truthy
       end
 
-      it 'cannot be deleted if it has a slug' do
-        content_package.delete
-        expect(content_package.deleted?).to be_falsey
+      it 'cannot be archived if it has a slug' do
+        content_package.archive
+        expect(content_package.archived?).to be_falsey
       end
 
-      it 'cannot be deleted if it has a child with a slug' do
+      it 'cannot be archived if it has a child with a slug' do
         content_package.slug = nil
         content_package.save
         content_package.children << FactoryGirl.build(:content_package, :parent => content_package)
-        content_package.delete
-        expect(content_package.deleted?).to be_falsey
+        content_package.archive
+        expect(content_package.archived?).to be_falsey
       end
 
     end
