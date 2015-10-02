@@ -5,6 +5,7 @@ module Pig
                   :basic_redactor_plugins,
                   :redactor_plugins,
                   :cms_roles,
+                  :content_types,
                   :unpublished,
                   :not_found,
                   :additional_stylesheets,
@@ -28,6 +29,7 @@ module Pig
       self.archive_domain = options[:archive_domain] || ''
       self.ga_code = options[:ga_code] || ''
       self.cms_roles = options[:cms_roles] || [:developer, :admin, :editor, :author]
+      self.content_types = options[:content_types] || {}
     end
 
   end
