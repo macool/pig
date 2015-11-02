@@ -17,6 +17,7 @@ Pig.setup do |config|
   # config.redactor_plugins = %w(bufferbuttons video blockQuote)
   # config.basic_redactor_plugins = ['bufferbuttons']
   config.cms_roles = [:developer, :admin, :editor, :author]
+  # config.content_types = {}
   config.homepage = proc { Pig::ContentPackage.find_by slug: 'home' }
   # config.archive_domain = 'http://www.example.com'
   # config.ga_code = 'UA-xxxxxxxx-1'

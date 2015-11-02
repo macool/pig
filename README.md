@@ -71,3 +71,33 @@ We then have to give Pig the permission to access to the Google analytics API
 2. Click the **admin** tab
 3. Choose the relevant account from the drop down
 4. Add the service account email to the user management with *Read & analyze* privileges
+
+### Custom field types
+Sometimes the predefined field types in Pig (Single line of text, rich text, boolean, etc) aren't enough. The following steps allow creation of custom types.
+
+Add the following line to the Pig config initializer
+
+    config.content_types = { my_custom_field: 'Display name' }
+
+Create 2 new files in your application, the first file defines how the custom field will be rendered when editing the page. Pig uses [formtastic](https://github.com/justinfrench/formtastic) for all its inputs.
+```ruby
+# /app/inputs/my_custom_field_input.rb
+class StoryTagsInput < FormtasticBootstrap::Inputs::SelectInput
+  def input_html_options
+    super.merge(class: "my-custom-input")
+  end
+end
+```
+The second file defines `get/set` for the value of the field.
+
+```ruby
+# /app/types/pig/my_custom_field_type.rb
+module Pig
+  class MyCustomFieldType < Type
+    def get(content_package)
+      super(content_package).do_custom_stuff
+    end
+  end
+end
+```
+#### Thats it!
