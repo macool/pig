@@ -23,21 +23,21 @@ module Pig
 
       def field_types
         {
-          :string => 'Single line of text',
-          :text => 'Block of text',
-          :link => 'Link',
-          :image => 'Image',
-          :file => 'File',
-          :embeddable => 'Embeddable content - Flickr, Instagram, Scribd, Slideshare, SoundCloud, Vimeo, YouTube',
-          :tags => 'Tag list',
-          :boolean => 'Check box',
-          :user => "User",
-          :location => "Location",
-          :resource => "Link to content",
-          :rich_content => "Rich Content",
-          :date => "Date",
-          :time => "Time"
-        }
+          string: 'Single line of text',
+          text: 'Block of text',
+          link: 'Link',
+          image: 'Image',
+          file: 'File',
+          embeddable: 'Embeddable content - Flickr, Instagram, Scribd, Slideshare, SoundCloud, Vimeo, YouTube',
+          tags: 'Tag list',
+          boolean: 'Check box',
+          user: 'User',
+          location: 'Location',
+          resource: 'Link to content',
+          rich_content: 'Rich Content',
+          date: 'Date',
+          time: 'Time'
+        }.merge(Pig.configuration.content_types)
       end
 
       def fields_to_duplicate
