@@ -75,4 +75,3 @@ Scenario Outline: I cannot delete permalinks as an admin when they are an hour o
     | role   |
     | admin  |
     | editor |
-    | author |

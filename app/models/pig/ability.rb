@@ -57,9 +57,6 @@ module Pig
         can [:index, :show, :activity, :ready_to_review, :search], Pig::ContentPackage
         can [:index, :dashboard, :children], Pig::ContentType
         can :contributor_blog_posts, Pig::ContentPackage
-        can :destroy, Pig::Permalink do |permalink|
-          permalink.created_at > 1.hour.ago
-        end
         can [:create], Pig::Comment
       end
     end
