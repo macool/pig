@@ -27,6 +27,12 @@ module Pig
 
     scope :all_users, -> { where(role: Pig.configuration.cms_roles) }
 
+    delegate :can?, :cannot?, to: :ability
+
+    def ability
+      @ability ||= Pig::Ability.new(self)
+    end
+
     def available_roles
       all_roles = Pig::User.available_roles
       all_roles.reject do |r|

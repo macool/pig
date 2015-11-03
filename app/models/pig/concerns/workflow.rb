@@ -12,10 +12,10 @@ module Pig
       class_methods do
         def statuses(user)
           statuses = {}
-          statuses[:draft] = 'Draft' if user.try(:role_is?, [:developer, :admin, :editor])
+          statuses[:draft] = 'Draft' if user.can? :manage, self
           statuses[:pending] = 'Ready to review'
-          statuses[:published] = 'Published' if user.try(:role_is?, [:developer, :admin, :editor])
-          statuses[:expiring] = 'Getting old' if user.try(:role_is?, [:developer, :admin, :editor])
+          statuses[:published] = 'Published' if user.can? :manage, self
+          statuses[:expiring] = 'Getting old' if user.can? :manage, self
           statuses
         end
       end
