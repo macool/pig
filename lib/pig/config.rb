@@ -13,7 +13,8 @@ module Pig
                   :homepage,
                   :archive_domain,
                   :ga_code,
-                  :mount_path
+                  :mount_path,
+                  :can_delete_permalink
 
     def initialize(options = {})
       self.mount_path =  options[:nested_permalinks] || 'admin'
@@ -30,6 +31,7 @@ module Pig
       self.ga_code = options[:ga_code] || ''
       self.cms_roles = options[:cms_roles] || [:developer, :admin, :editor, :author]
       self.content_types = options[:content_types] || {}
+      self.can_delete_permalink = options[:can_delete_permalink] || proc { true }
     end
 
   end

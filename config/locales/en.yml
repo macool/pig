@@ -1,6 +1,9 @@
 en:
   actions:
-    confirm_destroy: "Are you sure you want to destroy this %{class}? This action cannot be undone."
+    confirm_permalink_destroy: |
+      This permalink has been in use for %{in_use_for}!
+      Are you sure you want to destroy this permalink?
+      This action cannot be undone."
     destroyed: "%{class} destroyed."
     archive: "Archive"
     archived: "Archived"
