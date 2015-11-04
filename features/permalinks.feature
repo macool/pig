@@ -51,7 +51,7 @@ Scenario Outline: I can delete permalinks
     | developer |
 
 @javascript
-Scenario Outline: I can delete permalinks as an admin when they are new
+Scenario Outline: I can delete permalinks as an admin
   Given I am logged in as an <role>
   And there is 1 content package
   And the content package has a new permalink alias
@@ -64,9 +64,10 @@ Scenario Outline: I can delete permalinks as an admin when they are new
     | editor |
 
 @javascript
-Scenario Outline: I cannot delete permalinks as an admin when they are an hour old
+Scenario Outline: I can define rules as to when permalinks can be deleted
   Given I am logged in as an <role>
   And there is 1 content package
+  And the config is setup to only allow permalink to be deleted for 1 hour
   And the content package has an old permalink alias
   When I visit the content package edit page
   Then I should not be able to delete the permalink alias

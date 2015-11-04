@@ -21,4 +21,10 @@ Pig.setup do |config|
   config.homepage = proc { Pig::ContentPackage.find_by slug: 'home' }
   # config.archive_domain = 'http://www.example.com'
   # config.ga_code = 'UA-xxxxxxxx-1'
+
+  # Define if an admin can delete permalinks
+  # By default it is true but can be specified using a block
+  # If you wanted to only allow deletion for 1 hour after it was created you could use:
+  # `config.can_delete_permalink = proc { |permalink| permalink.created_at > 1.hours.ago }`
+  # config.can_delete_permalink = proc { true }
 end
