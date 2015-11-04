@@ -62,7 +62,6 @@ Scenario Outline: I can delete permalinks as an admin when they are new
     | role   |
     | admin  |
     | editor |
-    | author |
 
 @javascript
 Scenario Outline: I cannot delete permalinks as an admin when they are an hour old
