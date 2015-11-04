@@ -36,7 +36,7 @@
 
             #collapseAudience.collapse
               =form.inputs do
-                -Pig::PersonaGroup.all.each do |group|
+                -Pig::PersonaGroup.all.order(:position).each do |group|
                   .persona-group-select
                     %h4.col-primary.cms-edit-group-title=group
                     =form.input :personas, :as => :check_boxes, :collection => group.personas, :label => false, :member_label => :to_s
