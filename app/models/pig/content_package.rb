@@ -20,7 +20,7 @@ module Pig
     belongs_to :requested_by, :class_name => 'Pig::User'
     has_many :archived_children, -> { where("archived_at IS NOT NULL").order(:position, :id) }, :class_name => "ContentPackage", :foreign_key => 'parent_id'
 
-    before_create :set_next_review
+    before_create :set_next_review, :set_meta_title
 
     validates :name, :content_type, :requested_by, :review_frequency, :presence => true
     validate :required_attributes
@@ -308,6 +308,10 @@ module Pig
 
     def set_next_review
       self.next_review = Date.today + self.review_frequency.months
+    end
+
+    def set_meta_title
+      self.meta_title = name
     end
 
     def set_permalink_with_viewless

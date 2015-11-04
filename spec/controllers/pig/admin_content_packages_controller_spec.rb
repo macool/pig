@@ -72,6 +72,12 @@ module Pig
             post :create, { content_package: valid_attributes }, valid_session
             expect(response).to redirect_to(edit_admin_content_package_path(ContentPackage.last))
           end
+
+          it 'defaults the meta title to the content package name' do
+            post :create, { content_package: valid_attributes }, valid_session
+            content_package = ContentPackage.last
+            expect(content_package.meta_title).to eq(content_package.name)
+          end
         end
 
         context 'with invalid params' do
