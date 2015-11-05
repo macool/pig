@@ -24,6 +24,7 @@ module Pig
 
       def render_content_package_view
         return if @content_package.missing_view?
+        logger.info "Rendering with the template: #{@content_package.view_name}"
         render "pig/templates/#{@content_package.view_name}"
       end
 
