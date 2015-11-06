@@ -4,10 +4,12 @@ module Formtastic
   module Helpers
     module InputHelper
 
-      def content_input(content_attribute, options = {})
+      def content_input(content_attribute, developer = false, options = {})
+        label = (content_attribute.name + (developer ? " <small>(#{content_attribute.slug})</small>" : '')).html_safe
+
         options.reverse_merge!(
           :as => content_attribute.input_type,
-          :label => content_attribute.name,
+          :label => label,
           :hint => content_attribute.description,
           :required => content_attribute.required
         )

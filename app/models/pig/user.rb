@@ -60,6 +60,10 @@ module Pig
       end
     end
 
+    def role
+      super.try(:inquiry)
+    end
+
     class << self
       def available_roles
         Pig.configuration.cms_roles || []
