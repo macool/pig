@@ -82,6 +82,7 @@ When(/^I fill in the new content package form and submit$/) do
   @content_package = FactoryGirl.build(:content_package, :content_type => @content_type, :author => @current_user)
   select(@content_type)
   fill_in('Name', :with => @content_package.name)
+  fill_in('Review date', :with => Date.today + 6.months)
   select(@content_package.author.full_name, :from => 'Author')
   click_button("Save and add content")
 end

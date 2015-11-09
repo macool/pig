@@ -51,7 +51,7 @@
                 =form.input :requested_by, :collection => Pig::User.where(role: ['developer', 'admin', 'editor']).order('LOWER(last_name)')
                 =form.input :author, :collection => Pig::User.order('LOWER(last_name)').where("role<>''").map { |u| ["#{u.full_name} (#{u.role})", u.id] }
                 =form.input :due_date, :order => [:day, :month, :year], :include_blank => false, :start_year => Date.today.year
-                =form.input :review_frequency, :as => :radio, :collection => Pig::ContentPackage.review_frequencies.invert
+                =render('review_date', f: form)
 
             =form.submit 'Save and close', class: 'btn btn-success pull-right', name: 'close'
             =form.action :submit, :label => 'Save and add content', :wrapper_html => { :class => 'btn btn-success pull-right' }

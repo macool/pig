@@ -111,7 +111,7 @@ module Pig
         @content_package.content_type = Pig::ContentType.find_by_id(params[:content_type_id])
         @content_package.parent_id = params[:parent]
         @content_package.requested_by = current_user
-        @content_package.review_frequency = 1
+        @content_package.next_review = Date.today + 6.months
         @content_package.due_date = Date.today
         @content_types = Pig::ContentType.all.order('name')
         authorize!(:new, @content_package)

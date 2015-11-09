@@ -1,0 +1,7 @@
+.form-group
+  .check_boxes
+    =f.input :next_review, label: 'Review date', as: :string, input_html: { class: 'datepicker' }
+    =button_tag "1 Month", data: { review_preset: "#{Date.today + 1.month}" }, class: 'btn btn-primary btn-sm'
+    =button_tag "3 Months", data: { review_preset: "#{Date.today + 3.months}" }, class: 'btn btn-primary btn-sm'
+    =button_tag "6 Months", data: { review_preset: "#{Date.today + 6.months}" }, class: 'btn btn-primary btn-sm'
+    =button_tag "1 Year", data: { review_preset: "#{Date.today + 1.year}" }, class: 'btn btn-primary btn-sm'

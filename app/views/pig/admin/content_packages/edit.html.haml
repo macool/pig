@@ -99,10 +99,8 @@
                 .clearfix
                 =form.input :requested_by, :collection => Pig::User.where(:role => 'admin').order('lower(last_name)')
                 =form.input :due_date, :order => [:day, :month, :year], :include_blank => false, :start_year => Date.today.year
-                .form-group
-                  %h4.col-primary Review frequency
-                  .check_boxes
-                    =form.input :review_frequency, :as => :radio, :collection => Pig::ContentPackage.review_frequencies.invert, :label => false
+                =render('review_date', f: form)
+
               .form-group
                 %h4.col-primary Page settings
                 %hr

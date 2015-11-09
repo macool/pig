@@ -88,7 +88,7 @@ FactoryGirl.define do
   factory :content_package, class: Pig::ContentPackage do
     sequence(:name) {|n| "Content package #{n}"}
     content_type
-    review_frequency 1
+    next_review Date.today + 6.months
     due_date Date.today + 6.months
     author
     requested_by
