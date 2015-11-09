@@ -88,13 +88,10 @@ Scenario Outline: Try to change a user to a new role
     | developer | developer       | admin         | should     |
     | admin     | author          | editor        | should     |
     | admin     | author          | admin         | should     |
-    | admin     | author          | developer     | should not |
     | admin     | editor          | author        | should     |
     | admin     | editor          | admin         | should     |
-    | admin     | editor          | developer     | should not |
     | admin     | admin           | author        | should     |
     | admin     | admin           | editor        | should     |
-    | admin     | admin           | developer     | should not |
     | admin     | developer       | author        | should not |
     | admin     | developer       | editor        | should not |
     | admin     | developer       | admin         | should not |
