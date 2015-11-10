@@ -22,6 +22,7 @@
 //= require pig/navigation_manager
 //= require pig/custom
 //= require pig/character_limits
+//= require pig/review_frequencies
 //= require pig/tabs
 //= require pig/search_manager
 //= require underscore

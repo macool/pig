@@ -20,9 +20,9 @@ module Pig
     belongs_to :requested_by, :class_name => 'Pig::User'
     has_many :archived_children, -> { where("archived_at IS NOT NULL").order(:position, :id) }, :class_name => "ContentPackage", :foreign_key => 'parent_id'
 
-    before_create :set_next_review, :set_meta_title
+    before_create :set_meta_title
 
-    validates :name, :content_type, :requested_by, :review_frequency, :presence => true
+    validates :name, :content_type, :requested_by, :next_review, :presence => true
     validate :required_attributes
     validate :embeddable_attributes
     validate :lineage
@@ -123,15 +123,6 @@ module Pig
 
         # Return a joint array of resourceful routes as well as defined member routes
         routes | resourceful_routes
-      end
-
-      def review_frequencies
-        {
-          :'1' => 'Monthly',
-          :'2' => 'Every 2 Months',
-          :'3' => 'Every 3 Months',
-          :'6' => 'Every 6 Months'
-        }
       end
 
       def search(term)
@@ -304,10 +295,6 @@ module Pig
 
     def save_content_chunks
       content_chunks.each(&:save)
-    end
-
-    def set_next_review
-      self.next_review = Date.today + self.review_frequency.months
     end
 
     def set_meta_title

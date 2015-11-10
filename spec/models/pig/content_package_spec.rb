@@ -33,7 +33,7 @@ module Pig
 
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:requested_by) }
-    it { should validate_presence_of(:review_frequency) }
+    it { should validate_presence_of(:next_review) }
 
     it 'is valid' do
       content_package.valid?
