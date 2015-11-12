@@ -63,7 +63,7 @@ if (!RedactorPlugins) var RedactorPlugins = {};
           else if (data.match(this.video.reUrlSoundcloud))
           {
             var self = this;
-            $.get("http://soundcloud.com/oembed?format=json&url=" + data, function(data) {
+            $.get("https://soundcloud.com/oembed?format=json&url=" + data, function(data) {
               self.video.addToRedactor(data.html);
             });
           }
