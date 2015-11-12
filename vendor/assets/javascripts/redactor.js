@@ -255,7 +255,7 @@
     langs: {
       en: {
         html: 'HTML',
-        video: 'Insert Video',
+        video: 'Insert Media',
         image: 'Insert Image',
         table: 'Table',
         link: 'Link',

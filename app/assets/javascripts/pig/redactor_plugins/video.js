@@ -13,12 +13,12 @@ if (!RedactorPlugins) var RedactorPlugins = {};
     return {
       reUrlYoutube: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube\.com\S*[^\w\-\s])([\w\-]{11})(?=[^\w\-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*/ig,
       reUrlVimeo: /https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/,
+      reUrlSoundcloud: /https?:\/\/(www\.)?soundcloud.com\/.+/,
       getTemplate: function() {
-        return String()
-        + '<section id="redactor-modal-video-insert">'
-          + '<label>Paste a YouTube or Vimeo link here.<br>(e.g. https://www.youtube.com/watch?v=8uDuls5TyNE)</label>'
-          + '<textarea id="redactor-insert-video-area" style="height: 160px;"></textarea>'
-        + '</section>';
+        return "<section id=\"redactor-modal-video-insert\">" +
+          '<label>Paste a YouTube, Vimeo or Soundcloud link here.<br>(e.g. https://www.youtube.com/watch?v=8uDuls5TyNE)</label>' +
+          '<textarea id="redactor-insert-video-area" style="height: 160px;"></textarea>' +
+        '</section>';
       },
       init: function() {
         var button = this.button.addAfter('image', 'video', this.lang.get('video'));
@@ -53,13 +53,23 @@ if (!RedactorPlugins) var RedactorPlugins = {};
           if (data.match(this.video.reUrlYoutube))
           {
             data = data.replace(this.video.reUrlYoutube, iframeStart + '//www.youtube.com/embed/$1' + iframeEnd);
+            this.video.addToRedactor(data);
           }
           else if (data.match(this.video.reUrlVimeo))
           {
             data = data.replace(this.video.reUrlVimeo, iframeStart + '//player.vimeo.com/video/$2' + iframeEnd);
+            this.video.addToRedactor(data);
+          }
+          else if (data.match(this.video.reUrlSoundcloud))
+          {
+            var self = this;
+            $.get("http://soundcloud.com/oembed?format=json&url=" + data, function(data) {
+              self.video.addToRedactor(data.html);
+            });
           }
         }
-
+      },
+      addToRedactor: function (data) {
         this.selection.restore();
         this.modal.close();
 
