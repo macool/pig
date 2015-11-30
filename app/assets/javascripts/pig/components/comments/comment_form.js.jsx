@@ -1,12 +1,12 @@
 var CommentForm = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
-    var text = React.findDOMNode(this.refs.comment).value.trim();
+    var text = ReactDOM.findDOMNode(this.refs.comment).value.trim();
     if (!text) {
       return;
     }
     this.props.onCommentSubmit({comment: text});
-    React.findDOMNode(this.refs.comment).value = '';
+    ReactDOM.findDOMNode(this.refs.comment).value = '';
     return;
   },
   render: function() {

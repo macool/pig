@@ -11,13 +11,26 @@ module Pig
 
       class_methods do
         def statuses(user)
+          statuses_for(user, self)
+        end
+
+        def check_ability(ability, instance, user)
+          (ability || user).can? :manage, instance
+        end
+
+        def statuses_for(user, instance, ability = nil)
           statuses = {}
-          statuses[:draft] = 'Draft' if user.can? :manage, self
+          statuses[:draft] = 'Draft' if check_ability(ability, instance, user)
           statuses[:pending] = 'Ready to review'
-          statuses[:published] = 'Published' if user.can? :manage, self
-          statuses[:expiring] = 'Getting old' if user.can? :manage, self
+          statuses[:published] = 'Published' if check_ability(ability, instance, user)
+          statuses[:expiring] = 'Getting old' if check_ability(ability, instance, user)
           statuses
         end
+
+      end
+
+      def statuses(user, ability)
+        self.class.statuses_for(user, self, ability)
       end
 
       def execute_transition

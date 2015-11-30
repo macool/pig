@@ -49,10 +49,12 @@ module Pig
         cannot :destroy,  Pig::ContentPackage
         can [:index, :dashboard, :children], Pig::ContentType
         can [:create], Pig::Comment
+        can [:create, :show], Pig::Permalink
         can :destroy, Pig::Permalink do |permalink|
           instance_exec permalink, &Pig.configuration.can_delete_permalink
         end
       elsif user.role_is?(:author)
+        cannot :manage, Pig::Permalink
         can [:edit, :update], Pig::ContentPackage, :author_id => user.id
         can [:index, :show, :activity, :ready_to_review, :search], Pig::ContentPackage
         can [:index, :dashboard, :children], Pig::ContentType

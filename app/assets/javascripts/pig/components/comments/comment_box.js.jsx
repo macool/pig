@@ -15,6 +15,8 @@ var CommentBox = React.createClass({
   handleCommentSubmit: function(comment, commentInput) {
     var comments = this.state.comments;
     comment.user = {full_name:  this.props.author };
+    // Set the id to -1 so the new comment has a unique key, the list will be re-rendered anyway
+    comment.id = -1;
     var newComments = comments.concat([comment]);
     this.setState({comments: newComments}, function() {
       this.scrollToBottom();

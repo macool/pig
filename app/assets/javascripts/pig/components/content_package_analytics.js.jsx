@@ -86,11 +86,11 @@ var AnalyticReferrers = React.createClass({
   render: function() {
     var referrerNodes = this.props.data.map(function(referrer) {
       return (
-        <li className="analytics-referer">
+        <li key={referrer.name} className="analytics-referer">
           <strong>{referrer.name}
             -
             {referrer.total}</strong>
-          <AnalyticReferrerKeyword  data={referrer.keywords}/>
+          <AnalyticReferrerKeyword  data={referrer.keywords} referrerName={referrer.name} />
         </li>
       );
     });
@@ -104,9 +104,10 @@ var AnalyticReferrers = React.createClass({
 
 var AnalyticReferrerKeyword = React.createClass({
   render: function() {
-    var keywordNodes = this.props.data.map(function(keyword) {
+    var referrerName = this.props.referrerName;
+    var keywordNodes = this.props.data.map(function(keyword, index) {
       return (
-        <li>
+        <li key={referrerName + '-' + keyword.word + '-' + index}>
           <span>{keyword.word}
             -
             {keyword.total}</span>
