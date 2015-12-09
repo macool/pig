@@ -14,6 +14,8 @@ module Pig
           meta_title = "#{@content_package.long_page_title} | #{Settings.default_meta_title}"
         end
 
+      elsif content_for(:title)
+        meta_title = "#{content_for(:title)} | #{Settings.default_meta_title}"
       end
 
       meta_title
@@ -39,11 +41,10 @@ module Pig
         end
 
       else
-        meta_title = Settings.default_meta_title
-        meta_description = Settings.default_meta_description
-        meta_keywords = Settings.default_meta_keywords
+        meta_title = content_for(:title) || Settings.default_meta_title
+        meta_description = content_for(:description) || Settings.default_meta_description
+        meta_keywords = content_for(:keywords) || Settings.default_meta_keywords
         meta_hide_from_robots = nil
-
       end
 
       meta_image = image || "#{Settings.site_url}#{asset_path(Settings.default_fb_meta_image)}"
