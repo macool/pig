@@ -19,7 +19,7 @@
                   %i.fa.fa-file-text-o
                   %span Templates
             %li{:class => @archived_content_packages ? 'active' : nil}
-              =link_to(pig.archive_admin_content_packages_path) do
+              =link_to(pig.archived_admin_content_packages_path) do
                 %i.fa.fa-trash-o
                 %span=t('actions.archived_content')
             / TODO - Allow trough to insert itself
