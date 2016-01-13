@@ -72,7 +72,7 @@ module Pig
 
       def archive
         if @content_package.archive
-          flash[:notice] = "#{t('actions.archived')} \"#{@content_package}\" - #{view_context.link_to('Undo', restore_admin_content_package_path(@content_package), :method => :put)}"
+          flash[:notice] = "#{t('actions.archived')} \"#{@content_package}\" - #{view_context.link_to('Undo', restore_admin_content_package_path(@content_package.id), :method => :put)}"
         else
           flash[:error] = "\"#{@content_package}\" couldn't be #{t('actions.archived').downcase}"
         end
@@ -84,7 +84,7 @@ module Pig
       end
 
       def destroy
-        @content_package = find_content_package(Pig::ContentPackage.unscoped)
+        @content_package = Pig::ContentPackage.unscoped.find(params[:id])
         set_editing_user
         authorize! :destroy, @content_package
         if @content_package.destroy
@@ -121,7 +121,7 @@ module Pig
       end
 
       def restore
-        @content_package = find_content_package(Pig::ContentPackage.unscoped)
+        @content_package = Pig::ContentPackage.unscoped.find(params[:id])
         set_editing_user
         authorize! :restore, @content_package
         @content_package.restore
