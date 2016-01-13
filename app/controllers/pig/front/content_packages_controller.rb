@@ -35,6 +35,7 @@ module Pig
             #If the permalink is active then just set the content package and yield to the original action.
             if permalink.active
               @content_package = permalink.resource
+              raise ::ActiveRecord::RecordNotFound.new unless @content_package
               authorize! params[:action].to_sym, @content_package
               yield
             else
