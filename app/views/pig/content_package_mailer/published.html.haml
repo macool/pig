@@ -1,0 +1,8 @@
+%p="Hi #{@user.first_name},"
+%p="We thought you might want to know that your work on #{@content_package.name} has just been published"
+%p
+  You can view it on the site
+  =link_to "here", "#{Settings.site_url}/" + (@content_package.permalink_path ||= "content_packages/#{@content_package.id}")
+
+
+%p Thanks
