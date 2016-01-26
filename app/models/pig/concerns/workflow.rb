@@ -41,13 +41,16 @@ module Pig
       def execute_status_transition
         transitions = {
           draft: {
-            pending: :ready_to_review
+            pending: :ready_to_review,
+            published: :notify_author_of_publish
           },
           pending: {
-            draft: :assign_to_author
+            draft: :assign_to_author,
+            published: :notify_author_of_publish
           },
           published: {
-            draft: :assign_to_author
+            draft: :assign_to_author,
+            published: :notify_author_of_publish
           }
         }
         event = transitions[status_was.to_sym][status.to_sym]
@@ -59,8 +62,15 @@ module Pig
         assign_to_author
       end
 
+      def notify_author_of_publish
+        return if editing_user == last_edited_by
+        ContentPackageMailer.published(self, last_edited_by).deliver_now
+      end
+
       def ready_to_review
+        self.last_edited_by_id = author_id
         self.author_id = nil
+        puts "LAST_EDITED_BY_ID: #{self.last_edited_by_id}"
         ContentPackageMailer.assigned(self, requested_by).deliver_now
       end
 
