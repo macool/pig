@@ -6,7 +6,7 @@ module Pig
       extend ActiveSupport::Concern
 
       included do
-        before_save :execute_transition
+        before_save :execute_transitions
       end
 
       class_methods do
@@ -33,8 +33,12 @@ module Pig
         self.class.statuses_for(user, self, ability)
       end
 
-      def execute_transition
-        return unless status_changed?
+      def execute_transitions
+        execute_status_transition if status_changed?
+        execute_author_transition if author_id_changed?
+      end
+
+      def execute_status_transition
         transitions = {
           draft: {
             pending: :ready_to_review
@@ -50,13 +54,20 @@ module Pig
         send(event) if event
       end
 
+      def execute_author_transition
+        return if author.nil?
+        assign_to_author
+      end
+
       def ready_to_review
         self.author_id = nil
-        ContentPackageMailer.assigned(self, requested_by).deliver
+        ContentPackageMailer.assigned(self, requested_by).deliver_now
       end
 
       def assign_to_author
-        ContentPackageMailer.assigned(self, author).deliver
+        return if @author_already_notified
+        ContentPackageMailer.assigned(self, author).deliver_now
+        @author_already_notified = true
       end
 
     end

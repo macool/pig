@@ -201,7 +201,7 @@ Scenario Outline: Discussing a content package
 @javascript
 Scenario Outline: I can assign a content package to an author
   Given I am logged in as an <role>
-  And there is 1 published content package
+  And there is 1 unpublished content package
   When I assign it to an author
   Then the content package author should change
   And the author should be emailed
