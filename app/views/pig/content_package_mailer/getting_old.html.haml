@@ -1,0 +1,15 @@
+%p="Hi #{@user.first_name},"
+-if @content_packages.count > 1
+  %p
+    The following content packages are starting to get old and are ready for review
+    %ul
+      -@content_packages.each do |cp|
+        %li=link_to "#{cp.name}", "#{Settings.site_url}/" + (cp.permalink_path ||= "content_packages/#{cp.id}")
+-else
+  -cp = @content_packages.first
+  =link_to "#{cp.name}", "#{Settings.site_url}/" + (cp.permalink_path ||= "content_packages/#{cp.id}")
+  is starting to get old and is ready for review
+
+%p
+  =@content
+%p Thanks
