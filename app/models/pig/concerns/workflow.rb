@@ -64,6 +64,7 @@ module Pig
 
       def notify_author_of_publish
         return if editing_user == last_edited_by
+        return if last_edited_by.nil?
         ContentPackageMailer.published(self, last_edited_by).deliver_now
       end
 
