@@ -5,6 +5,7 @@ module Pig
     include Pig::Concerns::Recordable
     include Pig::Concerns::Commentable
     include Pig::Concerns::Workflow
+    include Pig::Concerns::Versionable
 
     # Because of this issue on awesome_nested_set it is very important that
     # acts_as_taggable_on comes before acts_as_nested_set
