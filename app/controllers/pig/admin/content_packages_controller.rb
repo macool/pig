@@ -21,6 +21,7 @@ module Pig
         :update,
         :ready_to_review
       ]
+      before_action :set_paper_trail_whodunnit
 
       authorize_resource class: 'Pig::ContentPackage'
       skip_authorize_resource only: [:new, :destroy, :search, :restore]

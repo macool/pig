@@ -71,12 +71,13 @@ module Pig
       def ready_to_review
         self.last_edited_by_id = author_id
         self.author_id = nil
-        puts "LAST_EDITED_BY_ID: #{self.last_edited_by_id}"
+        return if requested_by.nil?
         ContentPackageMailer.assigned(self, requested_by).deliver_now
       end
 
       def assign_to_author
         return if @author_already_notified
+        return if author.nil?
         ContentPackageMailer.assigned(self, author).deliver_now
         @author_already_notified = true
       end
