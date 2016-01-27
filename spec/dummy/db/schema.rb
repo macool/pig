@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151001121540) do
+ActiveRecord::Schema.define(version: 20160126120845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,15 +78,15 @@ ActiveRecord::Schema.define(version: 20151001121540) do
     t.string   "slug"
     t.string   "name"
     t.integer  "content_type_id"
-    t.integer  "position",         default: 0
+    t.integer  "position",          default: 0
     t.integer  "parent_id"
-    t.integer  "lft",                                null: false
-    t.integer  "rgt",                                null: false
+    t.integer  "lft",                                 null: false
+    t.integer  "rgt",                                 null: false
     t.integer  "author_id"
     t.integer  "requested_by_id"
-    t.string   "status",           default: "draft"
-    t.boolean  "logged_in_only",   default: false
-    t.boolean  "hide_from_robots", default: false
+    t.string   "status",            default: "draft"
+    t.boolean  "logged_in_only",    default: false
+    t.boolean  "hide_from_robots",  default: false
     t.text     "notes"
     t.date     "due_date"
     t.integer  "review_frequency"
@@ -99,11 +99,12 @@ ActiveRecord::Schema.define(version: 20151001121540) do
     t.string   "meta_keywords"
     t.string   "meta_image_uid"
     t.string   "meta_image_name"
-    t.json     "json_content",     default: {},      null: false
-    t.integer  "depth",            default: 0,       null: false
-    t.integer  "children_count",   default: 0,       null: false
+    t.json     "json_content",      default: {},      null: false
+    t.integer  "depth",             default: 0,       null: false
+    t.integer  "children_count",    default: 0,       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "last_edited_by_id"
   end
 
   add_index "pig_content_packages", ["lft"], name: "index_pig_content_packages_on_lft", using: :btree
