@@ -2,7 +2,7 @@
 %p="We thought you might want to know that your work on #{@content_package.name} has just been published"
 %p
   You can view it on the site
-  =link_to "here", "#{Settings.site_url}/" + (@content_package.permalink_path ||= "content_packages/#{@content_package.id}")
+  =link_to "here", "#{Settings.site_url}" + pig.content_package_path(@content_package)
 
 
 %p Thanks
