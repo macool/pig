@@ -1,6 +1,5 @@
 %p="Hi #{@user.first_name},"
 %p
-  =link_to "#{@content_package.name}", "#{Settings.site_url}/" + (@content_package.permalink_path ||= "content_packages/#{@content_package.id}")
+  %li=link_to "#{@content_package.name}", "#{Settings.site_url}" + pig.content_package_path(@content_package)
   =@content
 %p Thanks
-
