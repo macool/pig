@@ -49,7 +49,7 @@ module Pig
     end
 
     def full_path_without_leading_slash
-      full_path.gsub!(/^(\/)?/, '')
+      full_path.gsub(/^(\/)?/, '')
     end
 
     private
