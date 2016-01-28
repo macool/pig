@@ -222,3 +222,33 @@ Scenario Outline: I can reorder children of a content package
     | developer |
     | admin     |
     | editor    |
+
+@javascript
+Scenario Outline: Assigning a published content package to an author changes the status to Update
+  Given I am logged in as an <role>
+  And there is 1 content package
+  When I change the assigned to field to an author
+  Then status is changed to Update
+  Examples:
+    | role      |
+    | developer |
+    | admin     |
+    | editor    |
+
+Scenario Outline: I can preview a content package with updates
+  Given I am logged in as an <role>
+  And there is 1 published content package
+  When the content package is edited
+  And I visit the content packages preview url
+  Then I see the updated content package
+  Examples:
+    | role      |
+    | developer |
+    | admin     |
+    | editor    |
+
+Scenario: I can view the live version of a content package with changes
+  Given there is 1 published content package
+  When the content package is edited
+  And I go to the content package
+  Then I see the original content package

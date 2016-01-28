@@ -22,6 +22,7 @@ module Pig
           statuses = {}
           statuses[:draft] = 'Draft' if check_ability(ability, instance, user)
           statuses[:pending] = 'Ready to review'
+          statuses[:update] = 'Needs updating' if (instance.try(:status) == 'published' || instance.try(:status) == 'update') && check_ability(ability, instance, user)
           statuses[:published] = 'Published' if check_ability(ability, instance, user)
           statuses[:expiring] = 'Getting old' if check_ability(ability, instance, user)
           statuses
@@ -50,7 +51,12 @@ module Pig
           },
           published: {
             draft: :assign_to_author,
-            published: :notify_author_of_publish
+            published: :notify_author_of_publish,
+            update: :notify_author_of_amends
+          },
+          update: {
+            published: :notify_author_of_publish,
+            pending: :ready_to_review
           }
         }
         event = transitions[status_was.to_sym][status.to_sym]

@@ -5,8 +5,8 @@ module Pig
 
     let(:content_package) do
       FactoryGirl.create(:content_package,
-                       status: 'draft',
-                        name: 'Test name')
+                          status: 'draft',
+                          name: 'Test name')
     end
 
     describe 'creating new versions' do
@@ -45,11 +45,18 @@ module Pig
       context 'when there is a published version' do
         before do
           content_package.update_attributes status: 'published', name: 'Published name'
-          content_package.update_attributes name: 'Changed name', status: 'draft'
         end
 
         it 'should return the published version' do
+          content_package.update_attributes name: 'Changed name', status: 'draft'
           expect(content_package.live_version.name).to eq('Published name')
+        end
+
+        context 'and there are previous versions' do
+          it 'should return the published version' do
+            content_package.update_attributes name: 'New name'
+            expect(content_package.live_version.name).to eq('New name')
+          end
         end
       end
     end
