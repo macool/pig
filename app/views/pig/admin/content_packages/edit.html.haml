@@ -8,7 +8,7 @@
 
     $("#content_package_author_id").on("change", function(){
       var status_select = $("#content_package_status");
-      if(status_select.val() == 'published'){
+      if(status_select.val() == 'published' || status_select.val() == 'pending'){
         $("#content_package_status").val("update");
       }
     });

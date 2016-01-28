@@ -235,6 +235,19 @@ Scenario Outline: Assigning a published content package to an author changes the
     | admin     |
     | editor    |
 
+  @javascript
+  Scenario Outline: Assigning a published content package to an author for updates
+    Given I am logged in as an <role>
+    And there is 1 published content package
+    When I change the assigned to field to an author
+    And I click "Save and view"
+    Then I can still view the old content package
+    Examples:
+      | role      |
+      | developer |
+      | admin     |
+      | editor    |
+
 Scenario Outline: I can preview a content package with updates
   Given I am logged in as an <role>
   And there is 1 published content package

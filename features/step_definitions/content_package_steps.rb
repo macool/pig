@@ -446,3 +446,8 @@ Then(/^I see the updated content package$/) do
   expect(page).to have_content "New Title"
   expect(page).to_not have_content @old_title
 end
+
+Then(/^I can still view the old content package$/) do
+  visit pig.preview_admin_content_package_path(@content_package)
+  expect(page).to have_content(@content_package.title)
+end
