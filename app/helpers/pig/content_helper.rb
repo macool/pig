@@ -35,6 +35,7 @@ module Pig
       case status_string
       when 'published' then 'Published'
       when 'pending' then 'Ready to review'
+      when 'update' then 'Needs updating'
       else 'Draft'
       end
     end

@@ -195,6 +195,8 @@ module Pig
           end
           if params[:view]
             redirect_to pig.content_package_path(@content_package)
+          elsif params[:preview]
+            redirect_to pig.preview_admin_content_package_path(@content_package)
           else
             redirect_to pig.edit_admin_content_package_path(@content_package)
           end

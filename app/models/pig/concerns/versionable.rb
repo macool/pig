@@ -9,10 +9,12 @@ module Pig
       end
 
       def live_version
+        return self if published?
+        return versions.last.reify if versions.any?
+        self
+      end
 
-        if self.versions.any?
-          return self.versions.last.reify
-        end
+      def preview_version
         self
       end
 
