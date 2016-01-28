@@ -83,13 +83,20 @@ module Pig
         self.last_edited_by_id = author_id
         self.author_id = nil
         return if requested_by.nil?
-        ContentPackageMailer.assigned(self, requested_by).deliver_now
+        ContentPackageMailer.assigned(self, requested_by, 'approval').deliver_now
       end
 
       def assign_to_author
         return if @author_already_notified
         return if author.nil?
-        ContentPackageMailer.assigned(self, author).deliver_now
+        ContentPackageMailer.assigned(self, author, 'writing').deliver_now
+        @author_already_notified = true
+      end
+
+      def notify_author_of_amends
+        return if @author_already_notified
+        return if author.nil?
+        ContentPackageMailer.assigned(self, author, 'updating').deliver_now
         @author_already_notified = true
       end
 
