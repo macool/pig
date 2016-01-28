@@ -320,6 +320,7 @@ module Pig
 
       it 'can be archived' do
         content_package.slug = nil
+        content_package.save
         content_package.archive
         expect(content_package.archived?).to be_truthy
       end
