@@ -22,7 +22,12 @@ module Pig
           statuses = {}
           statuses[:draft] = 'Draft' if check_ability(ability, instance, user)
           statuses[:pending] = 'Ready to review'
-          statuses[:update] = 'Needs updating' if (instance.try(:status) == 'published' || instance.try(:status) == 'update') && check_ability(ability, instance, user)
+          if (instance.try(:status) == 'published' ||
+              instance.try(:status) == 'update' ||
+              instance.try(:status) == 'pending') &&
+             check_ability(ability, instance, user)
+            statuses[:update] = 'Needs updating'
+          end
           statuses[:published] = 'Published' if check_ability(ability, instance, user)
           statuses[:expiring] = 'Getting old' if check_ability(ability, instance, user)
           statuses
