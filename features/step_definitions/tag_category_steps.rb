@@ -10,7 +10,6 @@ When(/^I fill in the new tag category form and submit$/) do
   visit pig.admin_tag_categories_path
   click_link 'New Tag Category'
   fill_in 'Name', with: 'Foo'
-  fill_in 'Unique identifier', with: 'foo'
   select2input = find('.select2-search__field')
 
   select2input.set('banana')
@@ -31,7 +30,6 @@ When(/^I update the tag category's form and submit$/) do
   visit pig.admin_tag_categories_path
   click_link @tag_category.name
   fill_in 'Name', with: 'New Foo'
-  fill_in 'Unique identifier', with: 'new-foo'
 
   @tag_to_remove = @tag_category.taxonomy_list.first
   within('.select2-selection__rendered') do
@@ -46,9 +44,10 @@ When(/^I update the tag category's form and submit$/) do
 end
 
 Then(/^the tag category should be updated$/) do
+  old_slug = @tag_category.slug
   @tag_category.reload
   expect(@tag_category.name).to eq('New Foo')
-  expect(@tag_category.slug).to eq('new-foo')
+  expect(@tag_category.slug).to eq(old_slug)
   expect(@tag_category.taxonomy_list).to_not include(@tag_to_remove)
 end
 

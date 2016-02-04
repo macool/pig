@@ -14,6 +14,23 @@ module Pig
       expect(FactoryGirl.create(:tag_category)).to be_valid
     end
 
+    describe 'slugs' do
+      context 'on create' do
+        it 'sets the slug' do
+          tc = TagCategory.create(name: "a b c")
+          expect(tc.slug).to eq("a-b-c")
+        end
+      end
+
+      context 'on update' do
+        it 'doesnt change the slug' do
+          tc = TagCategory.create(name: "a b c")
+          tc.update_attribute(:name, "x y z")
+          expect(tc.slug).to eq("a-b-c")
+        end
+      end
+    end
+
     describe '#tag_count_for' do
       subject { FactoryGirl.create(:tag_category) }
       let(:tag) { FactoryGirl.create(:tag) }
