@@ -228,7 +228,7 @@ module Pig
     end
 
     def to_param
-      return id unless permalink
+      return id.to_s unless permalink
       permalink.full_path_without_leading_slash
     end
 
