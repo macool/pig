@@ -3,7 +3,7 @@ module Pig
 
     helper Pig::UrlHelper
 
-    default from: "\"#{Settings.site_name}\" <#{Settings.site_noreply_email}>"
+    default from: Settings.site_noreply_email
 
     def assigned(content_package, assigned_to, reason)
       @content_package = content_package
