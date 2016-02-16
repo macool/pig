@@ -26,6 +26,7 @@ module Pig
 
       return unless user
 
+      can [:create, :index], RedactorImageUpload
       can [:edit, :show, :update], Pig::User, id: user.id
       if user.role_is?(:developer)
         can :manage, :all
