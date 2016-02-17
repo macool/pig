@@ -1,8 +1,9 @@
--if params[:action] == 'preview'
-  .preview-status
-    You are viewing an unpublished update.
-    =link_to "View the live version", pig.content_package_path(@content_package)
--elsif params[:action] == 'show' && !@content_package.live?
-  .preview-status
-    There are unpublished changes to this page.
-    =link_to "View the updates", pig.preview_admin_content_package_path(@content_package)
+-if @content_package
+  -if params[:action] == 'preview'
+    .preview-status
+      You are viewing an unpublished update.
+      =link_to "View the live version", pig.content_package_path(@content_package)
+  -elsif params[:action] == 'show' && !@content_package.live?
+    .preview-status
+      There are unpublished changes to this page.
+      =link_to "View the updates", pig.preview_admin_content_package_path(@content_package)
