@@ -1,3 +1,3 @@
 module Pig
-  VERSION = "0.0.6.15"
+  VERSION = "0.0.7.0"
 end
