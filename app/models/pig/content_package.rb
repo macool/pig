@@ -26,6 +26,7 @@ module Pig
     validate :required_attributes
     validate :embeddable_attributes
     validate :lineage
+    validate :validate_content_chunks
 
     delegate :content_attributes, :package_name, :view_name, :missing_view?, :viewless?, :to => :content_type
 
@@ -325,5 +326,14 @@ module Pig
       end
     end
 
+    def validate_content_chunks
+      content_chunk_names.each do |chunk_name|
+        self.send("#{chunk_name}_valid?", self)
+      end
+    end
+
+    def content_chunk_names
+      json_content["content_chunks"].try(:keys) || []
+    end
   end
 end
