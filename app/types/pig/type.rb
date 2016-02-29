@@ -14,6 +14,9 @@ module Pig
       content_package.define_singleton_method("#{@slug}=") do |value|
         this.set(self, value)
       end
+      content_package.define_singleton_method("#{@slug}_valid?") do |content_package|
+        this.valid?(content_package)
+      end
     end
 
     def get(content_package)
@@ -38,6 +41,10 @@ module Pig
     def content_chunk(content_package)
       content_package.json_content['content_chunks'] ||= {}
       content_package.json_content['content_chunks'][@slug] ||= {}
+    end
+
+    def valid?(content_package)
+      true
     end
   end
 end
