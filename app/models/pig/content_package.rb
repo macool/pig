@@ -11,7 +11,7 @@ module Pig
     # https://github.com/collectiveidea/awesome_nested_set/issues/213
     acts_as_taggable_on :acts_as_taggable_on_tags
     acts_as_taggable_on :taxonomy
-    acts_as_nested_set touch: true
+    acts_as_nested_set touch: true, order_column: :position
 
     belongs_to :content_type
     has_many :content_chunks, -> { includes :content_attribute }
