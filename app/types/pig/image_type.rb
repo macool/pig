@@ -66,7 +66,7 @@ module Pig
       accepted_formats = %w{ png jpeg jpg gif bmp svg webp }
       ext = get(content_package).try(:ext)
       if ext
-        unless ext.in?(accepted_formats)
+        unless ext.downcase.in?(accepted_formats)
           content_package.errors.add(:base, "Image cannot be processed, we accept the following formats: #{accepted_formats.to_sentence}")
         end
       end
