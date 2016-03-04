@@ -333,7 +333,9 @@ module Pig
     end
 
     def content_chunk_names
-      json_content["content_chunks"].try(:keys) || []
+      # Set intersect the json chunks with content attributes so we dont try
+      # and validate an attribute that no longer exists.
+      (json_content["content_chunks"].try(:keys) || []) & content_attributes.pluck(:slug)
     end
   end
 end
