@@ -1,19 +1,13 @@
 module Pig
   module ApplicationHelper
 
-    # Gets page title - uses long_page_title if meta_title not set. If neither, or not a pig page, uses default.
+    # Gets page title - uses long_page_title, etc if meta_title not set. If neither, or not a pig page, uses default.
     def get_meta_title
 
       meta_title = Settings.default_meta_title
 
-      if @content_package
-
-        if @content_package.meta_title.present?
-          meta_title = "#{@content_package.meta_title} | #{Settings.default_meta_title}"
-        elsif @content_package.respond_to?(:long_page_title)
-          meta_title = "#{@content_package.long_page_title} | #{Settings.default_meta_title}"
-        end
-
+      if @content_package && get_content_package_title
+        meta_title = "#{get_content_package_title} | #{Settings.default_meta_title}"
       elsif content_for(:title)
         meta_title = "#{content_for(:title)} | #{Settings.default_meta_title}"
       end
@@ -52,6 +46,21 @@ module Pig
       meta_values = [meta_title, meta_description, meta_image, meta_keywords, meta_hide_from_robots]
 
       pig_meta_tags(meta_values)
+    end
+
+    private
+    def get_content_package_title
+      if @content_package.meta_title.present?
+        @content_package.meta_title
+      elsif @content_package.respond_to?(:long_page_title)
+        @content_package.long_page_title
+      elsif @content_package.respond_to?(:title)
+        @content_package.title
+      elsif @content_package.respond_to?(:page_title)
+        @content_package.page_title
+      elsif @content_package.respond_to?(:heading)
+        @content_package.heading
+      end
     end
 
   end
