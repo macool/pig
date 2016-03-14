@@ -80,37 +80,10 @@
                                   =check_box_tag "content_package[taxonomy_tags][#{category.slug}][]", tag, @content_package.taxonomy_from(category).include?(tag)
                                   =tag
                           .clearfix
-        -if can? :manage_settings, @content_package
-          #settings.tab-pane
-            .cms-form-well
-              =form.inputs do
-                =form.input :content_type_id, :as => :hidden
-                =form.input :name
-                =form.input :notes, :label => 'Content objective/goal', :input_html => {:rows => 4}
-                .form-group#content_package_personas
-                  %h4.col-primary Personas
-                  %hr
-                  -@persona_groups.each_slice(2) do |groups|
-                    .row
-                      -groups.each do |group|
-                        .col-md-6
-                          %h5.mb-1=group
-                          =form.input :personas, :as => :check_boxes, :collection => group.personas, :label => false, :member_label => :to_s
-                .clearfix
-                =form.input :requested_by, :collection => Pig::User.where(role: ['admin', 'editor']).order('lower(last_name)')
-                =form.input :due_date, :order => [:day, :month, :year], :include_blank => false, :start_year => Date.today.year
-                =render('review_date', f: form)
-
-              .form-group
-                %h4.col-primary Page settings
-                %hr
-                =form.inputs do
-                  =form.input :parent_id, as: :select, collection: nested_set_options(Pig::ContentPackage, @content_package) {|i| "#{'-' * i.level} #{i.name}" }
-                  -if can? :manage_slug, @content_package
-                    =form.input :slug
-                  =form.input :logged_in_only, :as => :content_boolean, :label => "Only logged in users can view this"
-                  =form.input :hide_from_robots, :as => :content_boolean, :label => "Exclude from search engine indexing"
-
+        = render "settings",
+          form: form,
+          content_package: @content_package,
+          persona_groups: @persona_groups
         .cms-sidebar-actions
           -if current_user.role == "author"
             =form.action :submit, label: 'Save and view', button_html: { class: 'btn btn-success pull-right', data: { form_action: pig.admin_content_package_path(@content_package, view: true) } }
