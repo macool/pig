@@ -61,5 +61,15 @@ module Pig
       end
       super(content_package, uid)
     end
+
+    def valid?(content_package)
+      accepted_formats = %w{ png jpeg jpg gif bmp svg webp }
+      ext = get(content_package).try(:ext)
+      if ext
+        unless ext.downcase.in?(accepted_formats)
+          content_package.errors.add(:base, "Image cannot be processed, we accept the following formats: #{accepted_formats.to_sentence}")
+        end
+      end
+    end
   end
 end

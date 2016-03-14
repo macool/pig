@@ -12,7 +12,7 @@ module Pig
     # https://github.com/collectiveidea/awesome_nested_set/issues/213
     acts_as_taggable_on :acts_as_taggable_on_tags
     acts_as_taggable_on :taxonomy
-    acts_as_nested_set touch: true
+    acts_as_nested_set touch: true, order_column: :position
 
     belongs_to :content_type
     has_many :content_chunks, -> { includes :content_attribute }
@@ -28,6 +28,7 @@ module Pig
     validate :required_attributes
     validate :embeddable_attributes
     validate :lineage
+    validate :validate_content_chunks
 
     delegate :content_attributes, :package_name, :view_name, :missing_view?, :viewless?, :to => :content_type
 
@@ -327,5 +328,16 @@ module Pig
       end
     end
 
+    def validate_content_chunks
+      content_chunk_names.each do |chunk_name|
+        self.send("#{chunk_name}_valid?", self)
+      end
+    end
+
+    def content_chunk_names
+      # Set intersect the json chunks with content attributes so we dont try
+      # and validate an attribute that no longer exists.
+      (json_content["content_chunks"].try(:keys) || []) & content_attributes.pluck(:slug)
+    end
   end
 end
