@@ -1,28 +1,29 @@
 .unsaved-changes
-:javascript
-  $(document).ready(function() {
-    Pig.Redactor.init();
-    $( ".autocomplete-select" ).combobox();
+-content_for :javascript do
+  :javascript
+    $(document).ready(function() {
+      Pig.Redactor.init();
+      $( ".autocomplete-select" ).combobox();
 
-    $('html, body').animate({ scrollTop: $('h1').position().top }, 0, "linear");
+      $('html, body').animate({ scrollTop: $('h1').position().top }, 0, "linear");
 
-    $("#content_package_author_id").on("change", function(){
-      role = $("option:selected", this).data("role");
-      if (role === "author") {
-        $("#content_package_status").val("draft")
-      }
+      $("#content_package_author_id").on("change", function(){
+        role = $("option:selected", this).data("role");
+        if (role === "author") {
+          $("#content_package_status").val("draft")
+        }
+      });
+      $("input[data-form-action]").on("click", function(e) {
+        e.preventDefault();
+        $submit_button =$(e.currentTarget);
+        $form = $($submit_button.parents("form"));
+        $form.attr('action', $submit_button.data("form-action"));
+        $form.submit();
+      });
+
+      $("#content_package_parent_id").combobox();
+      $(".custom-combobox-input").attr('placeholder', 'Start typing to search');
     });
-    $("input[data-form-action]").on("click", function(e) {
-      e.preventDefault();
-      $submit_button =$(e.currentTarget);
-      $form = $($submit_button.parents("form"));
-      $form.attr('action', $submit_button.data("form-action"));
-      $form.submit();
-    });
-
-    $("#content_package_parent_id").combobox();
-    $(".custom-combobox-input").attr('placeholder', 'Start typing to search');
-  });
 
 =semantic_form_for [pig, :admin, @content_package], html: { onsubmit: 'setFormSubmitting()' } do |form|
   .container.page-margin-bottom

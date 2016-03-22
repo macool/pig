@@ -8,3 +8,7 @@
 =javascript_include_tag("pig/application")
 - Pig::configuration.additional_javascripts.each do |javascript|
   =javascript_include_tag javascript
+%script{:src => "//use.typekit.net/qse7god.js"}
+:javascript
+  try{Typekit.load();}catch(e){}
+=content_for :javascript

@@ -1,7 +1,8 @@
-:javascript
-  $(document).ready(function(){
-    Pig.ContentTypes.init()
-  });
+-content_for :javascript do
+  :javascript
+    $(document).ready(function(){
+      Pig.ContentTypes.init()
+    });
 
 .container.page-margin-bottom
   =render('pig/admin/content_packages/sitemap_header', header_title: 'Templates')

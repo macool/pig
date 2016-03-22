@@ -1,23 +1,25 @@
-:javascript
-  $(document).ready(function() {
-    $('select#role').change(function () {
-        var role;
+-content_for :javascript do
+  :javascript
+    $(document).ready(function() {
+      $('select#role').change(function () {
+          var role;
 
-        role = $('select#role').val();
-        if (role.length > 0) {
-          $('h1').text("Users - " + ($('select#role option:selected').text()));
-          $("tr.user-row").hide();
-          $("tr.role-" + role).show();
-        } else {
-          $('h1').text('Users');
-          $("tr.user-row").show();
-        }
+          role = $('select#role').val();
+          if (role.length > 0) {
+            $('h1').text("Users - " + ($('select#role option:selected').text()));
+            $("tr.user-row").hide();
+            $("tr.role-" + role).show();
+          } else {
+            $('h1').text('Users');
+            $("tr.user-row").show();
+          }
+        });
+      $('#show_inactive').change(function () {
+        var checked = this.checked;
+        window.location.href = window.location.href.replace(/true|false/gi, checked);
       });
-    $('#show_inactive').change(function () {
-      var checked = this.checked;
-      window.location.href = window.location.href.replace(/true|false/gi, checked);
     });
-  });
+
 .container
   .row
     .col-xs-12
@@ -29,7 +31,7 @@
             =link_if_can("Add new user", [:new, User.new], :icon => 'plus', :class => 'btn btn-success')
 .container.page-margin-bottom
   .col-md-12
-    
+
     %table.cms-table
       %thead
         %tr
