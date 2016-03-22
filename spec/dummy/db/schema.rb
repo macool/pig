@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151001121540) do
+ActiveRecord::Schema.define(version: 20160115102436) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,17 +63,6 @@ ActiveRecord::Schema.define(version: 20151001121540) do
 
   add_index "pig_content_attributes", ["content_type_id"], name: "index_pig_content_attributes_on_content_type_id", using: :btree
 
-  create_table "pig_content_chunks", force: :cascade do |t|
-    t.integer  "content_package_id"
-    t.integer  "content_attribute_id"
-    t.text     "value"
-    t.text     "html"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "pig_content_chunks", ["content_package_id", "content_attribute_id"], name: "index_content_on_package_attribute", unique: true, using: :btree
-
   create_table "pig_content_packages", force: :cascade do |t|
     t.string   "slug"
     t.string   "name"
@@ -91,8 +80,8 @@ ActiveRecord::Schema.define(version: 20151001121540) do
     t.date     "due_date"
     t.integer  "review_frequency"
     t.date     "next_review"
-    t.datetime "publish_at"
-    t.datetime "published_at"
+    t.date     "publish_at"
+    t.date     "published_at"
     t.datetime "archived_at"
     t.string   "meta_title"
     t.text     "meta_description"
@@ -193,6 +182,13 @@ ActiveRecord::Schema.define(version: 20151001121540) do
   end
 
   add_index "pig_personas", ["group_id"], name: "index_pig_personas_on_group_id", using: :btree
+
+  create_table "pig_redactor_image_uploads", force: :cascade do |t|
+    t.string   "file_uid"
+    t.string   "file_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "pig_resource_tag_categories", force: :cascade do |t|
     t.integer "tag_category_id"
