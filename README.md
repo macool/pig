@@ -26,12 +26,6 @@ If you take a look in your `config/routes.rb` file you should now see the Pig mo
 config.mount_path = 'admin'
 ```
 
-To run the cucumber tests you will need phantomjs, if you're on OSX it can be installed with:
-
-```
-brew install phantomjs
-```
-
 ### Google Analytics
 
 To configure Pig to display google analytics info when editing a page the following steps are required.
@@ -106,4 +100,14 @@ module Pig
   end
 end
 ```
+
+### Developing Pig
+
+To run the cucumber tests you will need phantomjs, if you're on OSX it can be installed with:
+
+```
+brew install phantomjs
+```
+
 #### Thats it!
+
