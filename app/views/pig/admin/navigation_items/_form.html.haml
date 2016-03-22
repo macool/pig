@@ -1,5 +1,6 @@
-:javascript
-  NavigationManager.init()
+-content_for :javascript do
+  :javascript
+    NavigationManager.init()
 .modal-header
   %button.close{'data-dismiss' => "modal"} &times;
   %h4.modal-title Navigation item
@@ -18,4 +19,4 @@
   .modal-footer
     =form.actions do
       =form.action :submit, :label => 'Submit', :button_html => {:class => 'btn btn-primary btn-block'}
-  
+

@@ -20,6 +20,7 @@
           =link_to 'Delete', pig.admin_persona_path(@persona), method: :delete, data: { confirm: 'Are you sure you want to remove this persona? This action cannot be undone.' }, class: 'btn btn-danger'
       .clearfix
 
+-content_for :javascript do
   :javascript
     PersonaForm = {
       init: function() {

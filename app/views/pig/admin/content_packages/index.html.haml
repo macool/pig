@@ -1,17 +1,18 @@
-:javascript
-  $(document).ready(function() {
-    Pig.Sitemap.init();
-    Pig.Sitemap.setOpenNodes();
-    // set up search form
-    SearchManager.init();
-    $('#content-package').removeClass('highlight');
-    #{"$('#content-package-#{params[:open]}').addClass('highlight');" if @open}
-    if ($('.highlight').length) {
-      $('html, body').animate({
-        scrollTop: $('.highlight').offset().top - 100
-      }, 800);
-    }
-  });
+-content_for :javascript do
+  :javascript
+    $(document).ready(function() {
+      Pig.Sitemap.init();
+      Pig.Sitemap.setOpenNodes();
+      // set up search form
+      SearchManager.init();
+      $('#content-package').removeClass('highlight');
+      #{"$('#content-package-#{params[:open]}').addClass('highlight');" if @open}
+      if ($('.highlight').length) {
+        $('html, body').animate({
+          scrollTop: $('.highlight').offset().top - 100
+        }, 800);
+      }
+    });
 .container.page-margin-bottom
   =render('sitemap_header', header_title: 'Content list')
   .row
