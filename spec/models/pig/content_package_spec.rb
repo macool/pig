@@ -20,7 +20,6 @@ module Pig
 
     it { should belong_to(:content_type) }
     it { should belong_to(:parent).class_name('ContentPackage') }
-    it { should have_many(:content_chunks) }
     it { should have_many(:archived_children)
       .class_name('ContentPackage')
       .with_foreign_key('parent_id')
