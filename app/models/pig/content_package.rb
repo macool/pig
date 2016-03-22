@@ -14,7 +14,6 @@ module Pig
     acts_as_nested_set touch: true, order_column: :position
 
     belongs_to :content_type
-    has_many :content_chunks, -> { includes :content_attribute }
     has_and_belongs_to_many :personas, class_name: 'Pig::Persona'
     belongs_to :author, :class_name => 'Pig::User'
     belongs_to :requested_by, :class_name => 'Pig::User'
@@ -24,7 +23,6 @@ module Pig
 
     validates :name, :content_type, :requested_by, :next_review, :presence => true
     validate :required_attributes
-    validate :embeddable_attributes
     validate :lineage
     validate :validate_content_chunks
 
@@ -56,42 +54,6 @@ module Pig
       super(value)
       build_content_chunk_methods
     end
-
-    def convert_chunks_to_content!
-      return false if content_type.nil?
-      content_chunks.each do |content_chunk|
-        next if content_chunk.content_attribute.nil?
-        slug = content_chunk.content_attribute.slug
-        value = content_chunk.attributes['value']
-        field_type = content_chunk.content_attribute.field_type
-        begin
-          if field_type.in?(%w( image file ))
-            send("#{slug}_uid=", value)
-          else
-            send("#{slug}=", value)
-          end
-        rescue SystemStackError, NoMethodError
-          return false
-        end
-      end
-      self.editing_user = Pig::User.where(role: 'developer').first
-      save(validate: false)
-    end
-
-      def self.convert_all_chunks_to_content!
-        failed = []
-        all.each do |content_package|
-          unless content_package.convert_chunks_to_content!
-            failed << content_package
-          end
-        end
-        if failed.empty?
-          'Success'
-        else
-          puts 'The following packages failed to convert:'
-          failed.collect(&:id)
-        end
-      end
 
     def type_factory(field_type)
       Pig.const_get("#{field_type.camelize}Type")
@@ -167,16 +129,6 @@ module Pig
       archived_at.present?
     end
 
-    def content_chunk_value_by_attribute_slug(slug)
-      attribute = ContentAttribute.where(:content_type_id => content_type.id).where(:slug => slug).first
-      chunk = content_chunks.select{|c|c.content_attribute.id == attribute.id}.first.try(:raw_value) || content_chunks.select{|c|c.content_attribute.id == attribute.default_attribute.try(:id)}.first.try(:raw_value)
-      ActionController::Base.helpers.strip_tags(chunk)
-    end
-
-    def content_chunks
-      @content_chunks ||= super.to_a
-    end
-
     def parents
       [parent, parent.try(:parents)].flatten.compact
     end
@@ -246,35 +198,6 @@ module Pig
       errors.add(:parent, 'can\'t be self')
     end
 
-    def content_chunk_for_content_attribute(content_attribute, initialise_if_nil = false)
-      content_chunk = self.content_chunks.select{|c| c.content_attribute_id == content_attribute.id }.first
-      if content_chunk.nil? && initialise_if_nil
-        content_chunk = ContentChunk.new(:content_attribute => content_attribute, :content_package => self)
-        self.content_chunks << content_chunk
-      end
-      content_chunk
-    end
-
-    def embeddable_attributes
-      self.content_chunks.each do |content_chunk|
-        if content_chunk.content_attribute
-          if content_chunk.content_attribute.field_type.embeddable? && content_chunk.value_changed?
-            if content_chunk.value.blank?
-              content_chunk.value = nil
-              content_chunk.html = nil
-            else
-              begin
-                content_chunk.html = OEmbed::Providers.get(content_chunk.value).html
-              rescue OEmbed::NotFound
-                content_chunk.html = nil
-                self.errors.add(content_chunk.content_attribute.slug + '_url', "No embeddable content found at this URL")
-              end
-            end
-          end
-        end
-      end
-    end
-
     def find_file_attribute_name(attribute_name)
       regexes = Regexp.union(/^retained_(.*)$/, /^remove_(.*)$/, /^(.*)_uid$/)
       attribute_name.scan(regexes).flatten.compact.first
@@ -292,10 +215,6 @@ module Pig
           self.errors.add_on_blank(content_attribute.slug)
         end
       end
-    end
-
-    def save_content_chunks
-      content_chunks.each(&:save)
     end
 
     def set_meta_title

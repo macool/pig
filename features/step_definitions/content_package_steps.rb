@@ -130,8 +130,8 @@ When(/^I go to the content package$/) do
 end
 
 Then(/^I should see all its content$/) do
-  @content_package.content_chunks.each do |content_chunk|
-    expect(page).to have_content(content_chunk.value)
+  @content_package.send(:content_chunk_names).each do |name|
+    expect(page).to have_content(@content_package.send(name))
   end
 end
 
