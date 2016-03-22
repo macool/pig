@@ -5,7 +5,7 @@
 Add Pig to your Gemfile:
 
 ```ruby
-gem "pig"
+gem 'pig', git: "https://#{ENV['GITHUB_PIG_TOKEN']}:x-oauth-basic@github.com/yoomee/pig.git", tag: '0.0.7.0'
 ```
 
 Run the bundle command to install it.
