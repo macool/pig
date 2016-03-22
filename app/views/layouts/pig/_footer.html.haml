@@ -3,3 +3,8 @@
     .row
       .col-xs-12.text-right.small-text
         Built by Yoomee.
+
+%script{:src => "https://code.jquery.com/jquery-1.11.2.min.js"}
+=javascript_include_tag("pig/application")
+- Pig::configuration.additional_javascripts.each do |javascript|
+  =javascript_include_tag javascript
