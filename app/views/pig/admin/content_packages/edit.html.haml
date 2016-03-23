@@ -147,6 +147,9 @@
                               %li=benefit
                         -if persona.file
                           =link_to("Download full persona", persona.file.url, :target => '_blank', :class => 'btn btn-sm', :icon => 'download')
+            - else
+              #personas.tab-pane.cms-well
+                %h4.text-center=t(".no_personas_set")
             #context.tab-pane.active.cms-well
               %label.col-primary Content Package Id
               %p
