@@ -114,7 +114,6 @@ ActiveRecord::Schema.define(version: 20160115102436) do
     t.string  "package_name"
     t.boolean "viewless",     default: false
     t.string  "view_name"
-    t.boolean "use_workflow", default: false
   end
 
   create_table "pig_meta_data", force: :cascade do |t|
