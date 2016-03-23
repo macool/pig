@@ -73,7 +73,7 @@ end
 Then(/^I see the cms users$/) do
   page.has_table? "users-table"
   user_rows = page.all('.user-row')
-  user_rows.count.should > 1
+  expect(user_rows.count).to be > 1
 end
 
 When(/^I set the user as inactive$/) do

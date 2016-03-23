@@ -38,7 +38,7 @@
                         -if content_type.destroyable?
                           %li=link_to('Delete this content template', pig.admin_content_type_path(content_type), :method => :delete, :data => {:confirm => "Are you sure you want to delete this content template? This cannot be undone."})
       -if can? :new, Pig::ContentType
-        =link_to("Add new content template", pig.new_admin_content_type_path, :icon => 'plus', :class => 'btn btn-success btn-small mt-3 pull-right')
+        =link_to("Add new template", pig.new_admin_content_type_path, :icon => 'plus', :class => 'btn btn-success btn-small mt-3 pull-right')
 .modal.fade#duplicate-modal
   .modal-dialog
     .modal-content

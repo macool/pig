@@ -8,7 +8,7 @@ module Pig
         yield @user if block_given?
 
         if @user.update(permitted_params)
-          @user.confirm!
+          @user.confirm
           set_flash_message(:notice, :confirmed) if is_flashing_format?
           respond_with_navigational(@user){ redirect_to after_confirmation_path_for(resource_name, @user) }
         else

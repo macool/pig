@@ -1,6 +1,6 @@
 u = Pig::User.create!(first_name: "Yoomee", last_name: "Developer", role: "admin",
                       active: true, email: "developers@yoomee.com", password: "password")
-u.confirm!
+u.confirm
 ct = Pig::ContentType.create!(name: "home", view_name: "homepage")
 Pig::ContentPackage.create!(slug: "home", name: "home", content_type: ct,
                             editing_user: u, requested_by: u, next_review: Date.today,
