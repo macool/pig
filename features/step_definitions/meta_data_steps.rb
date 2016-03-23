@@ -12,10 +12,10 @@ When(/^I fill in the meta data form$/) do
 end
 
 Then(/^the meta data should be created$/) do
-  page.should have_content @meta_data.page_slug
-  page.should have_content @meta_data.title
-  page.should have_content @meta_data.description
-  page.should have_content @meta_data.keywords
+  expect(page).to have_content @meta_data.page_slug
+  expect(page).to have_content @meta_data.title
+  expect(page).to have_content @meta_data.description
+  expect(page).to have_content @meta_data.keywords
 end
 
 Given(/^that there (?:is|are) (\d+) meta data pages?$/) do |x|
@@ -36,10 +36,10 @@ When(/^I update the meta data$/) do
 end
 
 Then(/^the meta data should be updated$/) do
-  page.should have_content 'Updated page slug'
-  page.should have_content 'Updated title'
-  page.should have_content 'Updated description'
-  page.should have_content 'Updated keywords'
+  expect(page).to have_content 'Updated page slug'
+  expect(page).to have_content 'Updated title'
+  expect(page).to have_content 'Updated description'
+  expect(page).to have_content 'Updated keywords'
 end
 
 When(/^I go to the meta data index page$/) do
@@ -48,15 +48,15 @@ end
 
 Then(/^I see all the meta data pages$/) do
   @meta_datas.each do |meta_data|
-    page.should have_content meta_data.page_slug
-    page.should have_content meta_data.title
-    page.should have_content meta_data.description
-    page.should have_content meta_data.keywords
+    expect(page).to have_content meta_data.page_slug
+    expect(page).to have_content meta_data.title
+    expect(page).to have_content meta_data.description
+    expect(page).to have_content meta_data.keywords
   end
 end
 
 Then(/^the meta data should be deleted$/) do
-  Pig::MetaDatum.count.should eq(0)
+  expect(Pig::MetaDatum.count).to eq(0)
 end
 
 Given(/^the meta data page refers to itself$/) do
@@ -65,7 +65,7 @@ Given(/^the meta data page refers to itself$/) do
 end
 
 Then(/^the meta data should be shown in the header$/) do
-  page.title.should have_content @meta_title
+  expect(page.title).to have_content @meta_title
   has_css?("meta[property='og:title'][content='#{@meta_data.title}']", visible: false)
   has_css?("meta[property='og:description'][content='#{@meta_data.description}']", visible: false)
   has_css?("meta[name='keywords'][content='#{@meta_data.keywords}']", visible: false)
