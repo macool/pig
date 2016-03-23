@@ -89,7 +89,6 @@ module Pig
           :package_name,
           :viewless,
           :view_name,
-          :use_workflow,
           :tag_category_ids => [],
           :content_attributes_attributes => [
             :id,

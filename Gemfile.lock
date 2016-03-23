@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pig (0.0.6.17)
+    pig (0.0.7.2)
       acts-as-taggable-on
       acts_as_commentable
       awesome_nested_set
@@ -316,7 +316,7 @@ GEM
       pry (~> 0.10)
     public_suffix (1.5.3)
     rack (1.6.4)
-    rack-cache (1.6.0)
+    rack-cache (1.6.1)
       rack (>= 0.4)
     rack-test (0.6.3)
       rack (>= 1.0)

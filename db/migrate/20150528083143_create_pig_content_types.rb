@@ -8,7 +8,6 @@ class CreatePigContentTypes < ActiveRecord::Migration
       t.string :package_name
       t.boolean :viewless, :default => false
       t.string :view_name
-      t.boolean :use_workflow, :default => false
     end
   end
 
