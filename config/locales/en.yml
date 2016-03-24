@@ -12,3 +12,8 @@ en:
   date:
     formats:
       default: "%A %d %B %Y"
+  pig:
+    admin:
+      content_packages:
+        edit:
+          no_personas_set: "No personas set"
