@@ -3,9 +3,9 @@ module Pig
     class ContentPackagesController < Pig::Front::ApplicationController
 
       load_and_authorize_resource class: 'Pig::ContentPackage'
-      skip_load_resource only: [:home]
+      skip_load_resource only: [:home, :preview]
 
-      around_action :redirect_to_permalink, only: [:show]
+      around_action :redirect_to_permalink, only: [:show, :preview]
 
       rescue_from CanCan::AccessDenied do |exception|
         instance_eval(&Pig.configuration.unpublished)
@@ -17,6 +17,10 @@ module Pig
       end
 
       def show
+        render_content_package_view
+      end
+
+      def preview
         render_content_package_view
       end
 
@@ -32,9 +36,9 @@ module Pig
         # If the url matched a permalinkable content package route then it will have a param of :path
         if params[:path]
           if permalink = Permalink.find_from_url(params[:path])
-            #If the permalink is active then just set the content package and yield to the original action.
+            # If the permalink is active then just set the content package and yield to the original action.
             if permalink.active
-              @content_package = permalink.resource
+              @content_package = permalink.resource.send(params[:action] == 'preview' ? :preview_version : :live_version)
               raise ::ActiveRecord::RecordNotFound.new unless @content_package
               authorize! params[:action].to_sym, @content_package
               yield

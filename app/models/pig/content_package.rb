@@ -5,6 +5,7 @@ module Pig
     include Pig::Concerns::Recordable
     include Pig::Concerns::Commentable
     include Pig::Concerns::Workflow
+    include Pig::Concerns::Versionable
 
     # Because of this issue on awesome_nested_set it is very important that
     # acts_as_taggable_on comes before acts_as_nested_set
@@ -15,8 +16,9 @@ module Pig
 
     belongs_to :content_type
     has_and_belongs_to_many :personas, class_name: 'Pig::Persona'
-    belongs_to :author, :class_name => 'Pig::User'
-    belongs_to :requested_by, :class_name => 'Pig::User'
+    belongs_to :author, class_name: 'Pig::User'
+    belongs_to :last_edited_by, class_name: 'Pig::User'
+    belongs_to :requested_by, class_name: 'Pig::User'
     has_many :archived_children, -> { where("archived_at IS NOT NULL").order(:position, :id) }, :class_name => "ContentPackage", :foreign_key => 'parent_id'
 
     before_create :set_meta_title

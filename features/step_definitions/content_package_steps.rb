@@ -420,3 +420,38 @@ end
 Then(/^the children are reordered$/) do
   expect(@content_package.children.pluck(:id)).to eq([3,2,4])
 end
+
+When(/^the content package is edited$/) do
+  @old_title = @content_package.title
+  @content_package.title = "New Title"
+  @content_package.status = "update"
+  @content_package.save
+end
+
+Then(/^I see the original content package$/) do
+  expect(page).to have_content @old_title
+  expect(page).to_not have_content "New Title"
+end
+
+When(/^I change the assigned to field to an author$/) do
+  visit pig.edit_admin_content_package_path(@content_package)
+  select("#{@author.full_name} (#{@author.role})", :from => 'content_package[author_id]', :visible => false)
+end
+
+Then(/^status is changed to Update$/) do
+  expect(page).to have_select('Status', selected: 'Needs updating')
+end
+
+When(/^I visit the content packages preview url$/) do
+  visit pig.preview_admin_content_package_path(@content_package)
+end
+
+Then(/^I see the updated content package$/) do
+  expect(page).to have_content "New Title"
+  expect(page).to_not have_content @old_title
+end
+
+Then(/^I can still view the old content package$/) do
+  visit pig.preview_admin_content_package_path(@content_package)
+  expect(page).to have_content(@content_package.title)
+end

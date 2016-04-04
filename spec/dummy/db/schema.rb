@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160115102436) do
+=======
+ActiveRecord::Schema.define(version: 20160127112431) do
+>>>>>>> features/workflow
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,15 +71,15 @@ ActiveRecord::Schema.define(version: 20160115102436) do
     t.string   "slug"
     t.string   "name"
     t.integer  "content_type_id"
-    t.integer  "position",         default: 0
+    t.integer  "position",          default: 0
     t.integer  "parent_id"
-    t.integer  "lft",                                null: false
-    t.integer  "rgt",                                null: false
+    t.integer  "lft",                                 null: false
+    t.integer  "rgt",                                 null: false
     t.integer  "author_id"
     t.integer  "requested_by_id"
-    t.string   "status",           default: "draft"
-    t.boolean  "logged_in_only",   default: false
-    t.boolean  "hide_from_robots", default: false
+    t.string   "status",            default: "draft"
+    t.boolean  "logged_in_only",    default: false
+    t.boolean  "hide_from_robots",  default: false
     t.text     "notes"
     t.date     "due_date"
     t.integer  "review_frequency"
@@ -88,11 +92,12 @@ ActiveRecord::Schema.define(version: 20160115102436) do
     t.string   "meta_keywords"
     t.string   "meta_image_uid"
     t.string   "meta_image_name"
-    t.json     "json_content",     default: {},      null: false
-    t.integer  "depth",            default: 0,       null: false
-    t.integer  "children_count",   default: 0,       null: false
+    t.json     "json_content",      default: {},      null: false
+    t.integer  "depth",             default: 0,       null: false
+    t.integer  "children_count",    default: 0,       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "last_edited_by_id"
   end
 
   add_index "pig_content_packages", ["lft"], name: "index_pig_content_packages_on_lft", using: :btree
@@ -232,6 +237,17 @@ ActiveRecord::Schema.define(version: 20160115102436) do
   add_index "pig_users", ["confirmation_token"], name: "index_pig_users_on_confirmation_token", unique: true, using: :btree
   add_index "pig_users", ["email"], name: "index_pig_users_on_email", unique: true, using: :btree
   add_index "pig_users", ["reset_password_token"], name: "index_pig_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "pig_versions", force: :cascade do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "pig_versions", ["item_type", "item_id"], name: "index_pig_versions_on_item_type_and_item_id", using: :btree
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"
