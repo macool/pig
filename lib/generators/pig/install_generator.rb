@@ -28,6 +28,7 @@ DOC
       def copy_initializer_file
         copy_file "pig.rb", "config/initializers/pig.rb"
         copy_file "homepage.html.erb", "app/views/pig/templates/homepage.html.erb"
+        copy_file "production.yml", "config/settings/production.yml"
       end
 
       def install_migrations
