@@ -109,5 +109,15 @@ To run the cucumber tests you will need phantomjs, if you're on OSX it can be in
 brew install phantomjs
 ```
 
+### Deploying Pig
+
+To deploy a site using Pig ensure the following in addition to the usual Rails deploy process:
+
+* A mail service is present, and if required any configuration for that service. We currently recommend the SendGrid add-on when using Heroku.
+
+* An email address is set in the `SITE_NOREPLY_EMAIL` environment variable.
+
+* The `GITHUB_PIG_TOKEN` variable is also present.
+
 #### Thats it!
 
