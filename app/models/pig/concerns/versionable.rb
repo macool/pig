@@ -1,3 +1,7 @@
+# When using versionable the live version published on the site
+# is always the last paper_trail version. The preview version
+# is the canonical non-versioned instance of the model.
+
 module Pig
   module Concerns
     module Versionable
@@ -15,7 +19,8 @@ module Pig
       end
 
       def preview_version
-        self
+        # get the non-versioned model
+        @preview_version ||= self.class.find(id)
       end
 
     end
