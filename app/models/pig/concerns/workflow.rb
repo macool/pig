@@ -62,7 +62,8 @@ module Pig
           update: {
             published: :notify_author_of_publish,
             pending: :ready_to_review
-          }
+          },
+          expiring: {}
         }
         event = transitions[status_was.to_sym][status.to_sym]
         send(event) if event
