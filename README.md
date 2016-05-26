@@ -26,6 +26,20 @@ If you take a look in your `config/routes.rb` file you should now see the Pig mo
 config.mount_path = 'admin'
 ```
 
+To use the pig factories in the specs of your project add the following to your RSpec configuration (usually found in `spec/rails_helper.rb`):
+
+```ruby
+config.before(:suite) do
+  FactoryGirl.reset_configuration
+  FactoryGirl.register_default_strategies
+  FactoryGirl.register_default_callbacks
+  FactoryGirl.definition_file_paths << Pig.factory_path
+	FactoryGirl.find_definitions
+end
+```
+
+Note: the config above has been tested with `factory_girl`, not `factory_girl_rails`.
+
 ### Google Analytics
 
 To configure Pig to display google analytics info when editing a page the following steps are required.

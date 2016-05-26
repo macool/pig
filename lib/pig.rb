@@ -45,6 +45,10 @@ require 'pig/concerns/models/name'
 module Pig
   class << self
     attr_writer :configuration
+
+    def factory_path
+      Pathname.new(File.expand_path('../../', __FILE__)).join("spec/factories/factories").to_s
+    end
   end
 
   module_function
