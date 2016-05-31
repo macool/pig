@@ -132,11 +132,6 @@ When(/^I log out$/) do
   click_link 'Sign out'
 end
 
-Then(/^the user should received an email to confirm their account$/) do
-  open_email(@user.email)
-  expect(current_email).to have_link('Confirm my account')
-end
-
 Given(/^I have received an email to confirm my account$/) do
   @user = FactoryGirl.create(:user)
   @user.send_confirmation_instructions
