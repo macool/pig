@@ -13,12 +13,6 @@ Scenario Outline: Creating a user
       | developer |
       | admin     |
 
-Scenario: Receiving an email to confirm my account
-  Given I am logged in as an developer
-  And there are 0 users
-  When I fill in the new cms user form and submit
-  Then the user should received an email to confirm their account
-
 @javascript
 Scenario Outline: Confirming an unconfirmed user
   Given I am logged in as an <role>
