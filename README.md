@@ -133,5 +133,7 @@ To deploy a site using Pig ensure the following in addition to the usual Rails d
 
 * The `GITHUB_PIG_TOKEN` variable is also present.
 
+* If you wish to use the embeddable content type with youtube and display video thumbnails add the `YOUTUBE_API_KEY` environment variable.
+
 #### Thats it!
 
