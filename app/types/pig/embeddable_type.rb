@@ -9,7 +9,7 @@ module Pig
       content_package.define_singleton_method("#{@slug}_url=") do |value|
         send("#{slug}=", value)
       end
-      content_package.define_singleton_method("thumbnail") do
+      content_package.define_singleton_method("#{@slug}_thumbnail") do
         content_package.json_content['content_chunks'][slug]['thumbnail']
       end
     end
