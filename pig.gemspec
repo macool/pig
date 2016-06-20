@@ -50,6 +50,7 @@ Gem::Specification.new do |s|
   s.add_dependency "typhoeus"
   s.add_dependency "acts_as_commentable"
   s.add_dependency "paper_trail"
+  s.add_dependency "yt"
 
   s.add_development_dependency "pg"
 end
