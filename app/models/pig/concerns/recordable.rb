@@ -10,11 +10,11 @@ module Pig
         attr_accessor :editing_user
         validates :editing_user, presence: true
         after_create { record_activity!(self.editing_user, "#{self.name} was created") }
-        after_update :record_update
+        after_update :record_update_activity
         before_destroy { record_activity!(self.editing_user, "#{self.name} was permanently deleted") }
       end
 
-      def record_update
+      def record_update_activity
         if self.archived_at_changed?
           if archived_at_was.nil?
             record_activity!(self.editing_user,  "#{self.name} was #{I18n.t('actions.archived').downcase}")

@@ -14,7 +14,7 @@ Scenario: Sign in with incorrect details
   When I visit the sign in page
   And I complete the form with email "foo@bar.com" and password "drowssap"
   Then I should be redirected to the sign in page
-  And I should see an "Invalid email or password" message
+  And I should see an "Invalid Email or password" message
 
 Scenario: Request password reset
   Given an author exists with email "author@yoomee.com"

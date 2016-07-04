@@ -20,7 +20,6 @@ module Pig
 
     it { should belong_to(:content_type) }
     it { should belong_to(:parent).class_name('ContentPackage') }
-    it { should have_many(:content_chunks) }
     it { should have_many(:archived_children)
       .class_name('ContentPackage')
       .with_foreign_key('parent_id')
@@ -46,7 +45,7 @@ module Pig
         expect{ content_package.title }.not_to raise_error
       end
       it 'should not work for other attributes' do
-        expect{ content_package.title2 }.to raise_error
+        expect{ content_package.title2 }.to raise_error(NoMethodError)
       end
     end
 
@@ -56,7 +55,7 @@ module Pig
         expect(content_package.title).to eq("A new title")
       end
       it 'should not work for other attributes' do
-        expect{ content_package.title2 = "title" }.to raise_error
+        expect{ content_package.title2 = "title" }.to raise_error(NoMethodError)
       end
     end
 
@@ -301,7 +300,7 @@ module Pig
         end
 
         cp_v.permalink_path = 'second'
-        puts cp_v.save
+        cp_v.save
 
         cps.each_with_index do |cp, index|
           cp.reload
@@ -320,6 +319,7 @@ module Pig
 
       it 'can be archived' do
         content_package.slug = nil
+        content_package.save
         content_package.archive
         expect(content_package.archived?).to be_truthy
       end

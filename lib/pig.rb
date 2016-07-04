@@ -28,6 +28,7 @@ require 'legato'
 require 'google/api_client'
 require 'awesome_nested_set'
 require 'acts_as_commentable'
+require 'paper_trail'
 
 require 'pig/link'
 require 'pig/permalinkable'
@@ -44,6 +45,10 @@ require 'pig/concerns/models/name'
 module Pig
   class << self
     attr_writer :configuration
+
+    def factory_path
+      Pathname.new(File.expand_path('../../', __FILE__)).join("spec/factories/factories").to_s
+    end
   end
 
   module_function

@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-sass'
   s.add_dependency 'will_paginate'
   s.add_dependency 'will_paginate-bootstrap'
-  s.add_dependency 'cells'
+  s.add_dependency 'cells', '4.0.5'
   s.add_dependency 'cells-haml'
   s.add_dependency 'poltergeist'
   s.add_dependency 'httparty'
@@ -49,6 +49,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'awesome_nested_set'
   s.add_dependency "typhoeus"
   s.add_dependency "acts_as_commentable"
+  s.add_dependency "paper_trail"
+  s.add_dependency "yt"
 
   s.add_development_dependency "pg"
 end

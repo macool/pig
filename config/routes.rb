@@ -92,5 +92,6 @@ Pig::Engine.routes.draw do
       as: 'not_found'
 
   get '//*id/edit', to: 'admin/content_packages#edit'
+  get '//*path/preview', to: 'front/content_packages#preview', as: 'preview_admin_content_package'
   get '//*path', to: 'front/content_packages#show', as: 'content_package'
 end

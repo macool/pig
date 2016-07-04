@@ -1,5 +1,5 @@
 Then(/^I should see the (\d+) activity items$/) do |n|
-  page.all("ul.cms-activities li").count.should eql(n.to_i)
+  expect(page.all("ul.cms-activities li").count).to eql(n.to_i)
 end
 
 When(/^I choose to see older activity$/) do

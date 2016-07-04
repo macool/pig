@@ -1,9 +1,7 @@
 module Pig
   module ApplicationHelper
-
     # Gets page title - uses long_page_title, etc if meta_title not set. If neither, or not a pig page, uses default.
     def get_meta_title
-
       meta_title = Settings.default_meta_title
 
       if @content_package && get_content_package_title
@@ -13,7 +11,6 @@ module Pig
       end
 
       meta_title
-
     end
 
     # Gets meta tags - uses pig values or default except for meta image
@@ -22,9 +19,9 @@ module Pig
       if @content_package
 
         if @content_package.meta_image_uid
-          image = "#{Settings.site_url}#{@content_package.meta_image.thumb('1024x1024#').url}"
+          image = "#{Settings.site_url}#{@content_package.meta_image.thumb('1200x630#').url}"
         elsif @content_package.respond_to?(:hero_image) && @content_package.hero_image.present?
-          image = "#{Settings.site_url}#{@content_package.hero_image.thumb('1024x1024#').url}"
+          image = "#{Settings.site_url}#{@content_package.hero_image.thumb('1200x630#').url}"
         end
 
         meta_title = @content_package.meta_title.presence || Settings.default_meta_title
@@ -41,7 +38,7 @@ module Pig
         meta_hide_from_robots = nil
       end
 
-      meta_image = image || "#{Settings.site_url}#{asset_path(Settings.default_fb_meta_image)}"
+      meta_image = image || content_for(:meta_image) || "#{Settings.site_url}#{asset_path(Settings.default_fb_meta_image)}"
 
       meta_values = [meta_title, meta_description, meta_image, meta_keywords, meta_hide_from_robots]
 
@@ -49,6 +46,7 @@ module Pig
     end
 
     private
+
     def get_content_package_title
       if @content_package.meta_title.present?
         @content_package.meta_title
@@ -62,7 +60,5 @@ module Pig
         @content_package.heading
       end
     end
-
   end
-
 end

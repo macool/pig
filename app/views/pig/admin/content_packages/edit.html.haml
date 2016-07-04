@@ -1,15 +1,16 @@
 .unsaved-changes
-:javascript
-  $(document).ready(function() {
-    Pig.Redactor.init();
-    $( ".autocomplete-select" ).combobox();
+-content_for :javascript do
+  :javascript
+    $(document).ready(function() {
+      Pig.Redactor.init();
+      $( ".autocomplete-select" ).combobox();
 
-    $('html, body').animate({ scrollTop: $('h1').position().top }, 0, "linear");
+      $('html, body').animate({ scrollTop: $('h1').position().top }, 0, "linear");
 
     $("#content_package_author_id").on("change", function(){
-      role = $("option:selected", this).data("role");
-      if (role === "author") {
-        $("#content_package_status").val("draft")
+      var status_select = $("#content_package_status");
+      if(status_select.val() == 'published' || status_select.val() == 'pending'){
+        $("#content_package_status").val("update");
       }
     });
     $("input[data-form-action]").on("click", function(e) {
@@ -20,9 +21,9 @@
       $form.submit();
     });
 
-    $("#content_package_parent_id").combobox();
-    $(".custom-combobox-input").attr('placeholder', 'Start typing to search');
-  });
+      $("#content_package_parent_id").combobox();
+      $(".custom-combobox-input").attr('placeholder', 'Start typing to search');
+    });
 
 =semantic_form_for [pig, :admin, @content_package], html: { onsubmit: 'setFormSubmitting()' } do |form|
   .container.page-margin-bottom
@@ -85,13 +86,20 @@
           content_package: @content_package,
           persona_groups: @persona_groups
         .cms-sidebar-actions
+          -if @content_package.status == "update"
+            -save_and_view_label = 'Save and preview'
+            -save_and_view_action = pig.admin_content_package_path(@content_package, preview: true)
+          -else
+            -save_and_view_label = 'Save and view'
+            -save_and_view_action = pig.admin_content_package_path(@content_package, view: true)
+
           -if current_user.role == "author"
-            =form.action :submit, label: 'Save and view', button_html: { class: 'btn btn-success pull-right', data: { form_action: pig.admin_content_package_path(@content_package, view: true) } }
+            =form.action :submit, label: save_and_view_label, button_html: { class: 'btn btn-success pull-right', data: { form_action: save_and_view_action } }
             =form.action :submit, :label => "Save and continue editing", :button_html => {:class => "btn btn-success pull-right", data: { form_action: pig.admin_content_package_path(@content_package) } }
             =form.action :submit, :label => "Mark as ready to review", :button_html => {:class => "btn pull-right", data: { form_action: pig.ready_to_review_admin_content_package_path(@content_package) } }
           -else
             -unless @content_package.viewless?
-              =form.action :submit, label: 'Save and view', button_html: { class: 'btn btn-success pull-right', data: { form_action: pig.admin_content_package_path(@content_package, view: true) } }
+              =form.action :submit, label: save_and_view_label, button_html: { class: 'btn btn-success pull-right', data: { form_action: save_and_view_action } }
             =form.action :submit, label: 'Save and continue editing', button_html: { class: 'btn btn-success pull-right', data: { form_action: pig.admin_content_package_path(@content_package) } }
           .clearfix
 
@@ -101,9 +109,18 @@
             .cms-edit-status.cms-well
               %div
                 %label{for: "content_package_author_id"} Assigned To
-                =form.input :author_id, :as => :select, :collection => Pig::User.where("role<>''").order(:last_name).map { |u| ["#{u.full_name} (#{u.role})", u.id, {:'data-role' => u.role }] }, :include_blank => true, :label => false
+                =form.input :author_id,
+                            as: :select,
+                            collection: Pig::User.where("role<>''").order(:last_name).map { |u| ["#{u.full_name} (#{u.role})", u.id, {:'data-role' => u.role }] },
+                            include_blank: true,
+                            label: false
                 %label{for: "content_package_status"} Status
-                =form.input :status, :as => :select, :collection => @content_package.statuses(current_user, current_ability).invert, :include_blank => false, :label => false
+                =form.input :status,
+                            as: :select,
+                            collection: @content_package.statuses(current_user, current_ability).invert,
+                            include_blank: false,
+                            label: false,
+                            input_html: { data: { original_status: form.object.status} }
                 #content_package_publish_at_fields{:class => content_package_publish_at_class}
                   %label{for: "content_package_publish_at"} Publish at (optional)
                   =form.input :publish_at, :as => :datepicker, :label => false
@@ -146,6 +163,9 @@
                               %li=benefit
                         -if persona.file
                           =link_to("Download full persona", persona.file.url, :target => '_blank', :class => 'btn btn-sm', :icon => 'download')
+            - else
+              #personas.tab-pane.cms-well
+                %h4.text-center=t(".no_personas_set")
             #context.tab-pane.active.cms-well
               %label.col-primary Content Package Id
               %p

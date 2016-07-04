@@ -13,7 +13,7 @@ RSpec.describe "pig/admin/tag_categories/_form", type: :view do
   end
 
   it "should have a name field" do
-    expect(rendered).to have_xpath("//input[@name='tag_category[taxonomy_list][]']")
+    expect(rendered).to have_xpath("//select[@name='tag_category[taxonomy_list][]']")
   end
 
 end

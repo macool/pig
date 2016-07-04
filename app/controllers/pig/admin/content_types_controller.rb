@@ -30,7 +30,7 @@ module Pig
 
       def dashboard
         @activity_items = Pig::ActivityItem.where(:resource_type => "Pig::ContentPackage").paginate(:page => 1, :per_page => 5)
-        @my_content = Pig::ContentPackage.where(:author_id => current_user.try(:id)).order('due_date, id')
+        @my_content = Pig::ContentPackage.where("author_id = :user_id OR (requested_by_id = :user_id and status = 'pending')", user_id: current_user.try(:id)).order('due_date, id')
       end
 
       def duplicate
@@ -89,7 +89,6 @@ module Pig
           :package_name,
           :viewless,
           :view_name,
-          :use_workflow,
           :tag_category_ids => [],
           :content_attributes_attributes => [
             :id,

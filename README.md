@@ -5,7 +5,7 @@
 Add Pig to your Gemfile:
 
 ```ruby
-gem "pig"
+gem 'pig', git: "https://#{ENV['GITHUB_PIG_TOKEN']}:x-oauth-basic@github.com/yoomee/pig.git", tag: '0.0.7.0'
 ```
 
 Run the bundle command to install it.
@@ -15,9 +15,9 @@ To install it simply run:
 ```bash
 rails g pig:install
 rake db:migrate
-# Optional (but recommended - Pig can seed some defaults to get you up and trotting quickly.
 rake pig:db:seed
 ```
+Now you're up and trotting! 🐖 
 
 If you take a look in your `config/routes.rb` file you should now see the Pig mounted, the default route for all pig admin functionality is `/admin`, this may be modified by editing:
 
@@ -25,6 +25,20 @@ If you take a look in your `config/routes.rb` file you should now see the Pig mo
 # config/initializers/pig.rb
 config.mount_path = 'admin'
 ```
+
+To use the pig factories in the specs of your project add the following to your RSpec configuration (usually found in `spec/rails_helper.rb`):
+
+```ruby
+config.before(:suite) do
+  FactoryGirl.reset_configuration
+  FactoryGirl.register_default_strategies
+  FactoryGirl.register_default_callbacks
+  FactoryGirl.definition_file_paths << Pig.factory_path
+	FactoryGirl.find_definitions
+end
+```
+
+Note: the config above has been tested with `factory_girl`, not `factory_girl_rails`.
 
 ### Google Analytics
 
@@ -100,4 +114,26 @@ module Pig
   end
 end
 ```
+
+### Developing Pig
+
+To run the cucumber tests you will need phantomjs, if you're on OSX it can be installed with:
+
+```
+brew install phantomjs
+```
+
+### Deploying Pig
+
+To deploy a site using Pig ensure the following in addition to the usual Rails deploy process:
+
+* A mail service is present, and if required any configuration for that service. We currently recommend the SendGrid add-on when using Heroku.
+
+* An email address is set in the `SITE_NOREPLY_EMAIL` environment variable.
+
+* The `GITHUB_PIG_TOKEN` variable is also present.
+
+* If you wish to use the embeddable content type with youtube and display video thumbnails add the `YOUTUBE_API_KEY` environment variable.
+
 #### Thats it!
+

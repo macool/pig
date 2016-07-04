@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151001121540) do
+ActiveRecord::Schema.define(version: 20160127112431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,47 +63,37 @@ ActiveRecord::Schema.define(version: 20151001121540) do
 
   add_index "pig_content_attributes", ["content_type_id"], name: "index_pig_content_attributes_on_content_type_id", using: :btree
 
-  create_table "pig_content_chunks", force: :cascade do |t|
-    t.integer  "content_package_id"
-    t.integer  "content_attribute_id"
-    t.text     "value"
-    t.text     "html"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "pig_content_chunks", ["content_package_id", "content_attribute_id"], name: "index_content_on_package_attribute", unique: true, using: :btree
-
   create_table "pig_content_packages", force: :cascade do |t|
     t.string   "slug"
     t.string   "name"
     t.integer  "content_type_id"
-    t.integer  "position",         default: 0
+    t.integer  "position",          default: 0
     t.integer  "parent_id"
-    t.integer  "lft",                                null: false
-    t.integer  "rgt",                                null: false
+    t.integer  "lft",                                 null: false
+    t.integer  "rgt",                                 null: false
     t.integer  "author_id"
     t.integer  "requested_by_id"
-    t.string   "status",           default: "draft"
-    t.boolean  "logged_in_only",   default: false
-    t.boolean  "hide_from_robots", default: false
+    t.string   "status",            default: "draft"
+    t.boolean  "logged_in_only",    default: false
+    t.boolean  "hide_from_robots",  default: false
     t.text     "notes"
     t.date     "due_date"
     t.integer  "review_frequency"
     t.date     "next_review"
-    t.datetime "publish_at"
-    t.datetime "published_at"
+    t.date     "publish_at"
+    t.date     "published_at"
     t.datetime "archived_at"
     t.string   "meta_title"
     t.text     "meta_description"
     t.string   "meta_keywords"
     t.string   "meta_image_uid"
     t.string   "meta_image_name"
-    t.json     "json_content",     default: {},      null: false
-    t.integer  "depth",            default: 0,       null: false
-    t.integer  "children_count",   default: 0,       null: false
+    t.json     "json_content",      default: {},      null: false
+    t.integer  "depth",             default: 0,       null: false
+    t.integer  "children_count",    default: 0,       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "last_edited_by_id"
   end
 
   add_index "pig_content_packages", ["lft"], name: "index_pig_content_packages_on_lft", using: :btree
@@ -125,7 +115,6 @@ ActiveRecord::Schema.define(version: 20151001121540) do
     t.string  "package_name"
     t.boolean "viewless",     default: false
     t.string  "view_name"
-    t.boolean "use_workflow", default: false
   end
 
   create_table "pig_meta_data", force: :cascade do |t|
@@ -194,6 +183,13 @@ ActiveRecord::Schema.define(version: 20151001121540) do
 
   add_index "pig_personas", ["group_id"], name: "index_pig_personas_on_group_id", using: :btree
 
+  create_table "pig_redactor_image_uploads", force: :cascade do |t|
+    t.string   "file_uid"
+    t.string   "file_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "pig_resource_tag_categories", force: :cascade do |t|
     t.integer "tag_category_id"
     t.integer "taggable_resource_id"
@@ -237,6 +233,17 @@ ActiveRecord::Schema.define(version: 20151001121540) do
   add_index "pig_users", ["confirmation_token"], name: "index_pig_users_on_confirmation_token", unique: true, using: :btree
   add_index "pig_users", ["email"], name: "index_pig_users_on_email", unique: true, using: :btree
   add_index "pig_users", ["reset_password_token"], name: "index_pig_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "pig_versions", force: :cascade do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "pig_versions", ["item_type", "item_id"], name: "index_pig_versions_on_item_type_and_item_id", using: :btree
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"

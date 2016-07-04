@@ -21,6 +21,7 @@ module Pig
         :update,
         :ready_to_review
       ]
+      before_action :set_paper_trail_whodunnit
 
       authorize_resource class: 'Pig::ContentPackage'
       skip_authorize_resource only: [:new, :destroy, :search, :restore]
@@ -194,6 +195,8 @@ module Pig
           end
           if params[:view]
             redirect_to pig.content_package_path(@content_package)
+          elsif params[:preview]
+            redirect_to pig.preview_admin_content_package_path(@content_package)
           else
             redirect_to pig.edit_admin_content_package_path(@content_package)
           end

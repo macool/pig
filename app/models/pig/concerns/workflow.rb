@@ -6,7 +6,7 @@ module Pig
       extend ActiveSupport::Concern
 
       included do
-        before_save :execute_transition
+        before_save :execute_transitions
       end
 
       class_methods do
@@ -22,6 +22,12 @@ module Pig
           statuses = {}
           statuses[:draft] = 'Draft' if check_ability(ability, instance, user)
           statuses[:pending] = 'Ready to review'
+          if (instance.try(:status) == 'published' ||
+              instance.try(:status) == 'update' ||
+              instance.try(:status) == 'pending') &&
+             check_ability(ability, instance, user)
+            statuses[:update] = 'Needs updating'
+          end
           statuses[:published] = 'Published' if check_ability(ability, instance, user)
           statuses[:expiring] = 'Getting old' if check_ability(ability, instance, user)
           statuses
@@ -33,30 +39,66 @@ module Pig
         self.class.statuses_for(user, self, ability)
       end
 
-      def execute_transition
-        return unless status_changed?
+      def execute_transitions
+        execute_status_transition if status_changed?
+        execute_author_transition if author_id_changed?
+      end
+
+      def execute_status_transition
         transitions = {
           draft: {
-            pending: :ready_to_review
+            pending: :ready_to_review,
+            published: :notify_author_of_publish
           },
           pending: {
-            draft: :assign_to_author
+            draft: :assign_to_author,
+            published: :notify_author_of_publish
           },
           published: {
-            draft: :assign_to_author
-          }
+            draft: :assign_to_author,
+            published: :notify_author_of_publish,
+            update: :notify_author_of_amends
+          },
+          update: {
+            published: :notify_author_of_publish,
+            pending: :ready_to_review
+          },
+          expiring: {}
         }
         event = transitions[status_was.to_sym][status.to_sym]
         send(event) if event
       end
 
+      def execute_author_transition
+        return if author.nil?
+        assign_to_author
+      end
+
+      def notify_author_of_publish
+        return if editing_user == last_edited_by
+        return if last_edited_by.nil?
+        ContentPackageMailer.published(self, last_edited_by).deliver_now
+      end
+
       def ready_to_review
+        self.last_edited_by_id = author_id
         self.author_id = nil
-        ContentPackageMailer.assigned(self, requested_by).deliver
+        return if requested_by.nil?
+        ContentPackageMailer.assigned(self, requested_by, 'approval').deliver_now
       end
 
       def assign_to_author
-        ContentPackageMailer.assigned(self, author).deliver
+        return if @author_already_notified
+        return if author.nil?
+        ContentPackageMailer.assigned(self, author, 'writing').deliver_now
+        @author_already_notified = true
+      end
+
+      def notify_author_of_amends
+        return if @author_already_notified
+        return if author.nil?
+        ContentPackageMailer.assigned(self, author, 'updating').deliver_now
+        @author_already_notified = true
       end
 
     end

@@ -5,7 +5,6 @@ FactoryGirl.define do
     description "Share your latest news"
     singleton false
     view_name 'show'
-    use_workflow true
     after(:build) do |content_type|
       if content_type.content_attributes.count.zero?
         content_type.content_attributes = [

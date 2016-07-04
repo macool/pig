@@ -14,9 +14,21 @@ module Pig
         end
       end
 
+      def configure_email_default_host
+        inject_into_file "#{Rails.root}/config/environments/development.rb",
+          after: "Rails.application.configure do" do
+          <<DOC
+
+  # Set default host for mailers - Added by Pig
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+DOC
+        end
+      end
+
       def copy_initializer_file
         copy_file "pig.rb", "config/initializers/pig.rb"
         copy_file "homepage.html.erb", "app/views/pig/templates/homepage.html.erb"
+        copy_file "production.yml", "config/settings/production.yml"
       end
 
       def install_migrations
