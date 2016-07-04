@@ -16,7 +16,7 @@ Pig::Engine.routes.draw do
   end
 
   scope "/#{Pig.configuration.mount_path}", as: "admin", module: "admin" do
-    root 'content_types#dashboard'
+    root 'content_types#dashboard', as: 'root'
 
     get 'not-authorized' => 'application#not_authorized'
 
