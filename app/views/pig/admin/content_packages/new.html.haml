@@ -48,7 +48,7 @@
             #collapseAuthor.collapse
               =form.inputs do
                 -# TODO permissions
-                =form.input :requested_by, :collection => Pig::User.where(role: ['developer', 'admin', 'editor']).order('LOWER(last_name)')
+                =form.input :requested_by, :collection => Pig::User.where(role: ['developer', 'admin', 'editor', 'content_and_event_editor']).order('LOWER(last_name)')
                 =form.input :author, :collection => Pig::User.order('LOWER(last_name)').where("role<>''").map { |u| ["#{u.full_name} (#{u.role})", u.id] }
                 =form.input :due_date, :order => [:day, :month, :year], :include_blank => false, :start_year => Date.today.year
                 =render('review_date', f: form)
