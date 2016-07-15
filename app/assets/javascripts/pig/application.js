@@ -34,6 +34,7 @@
 //= require pig/google-analytics
 //= require pig/init
 //= require pig/content_package
+//= require pig/content_type
 //= require pig/main
 
 //= require_tree ./redactor_plugins
