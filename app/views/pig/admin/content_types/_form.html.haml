@@ -1,11 +1,5 @@
 -content_for :javascript do
   :javascript
-    $(".nested-fields").sortable({
-      containment: "parent",
-      stop: function(event, ui) {
-        alert('done');
-      }
-    });
     $(document).ready(function(){
       $('form.content_type')
         .on('cocoon:after-insert', function(e,added) {
