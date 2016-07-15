@@ -1,9 +1,8 @@
 -content_for :javascript do
   :javascript
-    Pig.ContentPackages.descriptions = #{Hash[Pig::ContentType.all.map{|ct| [ct.id, ct.description]}].to_json};
     $(document).ready(function(){
-      Pig.ContentPackages.initForm();
-      $( ".autocomplete-select" ).combobox();
+      Pig.ContentPackage.init(#{Hash[Pig::ContentType.all.map{|ct| [ct.id, ct.description]}].to_json})
+      $(".autocomplete-select").combobox();
     });
 
 .container.page-margin-bottom
