@@ -7,35 +7,30 @@ module Pig
 
     def initialize(val)
       @raw = val.strip
-      if raw =~ /^\d+$/
-        @content_package = Pig::ContentPackage.find_by_id(raw)
-        @target = nil
+      @url = val.to_s.html_safe
+      if @url.match(/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/)
+        # is email-like
+        @url = 'mailto:' + @url
       else
-        @url = val.to_s.html_safe
-        if @url.match(/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/)
-          # is email-like
-          @url = 'mailto:' + @url
+        # is this even a URL? (Until we have form validation, keep broken text)
+        begin
+          URI.parse(@url)
+        rescue
         else
-          # is this even a URL? (Until we have form validation, keep broken text)
           begin
-            URI.parse(@url)
+            parsed = PublicSuffix.parse(@url.gsub(/\/\w*/, ''))
           rescue
+            # must be internal/relative
           else
-            begin
-              parsed = PublicSuffix.parse(@url.gsub(/\/\w*/, ''))
-            rescue
-              # must be internal/relative
-            else
-              # must be external, add scheme if doesn't exist
-              @url = 'http://' + @url if URI.parse(@url).scheme.nil?
-            end
+            # must be external, add scheme if doesn't exist
+            @url = 'http://' + @url if URI.parse(@url).scheme.nil?
           end
         end
-        if url.start_with?('/')
-          @target = nil
-        else
-          @target = "_blank"
-        end
+      end
+      if url.start_with?('/')
+        @target = nil
+      else
+        @target = "_blank"
       end
     end
 
