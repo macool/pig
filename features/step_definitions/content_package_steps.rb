@@ -258,7 +258,7 @@ When(/^I expand the parent$/) do
 end
 
 Then(/^the (\d+) children are visible$/) do |children_count|
-  expect(page).to have_css(".td-name", count: children_count.to_i + 1)
+  expect(page).to have_css(".td-name", count: children_count.to_i + 1) # + 1 for parent
 end
 
 
