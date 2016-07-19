@@ -276,3 +276,17 @@ Scenario: I can view the live version of a content package with changes
   When the content package is edited
   And I go to the content package
   Then I see the original content package
+
+@javascript
+Scenario Outline: I can view children of a content package
+  Given I am logged in as an <role>
+  And there is a content package with 3 children
+  When I go to the list of content packages
+  And I expand the parent
+  Then the 3 children are visible
+  Examples:
+    | role      |
+    | developer |
+    | admin     |
+    | editor    |
+    | author    |

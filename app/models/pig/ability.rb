@@ -61,6 +61,7 @@ module Pig
         can [:index, :dashboard, :children], Pig::ContentType
         can :contributor_blog_posts, Pig::ContentPackage
         can [:create], Pig::Comment
+        can [:children], Pig::ContentPackage
       end
     end
   end
