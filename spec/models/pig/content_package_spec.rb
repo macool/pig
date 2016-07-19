@@ -138,10 +138,16 @@ module Pig
         content_package.link = url
         expect(content_package.link.value).to eq(url)
       end
-      it 'can be set as a content package' do
-        package_2 = FactoryGirl.create(:content_package)
-        content_package.link = package_2.id
-        expect(content_package.link.value).to eq(package_2)
+    end
+
+    describe 'resource attributes' do
+      it 'defaults to empty string' do
+        expect(content_package.resource).to eq('')
+      end
+      it 'can return the path to the related content package' do
+        cp = FactoryGirl.create(:content_package, :permalink_path => "test")
+        content_package.resource = cp.id
+        expect(content_package.resource_path).to eq(cp.to_param)
       end
     end
 
