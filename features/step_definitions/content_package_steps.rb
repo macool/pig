@@ -253,6 +253,15 @@ Then(/^I should see the content package named "(.*?)" highlighted$/) do |name|
   row[:class].include?('.highlight')
 end
 
+When(/^I expand the parent$/) do
+  find(".td-name").click
+end
+
+Then(/^the (\d+) children are visible$/) do |children_count|
+  expect(page).to have_css(".td-name", count: children_count.to_i + 1)
+end
+
+
 When(/^the content package is archived$/) do
   @content_package.slug = ''
   @content_package.archive
