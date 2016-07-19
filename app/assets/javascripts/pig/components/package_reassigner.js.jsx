@@ -11,6 +11,7 @@ var PackageReassigner = React.createClass({
     });
   },
   render: function() {
+    const token = $('meta[name="csrf-token"]').attr('content');
     var contentRows = [];
     var component = this;
     this.state.content.forEach(function(content) {
@@ -60,6 +61,7 @@ var PackageReassigner = React.createClass({
                 Cancel
               </a>
               <input className="btn btn-error" type="submit" value={"Deactivate user" + (this.state.content.length > 0 ? ' and reassign content' : '')} />
+              <input type="hidden" name="authenticity_token" value={token} readOnly={true} />
             </div>
           </div>
         </form>
