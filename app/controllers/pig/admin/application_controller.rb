@@ -3,6 +3,8 @@ module Pig
     class ApplicationController < ::ApplicationController
       layout 'pig/application'
 
+      before_filter :set_paper_trail_whodunnit
+
       rescue_from CanCan::AccessDenied do |exception|
         if current_user
           redirect_to pig.admin_not_authorized_path, alert: exception.message
