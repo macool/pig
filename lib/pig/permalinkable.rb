@@ -52,7 +52,7 @@ module Pig::Permalinkable
   private
 
   def set_permalink_errors
-    permalink_errors = permalink.try(:errors).try(:get, :path)
+    permalink_errors = permalink.try(:errors).try(:[], :path)
     errors.add(:permalink_path, permalink_errors) if permalink_errors.present?
   end
 
