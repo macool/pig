@@ -35,6 +35,9 @@
 //= require pig/init
 //= require pig/content_package
 //= require pig/content_type
+//= require pig/redactor
+//= require pig/sitemap
+//= require pig/sortable
 //= require pig/main
 
 //= require_tree ./redactor_plugins
