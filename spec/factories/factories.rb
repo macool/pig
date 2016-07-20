@@ -20,7 +20,8 @@ FactoryGirl.define do
           FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'date', :name => 'Date', :field_type => 'date', :description => 'Pick a date'),
           FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'time', :name => 'Time', :field_type => 'time', :description => 'Pick a time'),
           FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'geo', :name => 'Location', :field_type => 'location', :description => 'Pick a location'),
-          FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'rich_content', :name => 'Rich Content', :field_type => 'rich_content', :description => 'Enter some rich content')
+          FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'rich_content', :name => 'Rich Content', :field_type => 'rich_content', :description => 'Enter some rich content'),
+          FactoryGirl.build(:content_attribute, :content_type => content_type, :slug => 'resource', :name => 'Resource', :field_type => 'resource', :description => 'Select a page')
         ]
       end
     end
