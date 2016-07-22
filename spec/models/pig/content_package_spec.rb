@@ -147,7 +147,7 @@ module Pig
       it 'can return the path to the related content package' do
         cp = FactoryGirl.create(:content_package, :permalink_path => "test")
         content_package.resource = cp.id
-        expect(content_package.resource_path).to eq(cp.to_param)
+        expect(content_package.resource_path).to eq("/#{cp.to_param}")
       end
     end
 

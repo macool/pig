@@ -14,7 +14,8 @@ module Pig
       end
       content_package.define_singleton_method("#{@slug}_path") do
         if this.content_value(self).present?
-          Pig::ContentPackage.find(this.content_value(self)).to_param
+          cp_path = Pig::ContentPackage.find(this.content_value(self)).to_param
+          "/#{cp_path}".squeeze "/"
         end
       end
     end
