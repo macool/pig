@@ -17,3 +17,15 @@ en:
       content_packages:
         edit:
           no_personas_set: "No personas set"
+
+    content_package_mailer:
+      assigned_for_review:
+        subject: "[%{site_name}]: %{content_package_name} has being assigned to you for approval"
+      assigned_for_writing:
+        subject: "[%{site_name}]: %{content_package_name} has being assigned to you for writing"
+      assigned_for_updating:
+        subject: "[%{site_name}]: %{content_package_name} has being assigned to you for updating"
+      published:
+        subject: "[%{site_name}]: %{content_package_name} has been published"
+      getting_old:
+        subject: "[%{site_name}]: %{title} getting old"
