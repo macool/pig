@@ -17,3 +17,11 @@ en:
       content_packages:
         edit:
           no_personas_set: "No personas set"
+
+    content_package_mailer:
+      assigned:
+        subject: "[%{site_name}]: %{content_package_name} %{content}"
+      published:
+        subject: "[%{site_name}]: %{content_package_name} has been published"
+      getting_old:
+        subject: "[%{site_name}]: %{title} getting old"

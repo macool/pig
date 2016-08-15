@@ -9,25 +9,37 @@ module Pig
       @content_package = content_package
       @user = assigned_to
       @content = "has being assigned to you for #{reason}"
-      mail(to: assigned_to.email, subject: "[#{Settings.site_name}] #{content_package.name} #{@content}")
+      mail(to: assigned_to.email,
+           subject: default_i18n_subject(
+             site_name: Settings.site_name,
+             content_package_name: content_package.name,
+             content: @content
+           ))
     end
 
     def published(content_package, last_edited_by)
       @content_package = content_package
       @user = last_edited_by
-      mail(to: last_edited_by.email, subject: "[#{Settings.site_name}] #{content_package.name} has been published")
+      mail(to: last_edited_by.email,
+           subject: default_i18n_subject(
+             site_name: Settings.site_name,
+             content_package_name: content_package.name
+           ))
     end
 
     def getting_old(user, content_packages)
       @content_packages = content_packages
       @user = user
-      if @content_packages.count > 1
-        title = "#{@content_packages.count} content packages are "
-      else
-        title = "#{@content_packages.first.name} is"
-      end
-      mail(to: @user.email, subject: "[#{Settings.site_name}] #{title} getting old")
+      title = if @content_packages.count > 1
+                "#{@content_packages.count} content packages are "
+              else
+                "#{@content_packages.first.name} is"
+              end
+      mail(to: @user.email,
+           subject: default_i18n_subject(
+             site_name: Settings.site_name,
+             title: title
+           ))
     end
-
   end
 end
