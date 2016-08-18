@@ -3,7 +3,7 @@ module Pig
     class CommentsController < Pig::Admin::ApplicationController
 
       authorize_resource class: 'Pig::Comment'
-      before_filter :find_content_package
+      before_action :find_content_package
 
       def create
         comment = @content_package.comments.build(comment_params)
