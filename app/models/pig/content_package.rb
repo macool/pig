@@ -223,10 +223,12 @@ module Pig
       self.meta_title = name
     end
 
-    def set_permalink_with_viewless
-      content_type.try(:viewless?) ? true : set_permalink_without_viewless
+    module PermalinkViewlessCheck
+      def set_permalink
+        content_type.try(:viewless?) ? true : super
+      end
     end
-    alias_method_chain(:set_permalink, :viewless)
+    prepend PermalinkViewlessCheck
 
     def respond_to_missing?(method_name, include_private = false)
       return true if super

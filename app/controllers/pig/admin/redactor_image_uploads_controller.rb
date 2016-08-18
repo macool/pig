@@ -3,7 +3,7 @@ module Pig
     class RedactorImageUploadsController < Pig::Admin::ApplicationController
 
       load_and_authorize_resource class: 'Pig::RedactorImageUpload' if respond_to?(:load_and_authorize_resource)
-      skip_before_filter :verify_authenticity_token, only: :create
+      skip_before_action :verify_authenticity_token, only: :create
 
       def create
         @redactor_upload = RedactorImageUpload.new(file: params[:file], file_type: params[:file_type])
