@@ -2,6 +2,8 @@ module Pig
   # Generic type which adds a get and set method to the content package which
   # it decorates
   class Type
+    attr_accessor :slug
+
     def initialize(content_package, slug, field_type)
       @slug = slug
       @field_type = field_type

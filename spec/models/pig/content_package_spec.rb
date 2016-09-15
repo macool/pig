@@ -149,6 +149,11 @@ module Pig
         content_package.resource = cp.id
         expect(content_package.resource_path).to eq("/#{cp.to_param}")
       end
+      it 'can return the related content package' do
+        cp = FactoryGirl.create(:content_package)
+        content_package.resource = cp.id
+        expect(content_package.resource_content_package).to eq(cp)
+      end
     end
 
     describe 'text attributes' do

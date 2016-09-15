@@ -12,9 +12,14 @@ module Pig
       content_package.define_singleton_method("#{@slug}_valid?") do |content_package|
         this.valid?(content_package)
       end
+      content_package.define_singleton_method("#{@slug}_content_package") do
+        if this.content_value(self).present?
+          Pig::ContentPackage.find(this.content_value(self))
+        end
+      end
       content_package.define_singleton_method("#{@slug}_path") do
         if this.content_value(self).present?
-          cp_path = Pig::ContentPackage.find(this.content_value(self)).to_param
+          cp_path = self.send("#{this.slug}_content_package").to_param
           "/#{cp_path}".squeeze "/"
         end
       end
