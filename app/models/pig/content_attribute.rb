@@ -4,7 +4,7 @@ module Pig
     belongs_to :content_type
     belongs_to :default_attribute, :class_name => 'ContentAttribute'
     after_validation :set_meta_title, :if => :meta?
-    after_validation :set_slug
+    before_validation :set_slug
     validates :slug, :name, :field_type, :presence => true
     begin
       validates :slug, :name,
