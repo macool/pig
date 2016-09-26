@@ -149,7 +149,7 @@ module Pig
     end
 
     def published?
-      status == 'published' && (publish_at.nil? || publish_at <= Date.today)
+      (status == 'published' || status == 'update') && (publish_at.nil? || publish_at <= Date.today)
     end
 
     def visible_to_user?(user)
