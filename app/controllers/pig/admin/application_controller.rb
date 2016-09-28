@@ -1,6 +1,14 @@
 module Pig
   module Admin
     class ApplicationController < ::ApplicationController
+      helper Pig::ApplicationHelper
+      helper Pig::MetaTagsHelper
+      helper Pig::LayoutHelper
+      helper Pig::NavigationHelper
+      helper Pig::ContentHelper
+      helper Pig::TitleHelper
+      helper Pig::ImageHelper
+
       layout 'pig/application'
       before_action :set_paper_trail_whodunnit
 

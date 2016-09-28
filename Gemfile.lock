@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pig (1.0.9)
+    pig (1.0.10)
       acts-as-taggable-on
       acts_as_commentable
       awesome_nested_set
