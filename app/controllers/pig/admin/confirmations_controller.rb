@@ -3,6 +3,14 @@ module Pig
     class ConfirmationsController < Devise::ConfirmationsController
       layout 'pig/simple'
 
+      helper Pig::ApplicationHelper
+      helper Pig::MetaTagsHelper
+      helper Pig::LayoutHelper
+      helper Pig::NavigationHelper
+      helper Pig::ContentHelper
+      helper Pig::TitleHelper
+      helper Pig::ImageHelper
+
       def update
         @user = resource_class.find_first_by_auth_conditions(confirmation_token: params[resource_name][:confirmation_token])
         yield @user if block_given?
