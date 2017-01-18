@@ -4,7 +4,7 @@ class FileWithPreviewInput < FormtasticBootstrap::Inputs::FileInput
     bootstrap_wrapping do
       out = ''
       if object.send(input_name) && object.errors[input_name].blank?
-        out << "<p><em>#{object.send(input_name).name}</em></p>"
+        out << "<p><em><a href='#{object.send(input_name).url}' target='_blank'>#{object.send(input_name).name}</a></em></p>"
       end
       out << '<div class="file-inputs">'
       out << builder.file_field(method, input_html_options)

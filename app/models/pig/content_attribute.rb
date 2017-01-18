@@ -120,7 +120,11 @@ module Pig
 
     def set_slug
       return unless slug.blank? && name.present? && errors['name'].blank?
-      slug_name = name.gsub('-', ' ').parameterize('_').sub(/^\d+/, 'n')
+      if Rails.version.to_f >= 5.0
+        slug_name = name.gsub('-', ' ').parameterize(separator: '_').sub(/^\d+/, 'n')
+      else
+        slug_name = name.gsub('-', ' ').parameterize('_').sub(/^\d+/, 'n')
+      end
       if Pig::ContentPackage.new.respond_to?(slug_name)
         slug_name = 'content_package_' + slug_name
       end

@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'haml-rails'
   s.add_dependency 'config', '~> 1.0.0'
   s.add_dependency 'jquery-rails'
-  s.add_dependency 'jquery-ui-rails'
+  s.add_dependency 'jquery-ui-rails', '~> 5.0.5'
   s.add_dependency 'bootstrap-sass', '~> 3.3.7'
   s.add_dependency 'will_paginate'
   s.add_dependency 'will_paginate-bootstrap'
@@ -49,7 +49,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'awesome_nested_set'
   s.add_dependency "typhoeus"
   s.add_dependency "acts_as_commentable"
-  s.add_dependency "paper_trail"
+  s.add_dependency "paper_trail", "~> 5.2"
   s.add_dependency "yt"
 
   s.add_development_dependency "pg"
