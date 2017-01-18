@@ -54,6 +54,7 @@ module Pig
         can :destroy, Pig::Permalink do |permalink|
           instance_exec permalink, &Pig.configuration.can_delete_permalink
         end
+        can [:index, :edit], Pig::Persona
       elsif user.role_is?(:author)
         cannot :manage, Pig::Permalink
         can [:edit, :update], Pig::ContentPackage, :author_id => user.id
