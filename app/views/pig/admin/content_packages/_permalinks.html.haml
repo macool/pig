@@ -1,7 +1,11 @@
 %fieldset
   %hr
   %h4.col-primary= t('.url', default: 'URL')
-  = form.input :permalink_path, :prepend => content_package.parent && content_package.parent.respond_to?(:permalink_display_path) && Pig.configuration.nested_permalinks ? content_package.parent.permalink_display_path : '/'
+  - if Pig.configuration.nested_permalinks && content_package.parent.respond_to?(:permalink_display_path)
+    -label=content_package.parent.permalink_display_path.chop
+  -else
+    -label="Permalink"
+  = form.input :permalink_path, prepend: '/', label: label
   - if content_package.permalinks.inactive.any?
     %label= t('.inactive_permalinks', default: 'Aliases')
     %ul
