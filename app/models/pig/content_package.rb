@@ -131,6 +131,10 @@ module Pig
       archived_at.present?
     end
 
+    def expiring?
+      next_review <  Date.today
+    end
+
     def parents
       [parent, parent.try(:parents)].flatten.compact
     end

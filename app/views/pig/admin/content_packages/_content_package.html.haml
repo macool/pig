@@ -1,6 +1,6 @@
 - open = @open && @open.include?(content_package)
 - parents = parents.try(:dup) || []
-%tr.content-package{:class => "status-#{content_package.status} #{'has-children' unless content_package.children.count.zero?}", :id => "content-package-#{content_package.id}", :data => {:depth => parents.size, :children_url => pig.children_admin_content_package_path(content_package)}}
+%tr.content-package{:class => "#{'status-expiring' unless !content_package.expiring?} status-#{content_package.status} #{'has-children' unless content_package.children.count.zero?}", :id => "content-package-#{content_package.id}", :data => {:depth => parents.size, :children_url => pig.children_admin_content_package_path(content_package)}}
   %td.td-name{:data => {:open => (open ? 1 : 0), :loaded => (open ? 1 : 0), :content_package => content_package.id}}
     =sitemap_spacers(content_package, parents)
     %span.name
