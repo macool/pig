@@ -15,7 +15,7 @@
                   %h5.mb-1=group
                   =form.input :persona_ids, :as => :check_boxes, :collection => group.personas.collect{|p| [p.to_s, p.id]}, :label => false
         .clearfix
-        =form.input :requested_by, :collection => Pig::User.where(role: ['admin', 'editor', 'content_and_event_editor']).order('lower(last_name)')
+        =form.input :requested_by, :collection => Pig::User.where(role: ['admin', 'editor', 'content_and_event_editor', 'author_and_event_editor']).order('lower(last_name)')
         =form.input :due_date, :order => [:day, :month, :year], :include_blank => false, :start_year => Date.today.year
         =render('review_date', f: form)
 
