@@ -1,7 +1,10 @@
 -activity_html = capture do
   =image_for(activity.user, "45x45#", :class => 'cms-thumbnail')
   -if include_name == true
-    %span="#{activity.text} by #{activity.user.full_name}"
+    -if activity.user
+      %span="#{activity.text} by #{activity.user.full_name}"
+    -else
+      %span="#{activity.text} by deleted user"
   -else
     =activity.text.try(:capitalize)
     by
