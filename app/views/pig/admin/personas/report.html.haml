@@ -1,0 +1,72 @@
+.container.page-margin-bottom
+  .row
+    .col-xs-12
+      .cms-page-header
+        .row
+          .col-sm-6.col-sm-offset-3
+            %h1=title 'Persona report'
+          .col-sm-3.cms-header-actions
+            =link_to('Back', pig.admin_personas_path, :icon => 'plus', :class => 'btn btn-success')
+
+  -@persona_groups.each do |group|
+    %br
+    .row
+      .col-md-8
+        %h3="Pages for #{group} users"
+    -group.personas.each_slice(1) do |personas|
+      .row
+        .col-md-3.col-sm-12
+          %table.cms-table{ :style => "width: 700px;" }
+            %thead
+              %tr
+                %th{ :style => "width: 200px;" } Persona
+                %th=status('published')
+                %th=status('draft')
+                %th=status('update')
+                %th=status('pending')
+
+            %tbody
+              -personas.each do |persona|
+                %tr
+                  %td.td-name
+                    =persona
+                  %td{ :style => "font-weight: bold;" }
+                    =persona.count_pages
+                    =" (#{persona.percentage_pages}%)"
+                  %td
+                    =persona.count_pages('draft')
+                  %td
+                    =persona.count_pages('update')
+                  %td
+                    =persona.count_pages('pending')
+
+
+  %br
+  .row
+    .col-md-8
+      %h3="Pages without any persona specified"
+      .row
+        .col-md-3.col-sm-12
+          %table.cms-table{ :style => "width: 700px;" }
+            %thead
+              %tr
+                %th{ :style => "width: 200px;" } Persona
+                %th=status('published')
+                %th=status('draft')
+                %th=status('update')
+                %th=status('pending')
+
+            %tbody
+              %tr
+                %td.td-name
+                  ="None specified"
+                %td{ :style => "font-weight: bold;" }
+                  =Pig::Persona.count_pages_without_personas
+                  =" (#{Pig::Persona.percentage_pages_without_personas}%)"
+
+                %td
+                  =Pig::Persona.count_pages_without_personas('draft')
+                %td
+                  =Pig::Persona.count_pages_without_personas('update')
+                %td
+                  =Pig::Persona.count_pages_without_personas('pending')

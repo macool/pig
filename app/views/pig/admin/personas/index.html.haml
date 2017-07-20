@@ -3,9 +3,10 @@
     .col-xs-12
       .cms-page-header
         .row
-          .col-sm-6.col-sm-offset-3
+          .col-sm-6
             %h1=title 'Personas'
-          .col-sm-3.cms-header-actions
+          .col-sm-6.cms-header-actions
+            =link_to('Persona report', pig.admin_persona_report_path, :icon => 'plus', :class => 'btn btn-success')
             =link_to('Add persona', pig.new_admin_persona_path, :icon => 'plus', :class => 'btn btn-success')
 
   -@persona_groups.each do |group|

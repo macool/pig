@@ -78,6 +78,7 @@ Pig::Engine.routes.draw do
       end
     end
 
+    get '/persona/report' => 'personas#report'
     resources :personas
     resources :meta_data
     resources :redactor_image_uploads, only: [:index, :create]

@@ -2,6 +2,8 @@ module Pig
   class Persona < ActiveRecord::Base
 
     belongs_to :group, :class_name => "PersonaGroup"
+    has_and_belongs_to_many :content_packages, class_name: 'Pig::ContentPackage'
+
     dragonfly_accessor :image
     dragonfly_accessor :file
     validate :group_name_is_valid
@@ -26,6 +28,33 @@ module Pig
       [name,category].select(&:present?).join(' - ')
     end
 
+    def count_pages(status = 'published')
+      content_packages.where(status: status).count
+    end
+
+    def percentage_pages(status = 'published')
+      count = count_pages(status)
+      total = Pig::ContentPackage.where(status: status).count
+      percentage = count.to_f / total.to_f * 100.0
+      return percentage.round 1
+    end
+
+    def self.count_pages_without_personas(status = 'published')
+      count = 0
+      results = Pig::ContentPackage.where(status: status)
+      results.each do |page|
+        count += 1 if page.personas.count == 0
+      end
+      return count
+    end
+
+    def self.percentage_pages_without_personas(status = 'published')
+      count = Pig::Persona.count_pages_without_personas(status)
+      total = Pig::ContentPackage.where(status: status).count
+      percentage = count.to_f / total.to_f * 100.0
+      return percentage.round 1
+    end
+
     private
     def group_name_is_valid
       return true unless group
@@ -34,6 +63,10 @@ module Pig
         self.errors.add(:group_name, message)
       end
       group.errors.blank?
+    end
+
+    def percent_of(n)
+      self.to_f / n.to_f * 100.0
     end
 
   end

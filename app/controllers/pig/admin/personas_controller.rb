@@ -20,6 +20,10 @@ module Pig
         @persona_groups = Pig::PersonaGroup.order(:position, :name)
       end
 
+      def report
+        @persona_groups = Pig::PersonaGroup.order(:position, :name)
+      end
+
       def new
       end
 
