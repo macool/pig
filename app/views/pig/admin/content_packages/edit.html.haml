@@ -73,7 +73,7 @@
                           %i.fa.fa-caret-down.pull-right
                       %div{:id => ("#{(category.name).parameterize}-collapse"), :class => 'collapse'}
                         %ul.list-half
-                          -category.taxonomy_list.each do |tag|
+                          -category.taxonomy_list.sort { |a, b| a.downcase <=> b.downcase }.each do |tag|
                             %li
                               .checkbox.m0
                                 %label.m0
