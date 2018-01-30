@@ -60,7 +60,7 @@
                 %td.td-name
                   ="None specified"
                 %td{ :style => "font-weight: bold;" }
-                  =link_to(Pig::Persona.count_pages_without_personas,"/admin/persona/pages/0")
+                  =link_to(Pig::Persona.count_pages_without_personas,"/admin/persona/pages/0/published")
                   =" (#{Pig::Persona.percentage_pages_without_personas}%)"
 
                 %td
