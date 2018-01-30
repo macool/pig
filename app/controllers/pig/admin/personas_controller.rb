@@ -24,7 +24,7 @@ module Pig
       end
 
       def report_pages
-        @status = "published"
+        @status = params.permit(:status)[:status]
         id = params.permit(:id)[:id].to_i
         if id == 0
           @name = "no persona"

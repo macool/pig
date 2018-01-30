@@ -79,7 +79,7 @@ Pig::Engine.routes.draw do
     end
 
     get '/persona/report' => 'personas#report'
-    get '/persona/pages/:id' => 'personas#report_pages'
+    get '/persona/pages/:id/:status' => 'personas#report_pages'
 
     resources :personas
     resources :meta_data

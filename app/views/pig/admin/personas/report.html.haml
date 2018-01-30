@@ -31,15 +31,14 @@
                   %td.td-name
                     =persona
                   %td{ :style => "font-weight: bold;" }
-                    =link_to(persona.count_pages,"/admin/persona/pages/#{persona.id}")
+                    =link_to(persona.count_pages,"/admin/persona/pages/#{persona.id}/published")
                     =" (#{persona.percentage_pages}%)"
                   %td
-                    =persona.count_pages('draft')
+                    =link_to(persona.count_pages('draft'),"/admin/persona/pages/#{persona.id}/draft")
                   %td
-                    =persona.count_pages('update')
+                    =link_to(persona.count_pages('update'),"/admin/persona/pages/#{persona.id}/update")
                   %td
-                    =persona.count_pages('pending')
-
+                    =link_to(persona.count_pages('pending'),"/admin/persona/pages/#{persona.id}/pending")
 
   %br
   .row
@@ -65,8 +64,8 @@
                   =" (#{Pig::Persona.percentage_pages_without_personas}%)"
 
                 %td
-                  =Pig::Persona.count_pages_without_personas('draft')
+                  =link_to(Pig::Persona.count_pages_without_personas('draft'),"/admin/persona/pages/0/draft")
                 %td
-                  =Pig::Persona.count_pages_without_personas('update')
+                  =link_to(Pig::Persona.count_pages_without_personas('update'),"/admin/persona/pages/0/update")
                 %td
-                  =Pig::Persona.count_pages_without_personas('pending')
+                  =link_to(Pig::Persona.count_pages_without_personas('pending'),"/admin/persona/pages/0/pending")
