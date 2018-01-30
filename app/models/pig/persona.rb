@@ -28,8 +28,12 @@ module Pig
       [name,category].select(&:present?).join(' - ')
     end
 
+    def get_pages(status = 'published')
+      content_packages.where(status: status)
+    end
+
     def count_pages(status = 'published')
-      content_packages.where(status: status).count
+      get_pages(status).count
     end
 
     def percentage_pages(status = 'published')
@@ -37,6 +41,15 @@ module Pig
       total = Pig::ContentPackage.where(status: status).count
       percentage = count.to_f / total.to_f * 100.0
       return percentage.round 1
+    end
+
+    def self.get_pages_without_personas(status = 'published')
+      pages = []
+      results = Pig::ContentPackage.where(status: status)
+      results.each do |page|
+        pages << page if page.personas.count == 0
+      end
+      return pages
     end
 
     def self.count_pages_without_personas(status = 'published')

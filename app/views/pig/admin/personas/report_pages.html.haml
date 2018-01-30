@@ -1,0 +1,31 @@
+.container.page-margin-bottom
+  .row
+    .col-xs-12
+      .cms-page-header
+        .row
+          .col-sm-6.col-sm-offset-3
+            %h1=title 'Persona pages report'
+          .col-sm-3.cms-header-actions
+            =link_to('Back', "/admin/persona/report", :icon => 'plus', :class => 'btn btn-success')
+
+  .row
+    %h3
+      =@pages.count
+      = " "
+      =status(@status).downcase
+      =" pages for #{@name}"
+    .col-md-3.col-sm-12
+      %table.cms-table{ :style => "width: 1200px;" }
+        %thead
+          %tr
+            %th{ :style => "width: 200px;" } Page name
+            %th{ :style => "width: 200px;" } Page location
+        -@pages.each do |page|
+          %tbody
+            %tr
+              %td.td-name
+                =link_to(page.name, page)
+              %td.td-name
+                -page.breadcrumbs.each do |b|
+                  ="> "
+                  =b[:name].to_s

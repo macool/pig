@@ -31,7 +31,7 @@
                   %td.td-name
                     =persona
                   %td{ :style => "font-weight: bold;" }
-                    =persona.count_pages
+                    =link_to(persona.count_pages,"/admin/persona/pages/#{persona.id}")
                     =" (#{persona.percentage_pages}%)"
                   %td
                     =persona.count_pages('draft')
@@ -61,7 +61,7 @@
                 %td.td-name
                   ="None specified"
                 %td{ :style => "font-weight: bold;" }
-                  =Pig::Persona.count_pages_without_personas
+                  =link_to(Pig::Persona.count_pages_without_personas,"/admin/persona/pages/0")
                   =" (#{Pig::Persona.percentage_pages_without_personas}%)"
 
                 %td
