@@ -46,7 +46,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'oauth2'
   s.add_dependency 'legato'
   s.add_dependency 'google-api-client', '~> 0.8.0'
-  s.add_dependency 'awesome_nested_set'
+  s.add_dependency 'awesome_nested_set', '~> 3.1'
   s.add_dependency "typhoeus"
   s.add_dependency "acts_as_commentable"
   s.add_dependency "paper_trail", "~> 5.2"
