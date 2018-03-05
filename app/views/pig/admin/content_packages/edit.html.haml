@@ -42,6 +42,11 @@
             =link_to('#content', 'data-toggle' => 'tab') do
               %i.fa.fa-paragraph
               %span Content
+          -if @content_package.versions && @content_package.versions.count > 1
+            %li
+              =link_to('#changes', 'data-toggle' => 'tab') do
+                %i.fa.fa-history
+                %span Changes
           %li
             =link_to('#meta', 'data-toggle' => 'tab') do
               %i.fa.fa-tag
@@ -58,6 +63,9 @@
                 %span Settings
         #content.tab-pane.active
           =render 'content_attributes', form: form
+        #changes.tab-pane
+          -if @content_package.versions && @content_package.versions.count > 0
+            =render 'content_changes', content_package: @content_package, live_content_package: @content_package.live_version
         #meta.tab-pane
           =render 'meta_inputs', form: form
         -if Pig::configuration.tags_feature
@@ -134,11 +142,13 @@
             -# %li=link_to("Scorecard", '#content-scorecard', 'data-toggle' => 'pill')
           .tab-content
             #activity.tab-pane.cms-well
-              %ul.cms-activities.cms-activity-feed
-                =render(partial: 'activity', collection: @activity_items, as: :activity, locals: {:include_name => true})
-              -if @activity_items.total_pages != @activity_items.current_page
-                =link_to "See older activity", pig.activity_admin_content_package_path(@content_package), :remote => true, :class => 'btn btn-sm js-older-activities pull-right'
+              %p
+                %ul.cms-activities.cms-activity-feed
+                  =render(partial: 'activity', collection: @activity_items, as: :activity, locals: {:include_name => true})
+                -if @activity_items.total_pages != @activity_items.current_page
+                  =link_to "See older activity", pig.activity_admin_content_package_path(@content_package), :remote => true, :class => 'btn btn-sm js-older-activities pull-right'
                 .clearfix
+
             - if @content_package.personas.present?
               #personas.tab-pane.cms-well
                 %label.col-primary Audience/personas
