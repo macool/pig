@@ -41,6 +41,8 @@ module Pig
         meta_hide_from_robots = nil
       end
 
+      meta_description = strip_tags CGI.unescapeHTML(meta_description.strip)
+
       meta_image = image || content_for(:meta_image) || "#{Settings.site_url}#{asset_path(Settings.default_fb_meta_image)}"
 
       meta_values = [meta_title, meta_description, meta_image, meta_keywords, meta_hide_from_robots]
