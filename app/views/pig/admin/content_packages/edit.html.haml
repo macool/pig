@@ -65,7 +65,11 @@
           =render 'content_attributes', form: form
         #changes.tab-pane
           -if @content_package.versions && @content_package.versions.count > 0
-            =render 'content_changes', content_package: @content_package, live_content_package: @content_package.live_version
+            -if params[:compare1] != params[:compare2]
+              =render 'content_changes', compare1_content_package: @content_package.version_date(params[:compare1]), compare2_content_package: @content_package.version_date(params[:compare2])
+            -else
+              =render 'content_changes', compare1_content_package: @content_package.version_date(params[:compare1]), compare2_content_package: @content_package
+
         #meta.tab-pane
           =render 'meta_inputs', form: form
         -if Pig::configuration.tags_feature

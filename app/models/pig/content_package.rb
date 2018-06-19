@@ -63,6 +63,14 @@ module Pig
         raise Pig::UnknownAttributeTypeError, "Unable to find attribute type class #{field_type}"
     end
 
+    def version_date(timestamp)
+      if timestamp
+        version_at(Time.at(timestamp.to_i))
+      else
+        versions.last.reify
+      end
+    end
+
     class << self
 
       def member_routes
