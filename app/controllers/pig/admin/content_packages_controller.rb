@@ -178,6 +178,7 @@ module Pig
         @activity_items = @content_package.activity_items.includes(:user, :resource).paginate(:page => 1, :per_page => 5)
         @non_meta_content_attributes = @content_package.content_attributes.where(:meta => false)
         @meta_content_attributes = @content_package.content_attributes.where(:meta => true)
+        @changes_tab = params[:compare1] ? true : false
       end
 
       def update_content_package
