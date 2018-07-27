@@ -7,3 +7,5 @@
     -unless @content_package.viewless?
       -if can?(:create, Pig::Permalink)
         =render 'permalinks', content_package: @content_package, form: form
+      -else
+        =render 'permalinks_read_only', content_package: @content_package, form: form
