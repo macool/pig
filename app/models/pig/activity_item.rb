@@ -7,6 +7,7 @@ module Pig
     validates :user, :presence => true
 
     def next
+      return self if user.nil?
       next_activity = user.activity_items.where(resource_id: resource_id).where("id > ?", id).last
       if next_activity
         next_activity
@@ -17,6 +18,7 @@ module Pig
 
 
     def previous
+      return self if user.nil?
       previous_activity = user.activity_items.where(resource_id: resource_id).where("id < ?", id).first
       if previous_activity
         previous_activity
