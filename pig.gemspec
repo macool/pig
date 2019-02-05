@@ -28,28 +28,28 @@ Gem::Specification.new do |s|
   s.add_dependency 'formtastic-bootstrap'
   s.add_dependency 'cancancan'
   s.add_dependency 'rack-cache'
-  s.add_dependency 'dragonfly', '~>1.0'
+  s.add_dependency 'dragonfly'
   s.add_dependency 'dragonfly-s3_data_store'
   s.add_dependency 'devise'
-  s.add_dependency 'haml-rails', '~> 1.0'
-  s.add_dependency 'config', '~> 1.0.0'
+  s.add_dependency 'haml-rails'
+  s.add_dependency 'config'
   s.add_dependency 'jquery-rails'
-  s.add_dependency 'jquery-ui-rails', '~> 5.0.5'
-  s.add_dependency 'bootstrap-sass', '~> 3.3.7'
+  s.add_dependency 'jquery-ui-rails'
+  s.add_dependency 'bootstrap-sass'
   s.add_dependency 'will_paginate'
   s.add_dependency 'will_paginate-bootstrap'
   s.add_dependency 'cells', '4.0.5'
   s.add_dependency 'cells-haml'
   s.add_dependency 'poltergeist'
   s.add_dependency 'httparty'
-  s.add_dependency 'react-rails', '~> 1.0'
+  s.add_dependency 'react-rails'
   s.add_dependency 'oauth2'
   s.add_dependency 'legato'
-  s.add_dependency 'google-api-client', '~> 0.8.0'
+  s.add_dependency 'google-api-client'
   s.add_dependency 'awesome_nested_set'
   s.add_dependency "typhoeus"
   s.add_dependency "acts_as_commentable"
-  s.add_dependency "paper_trail", "~> 5.2"
+  s.add_dependency "paper_trail"
   s.add_dependency "yt"
   s.add_dependency "diffy"
 
