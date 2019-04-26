@@ -3,7 +3,7 @@ module Pig
 
     include Pig::Concerns::Models::Core
 
-    belongs_to :resource, polymorphic: true
+    belongs_to :resource, polymorphic: true, optional: true
 
     validates :full_path, presence: true,
       uniqueness: { case_sensitive: false, scope: :active },

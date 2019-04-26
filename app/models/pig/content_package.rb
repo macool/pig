@@ -230,7 +230,7 @@ module Pig
       return true if new_record? || content_type.nil?
       content_attributes.each do |content_attribute|
         if content_attribute.required? && send(content_attribute.slug).blank?
-          self.errors.add_on_blank(content_attribute.slug)
+          self.errors.add(:base, "#{content_attribute.name} can't be blank")
         end
       end
     end
