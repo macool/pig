@@ -2,8 +2,8 @@ module Pig
   class ActivityItem < ActiveRecord::Base
 
     belongs_to :user
-    belongs_to :resource, :polymorphic => true
-    belongs_to :parent_resource, :polymorphic => true
+    belongs_to :resource, :polymorphic => true, optional: true
+    belongs_to :parent_resource, :polymorphic => true, optional: true
     validates :user, :presence => true
 
     def next
