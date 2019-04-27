@@ -65,7 +65,7 @@ module Pig
 
     def version_date(timestamp)
       if timestamp
-        version_at(Time.at(timestamp.to_i))
+        paper_trail.version_at(Time.at(timestamp.to_i))
       else
         versions.last.reify
       end
