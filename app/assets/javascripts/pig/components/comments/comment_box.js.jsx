@@ -1,4 +1,4 @@
-var CommentBox = React.createClass({
+var CommentBox = createReactClass({
   getInitialState: function() {
     return {comments: this.props.comments};
   },

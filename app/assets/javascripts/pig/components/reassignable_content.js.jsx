@@ -1,4 +1,4 @@
-var ReassignableContent = React.createClass({
+var ReassignableContent = createReactClass({
   render: function() {
     var optionRows = [];
     var component = this;
