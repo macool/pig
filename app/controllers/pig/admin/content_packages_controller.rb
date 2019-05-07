@@ -191,7 +191,7 @@ module Pig
         previous_status = @content_package.status
 
         @content_package.last_edited_by = current_user
-        content_package_params[:author_id]=current_user.id if content_package_params[:author_id].empty?
+        content_package_params[:author_id]=current_user.id if content_package_params[:author_id].nil? || content_package_params[:author_id].empty?
 
         if @content_package.update_attributes(content_package_params)
           flash[:notice] = "Updated \"#{@content_package}\""
