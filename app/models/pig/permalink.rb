@@ -59,7 +59,8 @@ module Pig
     end
 
     def delete_duplicate_permalinks
-      Permalink.without(self).where(:path => path, :full_path => full_path, :active => false).delete_all
+      duplicate_links = Permalink.where(:path => path, :full_path => full_path, :active => false).reject{|p| p == self}
+      Permalink.delete(duplicate_links)
     end
 
     def path_does_not_match_existing_route
