@@ -1,4 +1,4 @@
-var PackageReassigner = React.createClass({
+var PackageReassigner = createReactClass({
   getInitialState: function() {
     return {content: []};
   },

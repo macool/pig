@@ -1,6 +1,14 @@
 module Pig
   module ContentHelper
 
+    def display_changes_date(timestamp)
+      if timestamp
+        time_ago_in_words(Time.at(timestamp.to_i))+" ago"
+      else
+        "last saved"
+      end
+    end
+
     def content_package_publish_at_class
       @content_package.status == 'published' && Pig::ContentPackage.statuses(current_user).has_key?(:published)  ? 'hidden' : ''
     end

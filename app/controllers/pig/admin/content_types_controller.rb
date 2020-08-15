@@ -74,6 +74,7 @@ module Pig
         if @content_type.update_attributes(params)
           redirect_to pig.admin_content_types_path
         else
+          flash[:error] = @content_type.errors.full_messages.to_sentence
           render :action => 'edit'
         end
       end

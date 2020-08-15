@@ -1,4 +1,4 @@
-var CommentList = React.createClass({
+var CommentList = createReactClass({
   render: function() {
     if (this.props.comments.length > 0)
       var commentNodes = this.props.comments.map(function(comment) {

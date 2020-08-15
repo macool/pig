@@ -1,0 +1,36 @@
+:css
+  ="#{diffy_css}"
+-index = 0
+.cms-form-well
+  %h3
+    ="Content fields changed"
+    =display_changes_date(params[:compare1])
+  -@non_meta_content_attributes.each do |content_attribute|
+    - compare1 = compare1_content_package.send(content_attribute.slug).try(:html_safe)
+    - compare2 = compare2_content_package.send(content_attribute.slug).try(:html_safe)
+    -if compare1 != compare2
+      #accordion.panel-group.accordian{"aria-multiselectable" => "true", :role => "tablist"}
+        .panel
+          %div{:role => "tab", :class => 'panel-heading', :id => "heading1"}
+            %h4.panel-title
+              %a{href: "#collapse#{index}", role: "button", "aria-controls" => "collapse#{index}", "aria-expanded" => "true", "data-parent" => "#accordion", "data-toggle" => "collapse", :class => 'collapsed'}="View HTML changes"
+          %div{"aria-labelledby" => "heading#{index}", :role => "tabpanel", :class => "panel-collapse collapse", :id => "collapse#{index}"}
+            .panel-body
+              %p=show_diff(compare1, compare2).html_safe
+      -index = index+1
+      %hr
+      %fieldset.inputs
+        %span.form-label
+          %label
+            =content_attribute.to_s + " before"
+      %div.field_content_changed
+        =compare1
+      %fieldset.inputs
+        %span.form-label
+          %label
+            ="Changed to"
+      %div.field_content_changed
+        =compare2
+      %br
+  -if index==0
+    %p="No changes"

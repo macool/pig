@@ -1,0 +1,16 @@
+%fieldset
+  %hr
+  %label= t('.url', default: 'URL')
+  %ul
+    %li
+      - if Pig.configuration.nested_permalinks && content_package.parent.respond_to?(:permalink_display_path)
+        -link = content_package.parent.permalink_display_path.chop + "/" + content_package.permalink_path
+      -else
+        -link = content_package.permalink_path
+      = link_to link, link, class: "col-primary"
+  - if content_package.permalinks.inactive.any?
+    %label= t('.inactive_permalinks', default: 'Aliases')
+    %ul
+    - content_package.permalinks.inactive.each do |permalink|
+      %li
+        = link_to permalink.full_path, '' + permalink.full_path, class: "col-primary"
