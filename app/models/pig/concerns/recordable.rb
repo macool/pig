@@ -28,7 +28,9 @@ module Pig
 
       def record_activity!(user, text)
         return unless user
-        self.activity_items.create(user_id: user.id, text: text)
+        if Pig::ActivityItem.where(resource_id: self.id, created_at: 1.seconds.ago..Time.now).empty? # Avoid creating duplicate activity items
+          self.activity_items.create(user_id: user.id, text: text)
+        end
       end
     end
   end

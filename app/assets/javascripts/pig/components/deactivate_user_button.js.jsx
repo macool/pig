@@ -1,4 +1,4 @@
-var DeactivateUserButton = React.createClass({
+var DeactivateUserButton = createReactClass({
   render: function() {
     return <span>
         <a className='btn btn-xs set-active-btn btn-default' onClick={this.showPackageReassigner}>

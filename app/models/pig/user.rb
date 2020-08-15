@@ -4,6 +4,8 @@ module Pig
     include Pig::Concerns::Models::Roles
     include Pig::Concerns::Models::Name
 
+    has_many :activity_items
+
     has_many :assigned_content_packages,
       class_name: '::Pig::ContentPackage',
       foreign_key: 'author_id'

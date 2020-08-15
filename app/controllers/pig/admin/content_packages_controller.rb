@@ -60,6 +60,7 @@ module Pig
         @content_package = Pig::ContentPackage.new(content_package_params)
         set_editing_user
         authorize! :create, @content_package
+        #@content_package.quick_build_permalink
         if @content_package.save
           if params[:close]
             redirect_to admin_content_packages_path(open: @content_package.id)
@@ -67,6 +68,7 @@ module Pig
             redirect_to edit_admin_content_package_path(@content_package)
           end
         else
+          flash[:notice] = "Error: #{@content_package.errors.full_messages.to_sentence}"
           render :action => 'new'
         end
       end
@@ -178,6 +180,7 @@ module Pig
         @activity_items = @content_package.activity_items.includes(:user, :resource).paginate(:page => 1, :per_page => 5)
         @non_meta_content_attributes = @content_package.content_attributes.where(:meta => false)
         @meta_content_attributes = @content_package.content_attributes.where(:meta => true)
+        @changes_tab = params[:compare1] ? true : false
       end
 
       def update_content_package
@@ -186,6 +189,9 @@ module Pig
         # Because of this the updated_at time is set here
 
         previous_status = @content_package.status
+
+        @content_package.last_edited_by = current_user
+        content_package_params[:author_id]=current_user.id if content_package_params[:author_id].nil? || content_package_params[:author_id].empty?
 
         if @content_package.update_attributes(content_package_params)
           flash[:notice] = "Updated \"#{@content_package}\""
@@ -209,6 +215,7 @@ module Pig
 
       def set_editing_user
         @content_package.editing_user = current_user
+        @content_package.last_edited_by = current_user
       end
 
       def service_account_user(scope="https://www.googleapis.com/auth/analytics.readonly")

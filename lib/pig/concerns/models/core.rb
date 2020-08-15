@@ -6,10 +6,10 @@ module Pig
         extend ::ActiveSupport::Concern
 
         included do
-          scope :without, (lambda do |ids_or_records|
-            array = [*ids_or_records].collect{|i| i.is_a?(Integer) ? i : i.try(:id)}.reject(&:nil?)
-            array.empty? ? scoped : where(["#{table_name}.id NOT IN (?)", array])
-            end)
+          # scope :without, (lambda do |ids_or_records|
+          #   array = [*ids_or_records].collect{|i| i.is_a?(Integer) ? i : i.try(:id)}.reject(&:nil?)
+          #   array.empty? ? scoped : where(["#{table_name}.id NOT IN (?)", array])
+          #   end)
         end
 
         def all_present?(*attrs)

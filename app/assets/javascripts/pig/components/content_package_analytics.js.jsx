@@ -1,4 +1,4 @@
-var ContentPackageAnalytics = React.createClass({
+var ContentPackageAnalytics = createReactClass({
   getInitialState: function() {
     return {
       isLoading: true,
@@ -82,7 +82,7 @@ var ContentPackageAnalytics = React.createClass({
   }
 });
 
-var AnalyticReferrers = React.createClass({
+var AnalyticReferrers = createReactClass({
   render: function() {
     var referrerNodes = this.props.data.map(function(referrer) {
       return (
@@ -102,7 +102,7 @@ var AnalyticReferrers = React.createClass({
   }
 });
 
-var AnalyticReferrerKeyword = React.createClass({
+var AnalyticReferrerKeyword = createReactClass({
   render: function() {
     var referrerName = this.props.referrerName;
     var keywordNodes = this.props.data.map(function(keyword, index) {

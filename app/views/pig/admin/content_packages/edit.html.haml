@@ -38,10 +38,15 @@
             %label.col-primary Content objective/goal
             %p.mb-0=@content_package.notes
         %ul.cms-tabs
-          %li.active
+          %li{class: ("active" unless @changes_tab)}
             =link_to('#content', 'data-toggle' => 'tab') do
               %i.fa.fa-paragraph
               %span Content
+          -if @content_package.versions && @content_package.versions.count > 1
+            %li{class: ("active" if @changes_tab)}
+              =link_to('#changes', 'data-toggle' => 'tab') do
+                %i.fa.fa-history
+                %span Changes
           %li
             =link_to('#meta', 'data-toggle' => 'tab') do
               %i.fa.fa-tag
@@ -56,8 +61,15 @@
               =link_to('#settings', 'data-toggle' => 'tab') do
                 %i.fa.fa-cog
                 %span Settings
-        #content.tab-pane.active
+        #content.tab-pane{class: ("active" unless @changes_tab)}
           =render 'content_attributes', form: form
+        #changes.tab-pane{class: ("active" if @changes_tab)}
+          -if @content_package.versions && @content_package.versions.count > 0
+            -if params[:compare1] != params[:compare2]
+              =render 'content_changes', compare1_content_package: @content_package.version_date(params[:compare1]), compare2_content_package: @content_package.version_date(params[:compare2])
+            -else
+              =render 'content_changes', compare1_content_package: @content_package.version_date(params[:compare1]), compare2_content_package: @content_package
+
         #meta.tab-pane
           =render 'meta_inputs', form: form
         -if Pig::configuration.tags_feature
@@ -128,17 +140,19 @@
                     %p Page will be published but not shown to the public until this date.
           .clearfix
           %ul.cms-tabs
-            %li.active=link_to("Context", '#context', 'data-toggle' => 'pill')
-            %li=link_to("Activity", '#activity', 'data-toggle' => 'pill')
+            %li{class: ("active" unless @changes_tab)}=link_to("Context", '#context', 'data-toggle' => 'pill')
+            %li{class: ("active" if @changes_tab)}=link_to("Activity", '#activity', 'data-toggle' => 'pill')
             %li=link_to("Personas", '#personas', 'data-toggle' => 'pill')
             -# %li=link_to("Scorecard", '#content-scorecard', 'data-toggle' => 'pill')
           .tab-content
-            #activity.tab-pane.cms-well
-              %ul.cms-activities.cms-activity-feed
-                =render(partial: 'activity', collection: @activity_items, as: :activity, locals: {:include_name => true})
-              -if @activity_items.total_pages != @activity_items.current_page
-                =link_to "See older activity", pig.activity_admin_content_package_path(@content_package), :remote => true, :class => 'btn btn-sm js-older-activities pull-right'
+            #activity.tab-pane.cms-well{class: ("active" if @changes_tab)}
+              %p
+                %ul.cms-activities.cms-activity-feed
+                  =render(partial: 'activity', collection: @activity_items, as: :activity, locals: {:include_name => true})
+                -if @activity_items.total_pages != @activity_items.current_page
+                  =link_to "See older activity", pig.activity_admin_content_package_path(@content_package), :remote => true, :class => 'btn btn-sm js-older-activities pull-right'
                 .clearfix
+
             - if @content_package.personas.present?
               #personas.tab-pane.cms-well
                 %label.col-primary Audience/personas
@@ -166,7 +180,7 @@
             - else
               #personas.tab-pane.cms-well
                 %h4.text-center=t(".no_personas_set")
-            #context.tab-pane.active.cms-well
+            #context.tab-pane.cms-well{class: ("active" unless @changes_tab)}
               %label.col-primary Content Package Id
               %p
                 =@content_package.id

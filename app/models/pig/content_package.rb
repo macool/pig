@@ -38,10 +38,10 @@ module Pig
     scope :archived, -> { unscoped.where("archived_at IS NOT NULL").order("archived_at DESC") }
     scope :published, -> { where(:status => 'published').where('publish_at <= ? OR publish_at IS NULL', Date.today) }
     scope :expiring, -> { where('next_review < ?', Date.today) }
-    scope :without, (lambda do |ids_or_records|
-      array = [*ids_or_records].collect{|i| i.is_a?(Integer) ? i : i.try(:id)}.reject(&:nil?)
-      array.empty? ? scoped : where(["#{table_name}.id NOT IN (?)", array])
-    end)
+    # scope :without, (lambda do |ids_or_records|
+    #   array = [*ids_or_records].collect{|i| i.is_a?(Integer) ? i : i.try(:id)}.reject(&:nil?)
+    #   array.empty? ? scoped : where(["#{table_name}.id NOT IN (?)", array])
+    # end)
 
     def build_content_chunk_methods
       if content_type
@@ -61,6 +61,14 @@ module Pig
       Pig.const_get("#{field_type.camelize}Type")
       rescue NameError
         raise Pig::UnknownAttributeTypeError, "Unable to find attribute type class #{field_type}"
+    end
+
+    def version_date(timestamp)
+      if timestamp
+        paper_trail.version_at(Time.at(timestamp.to_i))
+      else
+        versions.last.reify
+      end
     end
 
     class << self
@@ -222,7 +230,7 @@ module Pig
       return true if new_record? || content_type.nil?
       content_attributes.each do |content_attribute|
         if content_attribute.required? && send(content_attribute.slug).blank?
-          self.errors.add_on_blank(content_attribute.slug)
+          self.errors.add(:base, "#{content_attribute.name} can't be blank")
         end
       end
     end

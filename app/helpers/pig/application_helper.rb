@@ -1,5 +1,8 @@
 module Pig
   module ApplicationHelper
+
+    require 'diffy'
+
     # Gets page title - uses long_page_title, etc if meta_title not set. If neither, or not a pig page, uses default.
     def get_meta_title
       meta_title = Settings.default_meta_title
@@ -38,11 +41,35 @@ module Pig
         meta_hide_from_robots = nil
       end
 
+      meta_description = strip_tags CGI.unescapeHTML(meta_description.strip)
+
       meta_image = image || content_for(:meta_image) || "#{Settings.site_url}#{asset_path(Settings.default_fb_meta_image)}"
 
       meta_values = [meta_title, meta_description, meta_image, meta_keywords, meta_hide_from_robots]
 
       pig_meta_tags(meta_values)
+    end
+
+    def show_diff(string1, string2)
+      Diffy::Diff.new(string1, string2).to_s(:html)
+    end
+
+    def diffy_css
+      "
+      .diff{overflow:auto;}
+      .diff ul{background:#fff;overflow:auto;font-size:13px;list-style:none;margin:0;padding:0;display:table;width:100%;}
+      .diff del, .diff ins{display:block;text-decoration:none;}
+      .diff li{padding:0; display:table-row;margin: 0;height:1em;}
+      .diff li.ins{background:#dfd; color:#080}
+      .diff li.del{background:#fee; color:#b00}
+      /* try 'whitespace:pre;' if you don't want lines to wrap */
+      .diff del, .diff ins, .diff span{white-space:pre-wrap;font-family:courier;}
+      .diff del strong{font-weight:normal;background:#fcc;}
+      .diff ins strong{font-weight:normal;background:#9f9;}
+      .diff li.diff-comment { display: none; }
+      .diff li.diff-block-info { background: none repeat scroll 0 0 gray; }
+      "
+
     end
 
     private

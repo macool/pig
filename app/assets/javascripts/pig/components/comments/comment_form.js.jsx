@@ -1,4 +1,4 @@
-var CommentForm = React.createClass({
+var CommentForm = createReactClass({
   handleSubmit: function(e) {
     e.preventDefault();
     var text = ReactDOM.findDOMNode(this.refs.comment).value.trim();

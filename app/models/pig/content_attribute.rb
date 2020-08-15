@@ -2,7 +2,7 @@ module Pig
   class ContentAttribute < ActiveRecord::Base
 
     belongs_to :content_type
-    belongs_to :default_attribute, :class_name => 'ContentAttribute'
+    belongs_to :default_attribute, :class_name => 'ContentAttribute', optional: true
     after_validation :set_meta_title, :if => :meta?
     before_validation :set_slug
     validates :slug, :name, :field_type, :presence => true
@@ -16,7 +16,7 @@ module Pig
     rescue ActiveRecord::StatementInvalid
       # Migrations not yet carried out, but need to be able to precompile
     end
-    belongs_to :resource_content_type, :class_name => 'ContentType'
+    belongs_to :resource_content_type, :class_name => 'ContentType', optional: true
 
 
     class << self
